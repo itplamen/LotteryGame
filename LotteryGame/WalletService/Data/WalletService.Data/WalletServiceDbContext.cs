@@ -15,30 +15,32 @@
 
         public DbSet<BalanceHistory> BalanceHistories { get; set; }
 
+        public DbSet<Reservation> Reservations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Player>()
-                .HasOne(x => x.Wallet)
-                .WithOne(x => x.Player)
-                .HasForeignKey<Wallet>(x => x.PlayerId)
-                .IsRequired();
+            modelBuilder.Entity<Player>(entity =>
+            {
+                entity.HasKey(x => x.Id);
 
-            modelBuilder.Entity<Wallet>()
-                .HasMany(x => x.BalanceHistories)
-                .WithOne(x => x.Wallet)
-                .HasForeignKey(x => x.WalletId)
-                .IsRequired();
-
-            modelBuilder.Entity<Wallet>()
-                .HasIndex(x => x.PlayerId)
-                .IsUnique();
-
-            modelBuilder.Entity<BalanceHistory>()
-                .HasIndex(x => x.WalletId);
+                entity.HasOne(x => x.Wallet)
+                    .WithOne(x => x.Player)
+                    .HasForeignKey<Wallet>(x => x.PlayerId)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity<Wallet>(entity =>
             {
                 entity.HasKey(x => x.Id);
+
+                entity.HasMany(x => x.BalanceHistories)
+                    .WithOne(x => x.Wallet)
+                    .HasForeignKey(x => x.WalletId)
+                    .IsRequired();
+
+                entity.HasIndex(x => x.PlayerId)
+                    .IsUnique();
+
                 entity.ToTable(x => 
                     x.HasCheckConstraint(
                         "CK_Wallet_PositiveBalance",
@@ -50,6 +52,9 @@
             modelBuilder.Entity<BalanceHistory>(entity =>
             {
                 entity.HasKey(x => x.Id);
+
+                entity.HasIndex(x => x.WalletId);
+
                 entity.ToTable(x => x
                     .HasCheckConstraint(
                         "CK_BalanceHistory_PositiveBalance",
@@ -58,9 +63,33 @@
                 );
             });
 
-            modelBuilder.Entity<Player>(entity =>
+            modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(x => x.Id);
+
+                entity.HasOne(x => x.Wallet)
+                      .WithMany(x => x.Reservations)
+                      .HasForeignKey(x => x.WalletId)
+                      .IsRequired();
+
+                entity.Property(x => x.Amount)
+                      .HasColumnType("decimal(18,2)")
+                      .IsRequired();
+
+                entity.Property(x => x.ExpiresAt)
+                      .IsRequired();
+
+                entity.Property(x => x.IsCaptured)
+                      .HasDefaultValue(false);
+
+                entity.HasIndex(x => x.WalletId);
+
+                entity.ToTable(x => x
+                    .HasCheckConstraint(
+                        "CK_Reservation_PositiveAmount",
+                        "[Amount] >= 0"
+                    )
+                );
             });
 
             base.OnModelCreating(modelBuilder);

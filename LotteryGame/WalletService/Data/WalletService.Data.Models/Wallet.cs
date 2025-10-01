@@ -8,6 +8,7 @@
         public Wallet()
         {
             BalanceHistories = new HashSet<BalanceHistory>();
+            Reservations = new HashSet<Reservation>();
         }
 
         [Required]
@@ -31,5 +32,7 @@
         public Player Player { get; set; }
 
         public ICollection<BalanceHistory> BalanceHistories { get; set; }
+
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }
