@@ -52,8 +52,8 @@
             modelBuilder.Entity<BalanceHistory>(entity =>
             {
                 entity.HasKey(x => x.Id);
-
                 entity.HasIndex(x => x.WalletId);
+                entity.HasIndex(x => x.ReferenceId);
 
                 entity.ToTable(x => x
                     .HasCheckConstraint(

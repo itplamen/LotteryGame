@@ -13,11 +13,17 @@
         private readonly int reservationExpiryMins;
         private readonly IRepository<Wallet> walletRepo;
         private readonly IRepository<Reservation> reservationRepo;
+        private readonly IBalanceHistoryOperations balanceHistoryOperations;
 
-        public FundsOperations(IRepository<Wallet> walletRepo, IRepository<Reservation> reservationRepo, IConfiguration config)
+        public FundsOperations(
+            IRepository<Wallet> walletRepo, 
+            IRepository<Reservation> reservationRepo, 
+            IBalanceHistoryOperations balanceHistoryOperations, 
+            IConfiguration config)
         {
             this.walletRepo = walletRepo;
             this.reservationRepo = reservationRepo;
+            this.balanceHistoryOperations = balanceHistoryOperations;
             this.reservationExpiryMins = int.Parse(config["Reservation:ExpiryMins"]);
         }
 
@@ -36,6 +42,7 @@
                 return new ResponseDto<BaseDto>("Insufficient funds");
             }
 
+            decimal oldBalance = wallet.TotalBalance;
             decimal remaining = amount;
 
             if (wallet.RealMoney >= remaining)
@@ -63,6 +70,14 @@
             await reservationRepo.AddAsync(reservation);
             await walletRepo.SaveChangesAsync();
 
+            await balanceHistoryOperations.Record(
+                wallet.Id,
+                oldBalance,
+                wallet.TotalBalance, 
+                BalanceType.Reserve, 
+                "Funds reserved",
+                reservation.TicketId);
+
             return new ResponseDto<BaseDto>() { Data = new BaseDto(reservation.Id) };
         }
 
@@ -80,10 +95,19 @@
                  return new ResponseDto("Wallet not found");
             }
 
+            decimal oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
             reservation.IsCaptured = true;
 
             await walletRepo.SaveChangesAsync();
+
+            await balanceHistoryOperations.Record(
+                wallet.Id,
+                oldBalance,
+                wallet.TotalBalance,
+                BalanceType.Capture,
+                "Funds captured",
+                reservation.TicketId);
 
             return new ResponseDto();
         }
@@ -107,11 +131,20 @@
                 return new ResponseDto("Insufficient locked funds to process refund");
             }
 
+            decimal oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
             wallet.RealMoney += reservation.Amount;
 
             reservationRepo.Delete(reservation);
             await reservationRepo.SaveChangesAsync();
+
+            await balanceHistoryOperations.Record(
+                wallet.Id,
+                oldBalance,
+                wallet.TotalBalance,
+                BalanceType.Refund,
+                "Funds refunded",
+                reservation.TicketId);
 
             return new ResponseDto();
         }

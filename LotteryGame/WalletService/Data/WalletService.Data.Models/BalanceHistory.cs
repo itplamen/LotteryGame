@@ -14,6 +14,9 @@
         public decimal NewBalance { get; set; }
 
         [Required]
+        public string ReferenceId { get; set; }
+
+        [Required]
         public BalanceType Type { get; set; }
 
         [Required]

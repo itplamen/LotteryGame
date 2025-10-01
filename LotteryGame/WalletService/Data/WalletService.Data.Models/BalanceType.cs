@@ -2,9 +2,11 @@
 {
     public enum BalanceType
     {
-        RealMoney,
-        BonusMoney,
-        LockedFunds,
-        LoyaltyPoints
+        Reserve,
+        Capture,
+        Refund,
+        RealMoneyPrize,
+        BonusMoneyPrize,
+        LoyaltyPointsPrize
     }
 }

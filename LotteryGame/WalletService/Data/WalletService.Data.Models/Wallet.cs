@@ -34,5 +34,8 @@
         public ICollection<BalanceHistory> BalanceHistories { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
+
+        [NotMapped]
+        public decimal TotalBalance => RealMoney + BonusMoney + LockedFunds;
     }
 }
