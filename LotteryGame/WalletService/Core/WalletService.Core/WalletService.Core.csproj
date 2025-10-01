@@ -6,4 +6,9 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\WalletService.Data\WalletService.Data.csproj" />
+    <ProjectReference Include="..\WalletService.Core.Models\WalletService.Core.Models.csproj" />
+  </ItemGroup>
+
 </Project>
