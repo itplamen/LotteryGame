@@ -34,7 +34,11 @@
             await dbSet.AddAsync(item);
         }
 
-        public void Update(TEntity item) => dbSet.Update(item);
+        public void Update(TEntity item)
+        {
+            item.ModifiedOn = DateTime.UtcNow;
+            dbSet.Update(item);
+        }
 
         public void Delete(TEntity item)
         {
