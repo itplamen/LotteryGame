@@ -84,6 +84,12 @@
 
                 entity.HasIndex(x => x.WalletId);
 
+                entity.Property(x => x.TicketId)
+                    .IsRequired();
+
+                entity.HasIndex(x => x.TicketId)
+                    .IsUnique();
+
                 entity.ToTable(x => x
                     .HasCheckConstraint(
                         "CK_Reservation_PositiveAmount",
