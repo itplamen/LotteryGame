@@ -22,9 +22,11 @@
             this.dbSet = this.context.Set<TEntity>();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync() => await dbSet.ToListAsync();
+        public IQueryable<TEntity> Filter() => dbSet;
 
         public async Task<TEntity> GetByIdAsync(int id) => await dbSet.FindAsync(id);
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync() => await dbSet.ToListAsync();
 
         public async Task AddAsync(TEntity item)
         {
@@ -33,6 +35,12 @@
         }
 
         public void Update(TEntity item) => dbSet.Update(item);
+
+        public void Delete(TEntity item)
+        {
+            item.DeletedOn = DateTime.UtcNow;
+            dbSet.Update(item);
+        }
 
         public Task SaveChangesAsync() => context.SaveChangesAsync();
     }
