@@ -108,9 +108,6 @@
 
                 entity.HasIndex(x => x.WalletId);
 
-                entity.Property(x => x.TicketId)
-                    .IsRequired();
-
                 entity.HasIndex(x => x.TicketId)
                     .IsUnique();
 

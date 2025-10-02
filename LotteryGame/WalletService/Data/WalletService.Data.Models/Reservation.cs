@@ -11,7 +11,6 @@
 
         public bool IsCaptured { get; set; }
 
-        [Required]
         public string TicketId { get; set; }
 
         [Required]

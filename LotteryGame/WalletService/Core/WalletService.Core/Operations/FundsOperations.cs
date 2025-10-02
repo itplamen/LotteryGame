@@ -41,7 +41,7 @@
             return new ResponseDto() { ErrorMsg = errorMsg };
         }
 
-        public async Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount, string ticketId)
+        public async Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount)
         {
             Wallet wallet = await walletRepo.Filter()
                 .FirstOrDefaultAsync(x => x.PlayerId == playerId);
@@ -76,7 +76,6 @@
             {
                 WalletId = wallet.Id,
                 Amount = amount,
-                TicketId = ticketId,
                 IsCaptured = false,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(reservationExpiryMins)
             };
@@ -95,7 +94,7 @@
             return new ResponseDto<BaseDto>() { Data = new BaseDto(reservation.Id) };
         }
 
-        public async Task<ResponseDto> Capture(int reservationId)
+        public async Task<ResponseDto> Capture(int reservationId, string ticketId)
         {
             Reservation reservation = await reservationRepo.GetByIdAsync(reservationId);
             if (reservation == null || reservation.IsCaptured)
@@ -111,7 +110,9 @@
 
             long oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
+
             reservation.IsCaptured = true;
+            reservation.TicketId = ticketId;
 
             await walletRepo.SaveChangesAsync();
 
