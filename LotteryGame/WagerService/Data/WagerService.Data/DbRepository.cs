@@ -31,12 +31,12 @@
                 .ToListAsync();
         }
 
-        public async Task AddAsync(TEntity item)
+        public async Task AddAsync(TEntity entity)
         {
-            item.CreatedOn = DateTime.UtcNow;
+            entity.CreatedOn = DateTime.UtcNow;
 
             await dbContext.GetCollection<TEntity>()
-                .InsertOneAsync(item);
+                .InsertOneAsync(entity);
         }
 
         public async Task<bool> UpdateAsync(TEntity entity)

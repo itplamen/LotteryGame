@@ -11,7 +11,7 @@
 
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter);
 
-        Task AddAsync(TEntity item);
+        Task AddAsync(TEntity entity);
 
         Task<bool> UpdateAsync(TEntity entity);
     }

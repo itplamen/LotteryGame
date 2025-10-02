@@ -11,12 +11,12 @@
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 
-        Task AddAsync(TEntity item);
+        Task AddAsync(TEntity entity);
 
-        void Update(TEntity item);
+        void Update(TEntity entity);
 
         Task SaveChangesAsync();
 
-        void Delete(TEntity item);
+        void Delete(TEntity entity);
     }
 }

@@ -28,22 +28,22 @@
 
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await dbSet.ToListAsync();
 
-        public async Task AddAsync(TEntity item)
+        public async Task AddAsync(TEntity entity)
         {
-            item.CreatedOn = DateTime.UtcNow;
-            await dbSet.AddAsync(item);
+            entity.CreatedOn = DateTime.UtcNow;
+            await dbSet.AddAsync(entity);
         }
 
-        public void Update(TEntity item)
+        public void Update(TEntity entity)
         {
-            item.ModifiedOn = DateTime.UtcNow;
-            dbSet.Update(item);
+            entity.ModifiedOn = DateTime.UtcNow;
+            dbSet.Update(entity);
         }
 
-        public void Delete(TEntity item)
+        public void Delete(TEntity entity)
         {
-            item.DeletedOn = DateTime.UtcNow;
-            dbSet.Update(item);
+            entity.DeletedOn = DateTime.UtcNow;
+            dbSet.Update(entity);
         }
 
         public Task SaveChangesAsync() => context.SaveChangesAsync();
