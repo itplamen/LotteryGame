@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\WagerService.Data.Models\WagerService.Data.Models.csproj" />
+  </ItemGroup>
+
 </Project>
