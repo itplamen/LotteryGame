@@ -2,12 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Program.cs~RF212922fe.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.72.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -15,7 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Protobuf Include="..\LotteryGame.Orchestrators.Models\Protos\funds.proto" GrpcServices="Server" />
+	<Protobuf Include="..\LotteryGame.Orchestrators.Models\Protos\purchase.proto" GrpcServices="Server" />
+	<Protobuf Include="..\..\WalletService\Api\WalletService.Api.Models\Protos\funds.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\WagerService\Api\WagerService.Api.Models\Protos\tickets.proto" GrpcServices="Client" />
   </ItemGroup>
-
+ 
 </Project>
