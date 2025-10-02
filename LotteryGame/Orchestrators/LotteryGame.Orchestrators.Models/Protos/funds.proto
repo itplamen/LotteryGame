@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "LotteryGame.Orchestrators.Models.Protos.Funds";
+
+package funds;
+
+service Wallet {
+  rpc ReserveFunds (ReserveFundsRequest) returns (ReserveFundsResponse);
+}
+
+message ReserveFundsRequest {
+  int32 playerId = 1;
+  int64 amount = 2;
+  string ticketId = 3;
+}
+
+message ReserveFundsResponse {
+  bool success = 1;
+  string errorMsg = 2;
+  int32 reservationId = 3;
+}

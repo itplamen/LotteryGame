@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LotteryGame.Orchestrators.Models\LotteryGame.Orchestrators.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Protobuf Include="..\LotteryGame.Orchestrators.Models\Protos\funds.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+</Project>
