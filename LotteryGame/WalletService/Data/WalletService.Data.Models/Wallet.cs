@@ -12,16 +12,13 @@
         }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal RealMoney { get; set; }
+        public long RealMoney { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal BonusMoney { get; set; }
+        public long BonusMoney { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal LockedFunds { get; set; }
+        public long LockedFunds { get; set; }
 
         [Required]
         public int LoyaltyPoints { get; set; }
@@ -36,6 +33,6 @@
         public ICollection<Reservation> Reservations { get; set; }
 
         [NotMapped]
-        public decimal TotalBalance => RealMoney + BonusMoney + LockedFunds;
+        public long TotalBalance => RealMoney + BonusMoney + LockedFunds;
     }
 }

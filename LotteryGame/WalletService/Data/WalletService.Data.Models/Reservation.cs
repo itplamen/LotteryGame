@@ -1,13 +1,11 @@
 ﻿namespace WalletService.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public class Reservation : BaseEntity
     {
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Amount { get; set; }
+        public long Amount { get; set; }
 
         public DateTime ExpiresAt { get; set; }
 

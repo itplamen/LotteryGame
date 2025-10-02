@@ -13,7 +13,7 @@
             this.repository = repository;
         }
 
-        public async Task Record(int walletId, decimal oldBalance, decimal newBalance, BalanceType balanceType, string reason, string referenceId = null)
+        public async Task Record(int walletId, long oldBalance, long newBalance, BalanceType balanceType, string reason, string referenceId = null)
         {
             var balanceHistory = new BalanceHistory()
             {

@@ -32,6 +32,22 @@
             modelBuilder.Entity<Wallet>(entity =>
             {
                 entity.HasKey(x => x.Id);
+                
+                entity.Property(x => x.RealMoney)
+                    .HasColumnType("bigint")
+                    .IsRequired();
+                
+                entity.Property(x => x.BonusMoney)
+                    .HasColumnType("bigint")
+                    .IsRequired();
+
+                entity.Property(x => x.LockedFunds)
+                    .HasColumnType("bigint")
+                    .IsRequired();
+
+                entity.Property(x => x.LoyaltyPoints)
+                    .HasColumnType("int")
+                    .IsRequired();
 
                 entity.HasMany(x => x.BalanceHistories)
                     .WithOne(x => x.Wallet)
@@ -55,6 +71,14 @@
                 entity.HasIndex(x => x.WalletId);
                 entity.HasIndex(x => x.ReferenceId);
 
+                entity.Property(x => x.NewBalance)
+                    .HasColumnType("bigint")
+                    .IsRequired();
+
+                entity.Property(x => x.OldBalance)
+                    .HasColumnType("bigint")
+                    .IsRequired();
+
                 entity.ToTable(x => x
                     .HasCheckConstraint(
                         "CK_BalanceHistory_PositiveBalance",
@@ -73,8 +97,8 @@
                       .IsRequired();
 
                 entity.Property(x => x.Amount)
-                      .HasColumnType("decimal(18,2)")
-                      .IsRequired();
+                    .HasColumnType("bigint")
+                    .IsRequired();
 
                 entity.Property(x => x.ExpiresAt)
                       .IsRequired();

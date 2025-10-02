@@ -27,7 +27,7 @@
             this.reservationExpiryMins = int.Parse(config["Reservation:ExpiryMins"]);
         }
 
-        public async Task<ResponseDto<BaseDto>> Reserve(int playerId, decimal amount, string ticketId)
+        public async Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount, string ticketId)
         {
             Wallet wallet = await walletRepo.Filter()
                 .FirstOrDefaultAsync(x => x.PlayerId == playerId);
@@ -42,8 +42,8 @@
                 return new ResponseDto<BaseDto>("Insufficient funds");
             }
 
-            decimal oldBalance = wallet.TotalBalance;
-            decimal remaining = amount;
+            long oldBalance = wallet.TotalBalance;
+            long remaining = amount;
 
             if (wallet.RealMoney >= remaining)
             {
@@ -95,7 +95,7 @@
                  return new ResponseDto("Wallet not found");
             }
 
-            decimal oldBalance = wallet.TotalBalance;
+            long oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
             reservation.IsCaptured = true;
 
@@ -131,7 +131,7 @@
                 return new ResponseDto("Insufficient locked funds to process refund");
             }
 
-            decimal oldBalance = wallet.TotalBalance;
+            long oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
             wallet.RealMoney += reservation.Amount;
 
