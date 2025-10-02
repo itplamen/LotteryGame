@@ -6,12 +6,12 @@
 
         public ResponseDto(string errorMessage)
         {
-            Errors = new List<string>() { errorMessage };
+            ErrorMsg = errorMessage;
         }
 
-        public bool IsSuccess => Errors == null || !Errors.Any();
+        public bool IsSuccess => !string.IsNullOrEmpty(ErrorMsg);
 
-        public IEnumerable<string> Errors { get; set; }
+        public string ErrorMsg { get; set; }
     }
 
     public class ResponseDto<TResponse>
@@ -21,12 +21,12 @@
 
         public ResponseDto(string errorMessage)
         {
-            Errors = new List<string>() { errorMessage };
+            ErrorMsg = errorMessage;
         }
 
-        public bool IsSuccess => Data != null && (Errors == null || !Errors.Any());
+        public bool IsSuccess => !string.IsNullOrEmpty(ErrorMsg);
 
-        public IEnumerable<string> Errors { get; set; }
+        public string ErrorMsg { get; set; }
 
         public TResponse Data { get; set; }
     }
