@@ -1,19 +1,22 @@
 ﻿syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 option csharp_namespace = "WagerService.Api.Models.Protos.Tickets";
 
 package tickets;
 
 service Tickets {
-  rpc Create (TicketCreateRequest) returns (TicketResponse);
-  rpc Update (TicketUpdateRequest) returns (TicketResponse);
+	rpc GetPrice(google.protobuf.Empty) returns (PriceResponse);
+	rpc Create (TicketCreateRequest) returns (TicketResponse);
+	rpc Update (TicketUpdateRequest) returns (TicketResponse);
 }
 
 enum TicketStatus {
-  PENDING = 0;
-  CONFIRMED = 1;
-  CANCELLED = 2;
-  SETTLED = 3;
+	PENDING = 0;
+	CONFIRMED = 1;
+	CANCELLED = 2;
+	SETTLED = 3;
 }
 
 message Ticket {
@@ -25,8 +28,7 @@ message Ticket {
 message TicketCreateRequest {
 	int32 playerId = 1;
 	string drawId = 2;
-	int64 amount = 3;
-	int32 reservationId = 4;
+	int32 reservationId = 3;
 }
 
 message TicketResponse {
@@ -38,4 +40,8 @@ message TicketResponse {
 message TicketUpdateRequest {
 	string ticketId = 1;
 	TicketStatus status = 2;
+}
+
+message PriceResponse {
+	int64 price = 1;
 }

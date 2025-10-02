@@ -5,16 +5,38 @@ option csharp_namespace = "WalletService.Api.Models.Protos.Funds";
 package funds;
 
 service Funds {
-  rpc HasEnoughFunds (EnoughFundsRequest) returns (EnoughFundsResponse);
+	rpc HasEnoughFunds (EnoughFundsRequest) returns (BaseResponse);
+	rpc Reserve (ReserveRequest) returns (ReserveResponse);
+	rpc Capture (CaptureRequest) returns (BaseResponse);
+	rpc Refund (RefundRequest) returns (BaseResponse);
 }
 
 message EnoughFundsRequest {
-  int32 playerId = 1;
-  int64 costAmount = 2;
+	int32 playerId = 1;
+	int64 costAmount = 2;
 }
 
-message EnoughFundsResponse {
-  bool success = 1;
-  string errorMsg = 2;
+message BaseResponse {
+	bool success = 1;
+	string errorMsg = 2;
 }
 
+message ReserveRequest {
+	int32 playerId = 1;
+	int64 amount = 2;
+}
+
+message ReserveResponse {
+	bool success = 1;
+	string errorMsg = 2;
+	int32 reservationId = 3;
+}
+
+message CaptureRequest {
+	int32 reservationId = 1;
+	string ticketId = 2;
+}
+
+message RefundRequest {
+	int32 reservationId = 1;
+}
