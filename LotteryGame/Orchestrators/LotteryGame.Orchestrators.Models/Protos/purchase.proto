@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "LotteryGame.Orchestrators.Models.Protos.TicketPurchase";
+
+package funds;
+
+service TicketPurchase {
+  rpc Purchase (PurchaseRequest) returns (PurchaseResponse);
+}
+
+message PurchaseRequest {
+  int32 playerId = 1;
+  int32 numberOfTickets = 2;
+}
+
+message PurchaseResponse {
+  bool success = 1;
+  string errorMsg = 2;
+}
