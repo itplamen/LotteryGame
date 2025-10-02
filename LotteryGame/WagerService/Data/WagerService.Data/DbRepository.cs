@@ -38,5 +38,18 @@
             await dbContext.GetCollection<TEntity>()
                 .InsertOneAsync(item);
         }
+
+        public async Task<bool> UpdateAsync(TEntity entity)
+        {
+            entity.ModifiedOn = DateTime.UtcNow;
+
+            ReplaceOneResult result = await dbContext.GetCollection<TEntity>()
+                .ReplaceOneAsync(
+                    x => x.Id == entity.Id,
+                    entity,
+                    new ReplaceOptions { IsUpsert = false });
+
+            return result.ModifiedCount > 0;
+        }
     }
 }
