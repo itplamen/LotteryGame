@@ -5,7 +5,7 @@
 
     public interface ITicketOperations
     {
-        Task<ResponseDto<TicketDto>> Create(int playerId, string drawId, decimal amount, int reservationId);
+        Task<ResponseDto<TicketDto>> Create(int playerId, string drawId, long amount, int reservationId);
 
         Task<ResponseDto<TicketDto>> Update(string ticketId, TicketStatus status);
     }

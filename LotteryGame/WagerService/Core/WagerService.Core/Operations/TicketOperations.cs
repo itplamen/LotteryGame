@@ -20,7 +20,7 @@
             this.numberGeneration = numberGeneration;
         }
 
-        public async Task<ResponseDto<TicketDto>> Create(int playerId, string drawId, decimal amount, int reservationId)
+        public async Task<ResponseDto<TicketDto>> Create(int playerId, string drawId, long amount, int reservationId)
         {
             if (amount <= 0)
             {

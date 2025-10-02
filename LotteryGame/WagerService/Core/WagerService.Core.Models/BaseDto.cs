@@ -4,11 +4,11 @@
     {
         public BaseDto() { }
 
-        public BaseDto(int id)
+        public BaseDto(string id)
         {
             Id = id;
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }
