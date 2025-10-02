@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "WalletService.Api.Models.Protos.Funds";
+
+package funds;
+
+service Funds {
+  rpc HasEnoughFunds (EnoughFundsRequest) returns (EnoughFundsResponse);
+}
+
+message EnoughFundsRequest {
+  int32 playerId = 1;
+  int64 costAmount = 2;
+}
+
+message EnoughFundsResponse {
+  bool success = 1;
+  string errorMsg = 2;
+  int32 reservationId = 3;
+}
+
