@@ -1,13 +1,11 @@
 ﻿namespace DrawService.Data.Models
 {
-    using Newtonsoft.Json;
+    using CouchDB.Driver.Types;
 
-    public abstract class BaseEntity
+    public abstract class BaseEntity : CouchDocument
     {
-        [JsonProperty("_id")]
-        public string Id { get; set; }
+        public DateTime CreatedOn { get; set; }
 
-        [JsonProperty("_rev")]
-        public string Rev { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Draw : BaseEntity
     {
-        public DateTime Date { get; set; }
+        public DateTime DrawDate { get; set; }
 
         public DrawStatus Status { get; set; } 
         
