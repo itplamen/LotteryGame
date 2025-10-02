@@ -21,10 +21,34 @@
             this.fundsOperations = fundsOperations;
         }
 
-        public override async Task<EnoughFundsResponse> HasEnoughFunds(EnoughFundsRequest request, ServerCallContext context)
+        public override async Task<BaseResponse> HasEnoughFunds(EnoughFundsRequest request, ServerCallContext context)
         {
             ResponseDto responseDto = await fundsOperations.HasEnoughFunds(request.PlayerId, request.CostAmount);
-            EnoughFundsResponse response = mapper.Map<EnoughFundsResponse>(responseDto);
+            BaseResponse response = mapper.Map<BaseResponse>(responseDto);
+
+            return response;
+        }
+
+        public override async Task<ReserveResponse> Reserve(ReserveRequest request, ServerCallContext context)
+        {
+            ResponseDto<BaseDto> responseDto = await fundsOperations.Reserve(request.PlayerId, request.Amount);
+            ReserveResponse response = mapper.Map<ReserveResponse>(responseDto);
+
+            return response;
+        }
+
+        public override async Task<BaseResponse> Capture(CaptureRequest request, ServerCallContext context)
+        {
+            ResponseDto responseDto = await fundsOperations.Capture(request.ReservationId, request.TicketId);
+            BaseResponse response = mapper.Map<BaseResponse>(responseDto);
+
+            return response;
+        }
+
+        public override async Task<BaseResponse> Refund(RefundRequest request, ServerCallContext context)
+        {
+            ResponseDto responseDto = await fundsOperations.Refund(request.ReservationId);
+            BaseResponse response = mapper.Map<BaseResponse>(responseDto);
 
             return response;
         }
