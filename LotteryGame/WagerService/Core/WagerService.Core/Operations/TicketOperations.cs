@@ -20,9 +20,9 @@
             this.numberGeneration = numberGeneration;
         }
 
-        public async Task<ResponseDto<TicketDto>> Create(int playerId, string drawId, long amount, int reservationId)
+        public async Task<ResponseDto<TicketDto>> Create(TicketCreateRequestDto request)
         {
-            if (amount <= 0)
+            if (request.Amount <= 0)
             {
                 return new ResponseDto<TicketDto>("Invalid ticket amount");
             }
@@ -32,10 +32,10 @@
             var ticket = new Ticket()
             {
                 TicketNumber = ticketNumber,
-                PlayerId = playerId,
-                DrawId = drawId,
-                Amount = amount,
-                ReservationId = reservationId,
+                PlayerId = request.PlayerId,
+                DrawId = request.DrawId,
+                Amount = request.Amount,
+                ReservationId = request.ReservationId,
                 Status = TicketStatus.Pending
             };
 
@@ -44,16 +44,16 @@
             return new ResponseDto<TicketDto>() { Data = mapper.Map<TicketDto>(ticket) };
         }
 
-        public async Task<ResponseDto<TicketDto>> Update(string ticketId, TicketStatus status)
+        public async Task<ResponseDto<TicketDto>> Update(TicketUpdateRequestDto request)
         {
-            Ticket ticket = await repository.GetByIdAsync(ticketId);
+            Ticket ticket = await repository.GetByIdAsync(request.TicketId);
 
             if (ticket == null)
             {
                 return new ResponseDto<TicketDto>("Ticket not found");
             }
 
-            ticket.Status = status;
+            ticket.Status = request.Status;
 
             bool success = await repository.UpdateAsync(ticket);
 
