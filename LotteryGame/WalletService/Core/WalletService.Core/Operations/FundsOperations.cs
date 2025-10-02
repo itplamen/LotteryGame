@@ -27,6 +27,20 @@
             this.reservationExpiryMins = int.Parse(config["Reservation:ExpiryMins"]);
         }
 
+        public async Task<ResponseDto> HasEnoughFunds(int playerId, long costAmount)
+        {
+            Wallet wallet = await walletRepo.Filter()
+                .FirstOrDefaultAsync(x => x.PlayerId == playerId);
+
+            if (wallet == null)
+            {
+                return new ResponseDto("Wallet not found");
+            }
+
+            string errorMsg = wallet.TotalBalance >= costAmount ? null : "Insufficient funds";
+            return new ResponseDto() { ErrorMsg = errorMsg };
+        }
+
         public async Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount, string ticketId)
         {
             Wallet wallet = await walletRepo.Filter()
