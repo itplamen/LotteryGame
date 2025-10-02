@@ -16,6 +16,5 @@ message EnoughFundsRequest {
 message EnoughFundsResponse {
   bool success = 1;
   string errorMsg = 2;
-  int32 reservationId = 3;
 }
 

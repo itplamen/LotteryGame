@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\WalletService.Core\WalletService.Core.csproj" />
-    <ProjectReference Include="..\WalletService.Api.Models\WalletService.Api.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>

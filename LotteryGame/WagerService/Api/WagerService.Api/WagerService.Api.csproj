@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\WagerService.Core\WagerService.Core.csproj" />
     <ProjectReference Include="..\..\Data\WagerService.Data.Models\WagerService.Data.Models.csproj" />
-    <ProjectReference Include="..\WagerService.Api.Models\WagerService.Api.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
