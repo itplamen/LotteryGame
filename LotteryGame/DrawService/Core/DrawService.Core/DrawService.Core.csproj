@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\DrawService.Data.Models\DrawService.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\DrawService.Data\DrawService.Data.csproj" />
+    <ProjectReference Include="..\DrawService.Core.Models\DrawService.Core.Models.csproj" />
+  </ItemGroup>
+
+</Project>
