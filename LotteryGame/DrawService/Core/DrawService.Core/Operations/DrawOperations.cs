@@ -11,6 +11,7 @@
     
     public class DrawOperations : IDrawOperations
     {
+        private readonly long amount;
         private readonly int drawDays;
         private readonly IMapper mapper;
         private readonly IRepository<Draw> repository;
@@ -20,6 +21,7 @@
             this.mapper = mapper;
             this.repository = repository;
             this.drawDays = int.Parse(configuration["DrawDays"]);
+            this.amount = long.Parse(configuration["TicketPriceInCents"]);
         }
 
         public async Task<ResponseDto<DrawDto>> Create()
@@ -28,6 +30,7 @@
             {
                 DrawDate = DateTime.UtcNow.AddDays(drawDays),
                 Status = DrawStatus.Pending,
+                TicketPriceInCents = amount
             };
 
             await repository.AddAsync(draw);
