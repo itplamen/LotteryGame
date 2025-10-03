@@ -1,13 +1,10 @@
 ﻿syntax = "proto3";
 
-import "google/protobuf/empty.proto";
-
 option csharp_namespace = "WagerService.Api.Models.Protos.Tickets";
 
 package tickets;
 
 service Tickets {
-	rpc GetPrice(google.protobuf.Empty) returns (PriceResponse);
 	rpc Create (TicketCreateRequest) returns (TicketResponse);
 	rpc Update (TicketUpdateRequest) returns (TicketResponse);
 }
@@ -40,8 +37,4 @@ message TicketResponse {
 message TicketUpdateRequest {
 	string ticketId = 1;
 	TicketStatus status = 2;
-}
-
-message PriceResponse {
-	int64 price = 1;
 }

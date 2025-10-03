@@ -22,11 +22,6 @@
 
         public async Task<ResponseDto<TicketDto>> Create(TicketCreateRequestDto request)
         {
-            if (request.Amount <= 0)
-            {
-                return new ResponseDto<TicketDto>("Invalid ticket amount");
-            }
-
             string ticketNumber = numberGeneration.Generate();
 
             var ticket = new Ticket()
@@ -34,7 +29,6 @@
                 TicketNumber = ticketNumber,
                 PlayerId = request.PlayerId,
                 DrawId = request.DrawId,
-                Amount = request.Amount,
                 ReservationId = request.ReservationId,
                 Status = TicketStatus.Pending
             };

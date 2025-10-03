@@ -8,8 +8,6 @@
 
         public string DrawId { get; set; }
 
-        public long Amount { get; set; }
-
         public int ReservationId { get; set; }
 
         public TicketStatus Status { get; set; }
