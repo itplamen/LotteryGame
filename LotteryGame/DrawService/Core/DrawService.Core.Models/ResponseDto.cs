@@ -15,7 +15,6 @@
     }
 
     public class ResponseDto<TResponse>
-        where TResponse : BaseDto
     {
         public ResponseDto() { }
 

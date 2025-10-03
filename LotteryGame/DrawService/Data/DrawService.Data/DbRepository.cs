@@ -21,18 +21,35 @@
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter) => await database.QueryAsync(filter);
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             entity.CreatedOn = DateTime.UtcNow;
 
-            await database.AddAsync(entity);
+            TEntity created = await database.AddAsync(entity);
+
+            return created;
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities)
+        {
+            IList<TEntity> range = entities.Select(x =>
+            {
+                x.CreatedOn = DateTime.UtcNow;
+                return x;
+            }).ToList();
+
+            IEnumerable<TEntity> created = await database.AddOrUpdateRangeAsync(range);
+
+            return created;
+        }
+
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             entity.ModifiedOn = DateTime.UtcNow;
 
-            await database.AddOrUpdateAsync(entity);
+            TEntity updated = await database.AddOrUpdateAsync(entity);
+
+            return updated;
         }
     }
 }
