@@ -8,8 +8,8 @@
 
         Task<ResponseDto<DrawDto>> Create();
 
-        Task<ResponseDto<DrawDto>> Start(string drawId);
+        Task<ResponseDto> Join(string drawId, int playerId, IEnumerable<string> ticketIds);
 
-        Task<ResponseDto<DrawDto>> Join(string drawId, int playerId, IEnumerable<string> ticketIds);
+        Task<ResponseDto> Start(string drawId);
     }
 }

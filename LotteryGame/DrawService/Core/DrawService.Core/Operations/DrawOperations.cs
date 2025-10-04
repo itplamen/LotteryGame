@@ -60,22 +60,57 @@
             return mapper.Map<ResponseDto<DrawDto>>(draw);
         }
 
-        public async Task<ResponseDto<DrawDto>> Start(string drawId)
+        public async Task<ResponseDto> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
         {
             Draw draw = await repository.GetByIdAsync(drawId);
             if (draw == null)
             {
-                return new ResponseDto<DrawDto>("Draw not found");
+                return new ResponseDto("Draw not found");
+            }
+
+            if (draw.Status != DrawStatus.InProgress)
+            {
+                return new ResponseDto("Draw not started");
+            }
+
+            if (draw.PlayerTickets.ContainsKey(playerId))
+            {
+                return new ResponseDto("Player already joined the draw");
+            }
+
+            if (ticketIds.Count() < minTicketsPerPlayer || ticketIds.Count() > maxTicketsPerPlayer)
+            {
+                return new ResponseDto($"Invalid number of tickets. Min: {minTicketsPerPlayer}, Max: {maxTicketsPerPlayer}");
+            }
+
+            if (draw.PlayerTickets.Count == maxPlayersInDraw)
+            {
+                return new ResponseDto("Draw is full");
+            }
+
+            draw.PlayerTickets[playerId] = ticketIds.ToList();
+
+            await repository.UpdateAsync(draw);
+
+            return mapper.Map<ResponseDto>(draw);
+        }
+
+        public async Task<ResponseDto> Start(string drawId)
+        {
+            Draw draw = await repository.GetByIdAsync(drawId);
+            if (draw == null)
+            {
+                return new ResponseDto("Draw not found");
             }
 
             if (draw.Status != DrawStatus.Pending)
             {
-                return new ResponseDto<DrawDto>("Invalid draw status");
+                return new ResponseDto("Invalid draw status");
             }
 
             if (draw.PlayerTickets.Count < minPlayersInDraw)
             {
-                return new ResponseDto<DrawDto>("Draw cannot be started");
+                return new ResponseDto("Draw cannot be started");
             }
 
             draw.Status = DrawStatus.InProgress;
@@ -83,42 +118,7 @@
 
             await repository.UpdateAsync(draw);
 
-            return mapper.Map<ResponseDto<DrawDto>>(draw);
-        }
-
-        public async Task<ResponseDto<DrawDto>> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
-        {
-            Draw draw = await repository.GetByIdAsync(drawId);
-            if (draw == null)
-            {
-                return new ResponseDto<DrawDto>("Draw not found");
-            }
-
-            if (draw.Status != DrawStatus.InProgress)
-            {
-                return new ResponseDto<DrawDto>("Draw not started");
-            }
-
-            if (draw.PlayerTickets.ContainsKey(playerId))
-            {
-                return new ResponseDto<DrawDto>("Player already joined the draw");
-            }
-
-            if (ticketIds.Count() < minTicketsPerPlayer || ticketIds.Count() > maxTicketsPerPlayer)
-            {
-                return new ResponseDto<DrawDto>($"Invalid number of tickets. Min: {minTicketsPerPlayer}, Max: {maxTicketsPerPlayer}");
-            }
-
-            if (draw.PlayerTickets.Count == maxPlayersInDraw)
-            {
-                return new ResponseDto<DrawDto>("Draw is full");
-            }
-
-            draw.PlayerTickets[playerId] = ticketIds.ToList();
-
-            await repository.UpdateAsync(draw);
-
-            return mapper.Map<ResponseDto<DrawDto>>(draw);
+            return mapper.Map<ResponseDto>(draw);
         }
     }
 }
