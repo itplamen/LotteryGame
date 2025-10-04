@@ -21,7 +21,8 @@
 
         public Wallet Wallet { get; set; }
 
-        public int? ReservationId { get; set; }
+        [Required]
+        public int ReservationId { get; set; }
 
         public Reservation Reservation { get; set; }
     }

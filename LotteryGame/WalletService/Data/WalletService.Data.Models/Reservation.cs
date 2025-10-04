@@ -16,7 +16,7 @@
 
         public Wallet Wallet { get; set; }
 
-        public IEnumerable<ReservationTicket> Tickets { get; set; } = new HashSet<ReservationTicket>();
+        public ICollection<ReservationTicket> Tickets { get; set; } = new HashSet<ReservationTicket>();
 
         public ICollection<BalanceHistory> BalanceHistories { get; set; } = new HashSet<BalanceHistory>();
     }

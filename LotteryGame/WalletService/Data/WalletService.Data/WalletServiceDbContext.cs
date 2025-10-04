@@ -17,6 +17,8 @@
 
         public DbSet<Reservation> Reservations { get; set; }
 
+        public DbSet<ReservationTicket> ReservationTickets { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>(entity =>
@@ -24,19 +26,19 @@
                 entity.HasKey(x => x.Id);
 
                 entity.HasOne(x => x.Wallet)
-                    .WithOne(x => x.Player)
-                    .HasForeignKey<Wallet>(x => x.PlayerId)
-                    .IsRequired();
+                      .WithOne(x => x.Player)
+                      .HasForeignKey<Wallet>(x => x.PlayerId)
+                      .IsRequired();
             });
 
             modelBuilder.Entity<Wallet>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                
+
                 entity.Property(x => x.RealMoney)
                     .HasColumnType("bigint")
                     .IsRequired();
-                
+
                 entity.Property(x => x.BonusMoney)
                     .HasColumnType("bigint")
                     .IsRequired();
@@ -50,25 +52,31 @@
                     .IsRequired();
 
                 entity.HasMany(x => x.BalanceHistories)
-                    .WithOne(x => x.Wallet)
-                    .HasForeignKey(x => x.WalletId)
-                    .IsRequired();
+                      .WithOne(x => x.Wallet)
+                      .HasForeignKey(x => x.WalletId)
+                      .IsRequired()
+                      .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasMany(x => x.Reservations)
+                      .WithOne(x => x.Wallet)
+                      .HasForeignKey(x => x.WalletId)
+                      .IsRequired();
 
                 entity.HasIndex(x => x.PlayerId)
-                    .IsUnique();
+                      .IsUnique();
 
-                entity.ToTable(x => 
-                    x.HasCheckConstraint(
-                        "CK_Wallet_PositiveBalance",
-                        "[RealMoney] >= 0 AND [BonusMoney] >= 0 AND [LockedFunds] >= 0 AND [LoyaltyPoints] >= 0"
-                    )
-                );
+                entity.ToTable(x => x.HasCheckConstraint(
+                    "CK_Wallet_PositiveBalance",
+                    "[RealMoney] >= 0 AND [BonusMoney] >= 0 AND [LockedFunds] >= 0 AND [LoyaltyPoints] >= 0"
+                ));
             });
 
             modelBuilder.Entity<BalanceHistory>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.WalletId);;
+
+                entity.HasIndex(x => x.WalletId);
+                entity.HasIndex(x => x.ReservationId);
 
                 entity.Property(x => x.NewBalance)
                     .HasColumnType("bigint")
@@ -79,21 +87,21 @@
                     .IsRequired();
 
                 entity.HasOne(x => x.Wallet)
-                    .WithMany(x => x.BalanceHistories)
-                    .HasForeignKey(x => x.WalletId)
-                    .IsRequired();
+                      .WithMany(x => x.BalanceHistories)
+                      .HasForeignKey(x => x.WalletId)
+                      .IsRequired()
+                      .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(b => b.Reservation)
+                entity.HasOne(x => x.Reservation)
                       .WithMany(r => r.BalanceHistories)
-                      .HasForeignKey(b => b.ReservationId)
-                      .IsRequired(false);
+                      .HasForeignKey(x => x.ReservationId)
+                      .IsRequired()
+                      .OnDelete(DeleteBehavior.Restrict);
 
-                entity.ToTable(x => x
-                    .HasCheckConstraint(
-                        "CK_BalanceHistory_PositiveBalance",
-                        "[OldBalance] >= 0 AND [NewBalance] >= 0"
-                    )
-                );
+                entity.ToTable(x => x.HasCheckConstraint(
+                    "CK_BalanceHistory_PositiveBalance",
+                    "[OldBalance] >= 0 AND [NewBalance] >= 0"
+                ));
             });
 
             modelBuilder.Entity<Reservation>(entity =>
@@ -101,9 +109,9 @@
                 entity.HasKey(x => x.Id);
 
                 entity.HasOne(x => x.Wallet)
-                    .WithMany(x => x.Reservations)
-                    .HasForeignKey(x => x.WalletId)
-                    .IsRequired();
+                      .WithMany(x => x.Reservations)
+                      .HasForeignKey(x => x.WalletId)
+                      .IsRequired();
 
                 entity.Property(x => x.Amount)
                     .HasColumnType("bigint")
@@ -118,22 +126,21 @@
                 entity.HasIndex(x => x.WalletId);
 
                 entity.HasMany(x => x.Tickets)
-                    .WithOne(x => x.Reservation)
-                    .HasForeignKey(x => x.ReservationId)
-                    .IsRequired();
+                      .WithOne(x => x.Reservation)
+                      .HasForeignKey(x => x.ReservationId)
+                      .IsRequired()
+                      .OnDelete(DeleteBehavior.Cascade);
 
-                modelBuilder.Entity<Reservation>()
-                    .HasMany(x => x.BalanceHistories)
-                    .WithOne(x => x.Reservation)
-                    .HasForeignKey(x => x.ReservationId)
-                    .IsRequired(false);
+                entity.HasMany(x => x.BalanceHistories)
+                      .WithOne(x => x.Reservation)
+                      .HasForeignKey(x => x.ReservationId)
+                      .IsRequired()
+                      .OnDelete(DeleteBehavior.Restrict);
 
-                entity.ToTable(x => x
-                    .HasCheckConstraint(
-                        "CK_Reservation_PositiveAmount",
-                        "[Amount] >= 0"
-                    )
-                );
+                entity.ToTable(x => x.HasCheckConstraint(
+                    "CK_Reservation_PositiveAmount",
+                    "[Amount] >= 0"
+                ));
             });
 
             modelBuilder.Entity<ReservationTicket>()
