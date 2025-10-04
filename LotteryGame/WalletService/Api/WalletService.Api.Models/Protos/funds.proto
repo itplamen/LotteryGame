@@ -53,15 +53,13 @@ enum BalanceType {
 }
 
 message HistoryResponse {
-	bool success = 1;
-	string errorMsg = 2;
-	int64 amount = 3;
-	google.protobuf.Timestamp createdOn = 4;
-	int64 oldBalance = 5;
-	int64 newBalance = 6;
-	BalanceType type = 7;
-    string reason = 8;
-	bool isConfirmed = 9;
+	int64 amount = 1;
+	google.protobuf.Timestamp createdOn = 2;
+	int64 oldBalance = 3;
+	int64 newBalance = 4;
+	BalanceType type = 5;
+    string reason = 6;
+	bool isConfirmed = 7;
 }
 
 message HistoryResponseList {
