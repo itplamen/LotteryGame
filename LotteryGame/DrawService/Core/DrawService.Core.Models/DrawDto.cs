@@ -7,5 +7,7 @@
         public DateTime DrawDate { get; set; }
 
         public DrawStatus Status { get; set; }
+
+        public long TicketPriceInCents { get; set; }
     }
 }

@@ -1,0 +1,48 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "DrawService.Api.Models.Protos.Draws";
+
+package draws;
+
+service Draws {
+  rpc FetchDraw (FetchDrawRequest) returns (FetchDrawResponse);
+  rpc JoinDraw (JoinDrawRequest) returns (DrawResponse);
+  rpc StartDraw (StartDrawRequest) returns (DrawResponse);
+} 
+
+enum DrawStatus {
+    PENDING = 0;
+    IN_PROGRESS = 1;
+    COMPLETED = 2;
+    CANCELLED = 3;
+}
+
+message FetchDrawRequest {
+    int32 playerId = 1;
+}
+
+message FetchDrawResponse {
+    bool success = 1;
+    string errorMsg = 2;
+    string drawId = 3;
+    google.protobuf.Timestamp drawDate = 4;
+    DrawStatus status = 5;
+    int64 ticketPriceInCents = 6;
+}
+
+message JoinDrawRequest {
+    string drawId = 1;
+    int32 playerId = 2;
+    repeated string ticketIds = 3;
+}
+
+message DrawResponse {
+    bool success = 1;
+    string errorMsg = 2;
+}
+
+message StartDrawRequest {
+    string drawId = 1;
+}
