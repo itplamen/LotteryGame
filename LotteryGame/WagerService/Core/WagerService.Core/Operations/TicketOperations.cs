@@ -21,43 +21,62 @@
             this.numberGeneration = numberGeneration;
         }
 
-        public async Task<ResponseDto<TicketDto>> Create(TicketCreateRequestDto request)
+        public async Task<ResponseDto<IEnumerable<TicketDto>>> Create(TicketCreateRequestDto request)
         {
-            string ticketNumber = numberGeneration.Generate();
-
-            var ticket = new Ticket()
+            if (request.NumberOfTickets < 0)
             {
-                TicketNumber = ticketNumber,
-                PlayerId = request.PlayerId,
-                DrawId = request.DrawId,
-                ReservationId = request.ReservationId,
-                Status = TicketStatus.Pending
-            };
+                return new ResponseDto<IEnumerable<TicketDto>>()
+                {
+                    ErrorMsg = "Invalid number of tickets to create"
+                };
+            }
+            
+            IEnumerable<Ticket> tickets = Enumerable.Range(0, request.NumberOfTickets)
+                .Select(_ => new Ticket()
+                {
+                    TicketNumber = numberGeneration.Generate(),
+                    PlayerId = request.PlayerId,
+                    DrawId = request.DrawId,
+                    ReservationId = request.ReservationId,
+                    Status = TicketStatus.Pending
+                });
 
-            await repository.AddAsync(ticket);
+            await repository.AddAsync(tickets);
 
-            return new ResponseDto<TicketDto>() { Data = mapper.Map<TicketDto>(ticket) };
+            return new ResponseDto<IEnumerable<TicketDto>>() { Data = mapper.Map<IEnumerable<TicketDto>>(tickets) };
         }
 
-        public async Task<ResponseDto<TicketDto>> Update(TicketUpdateRequestDto request)
+        public async Task<ResponseDto<IEnumerable<TicketDto>>> Update(TicketUpdateRequestDto request)
         {
-            Ticket ticket = await repository.GetByIdAsync(request.TicketId);
-
-            if (ticket == null)
+            if (request.TicketIds == null || !request.TicketIds.Any())
             {
-                return new ResponseDto<TicketDto>("Ticket not found");
+                return new ResponseDto<IEnumerable<TicketDto>>("No ticket ids provided");
             }
 
-            ticket.Status = request.Status;
+            IEnumerable<Ticket> tickets = await repository.FindAsync(x => request.TicketIds.Contains(x.Id));
 
-            bool success = await repository.UpdateAsync(ticket);
+            if (tickets == null)
+            {
+                return new ResponseDto<IEnumerable<TicketDto>>("Tickets not found");
+            }
+
+            IEnumerable<Ticket> updatedTickets = tickets.Select(ticket =>
+            {
+                ticket.Status = request.Status;
+                return ticket;
+            });
+
+            bool success = await repository.UpdateAsync(updatedTickets);
 
             if (!success)
             {
-                return new ResponseDto<TicketDto>("Unsucessful ticket update");
+                return new ResponseDto<IEnumerable<TicketDto>>("Unsucessful ticket update");
             }
 
-            return new ResponseDto<TicketDto>() { Data = mapper.Map<TicketDto>(ticket) };
+            return new ResponseDto<IEnumerable<TicketDto>>() 
+            { 
+                Data = mapper.Map<IEnumerable<TicketDto>>(updatedTickets) 
+            };
         }
     }
 }

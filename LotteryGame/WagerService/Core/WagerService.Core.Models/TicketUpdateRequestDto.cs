@@ -4,7 +4,7 @@
 
     public class TicketUpdateRequestDto
     {
-        public string TicketId { get; set; }
+        public IEnumerable<string> TicketIds { get; set; }
 
         public TicketStatus Status { get; set; }
     }

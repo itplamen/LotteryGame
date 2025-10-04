@@ -3,7 +3,7 @@
     using System.Linq.Expressions;
 
     using MongoDB.Driver;
-
+   
     using WagerService.Data.Contracts;
     using WagerService.Data.Models;
 
@@ -39,6 +39,18 @@
                 .InsertOneAsync(entity);
         }
 
+        public async Task AddAsync(IEnumerable<TEntity> entities)
+        {
+            IList<TEntity> range = entities.Select(x =>
+            {
+                x.CreatedOn = DateTime.UtcNow;
+                return x;
+            }).ToList();
+
+            await dbContext.GetCollection<TEntity>()
+                .InsertManyAsync(range);
+        }
+
         public async Task<bool> UpdateAsync(TEntity entity)
         {
             entity.ModifiedOn = DateTime.UtcNow;
@@ -50,6 +62,18 @@
                     new ReplaceOptions { IsUpsert = false });
 
             return result.ModifiedCount > 0;
+        }
+
+        public async Task<bool> UpdateAsync(IEnumerable<TEntity> entities)
+        {
+            ReplaceOneResult[] results = await Task.WhenAll(
+                entities.Select(entity =>
+                {
+                    entity.ModifiedOn = DateTime.UtcNow;
+                    return dbContext.GetCollection<TEntity>().ReplaceOneAsync(x => x.Id == entity.Id, entity);
+                }));
+
+            return results.All(x => x.ModifiedCount > 0);
         }
     }
 }

@@ -5,8 +5,8 @@
 
     public interface ITicketOperations
     {
-        Task<ResponseDto<TicketDto>> Create(TicketCreateRequestDto request);
+        Task<ResponseDto<IEnumerable<TicketDto>>> Create(TicketCreateRequestDto request);
 
-        Task<ResponseDto<TicketDto>> Update(TicketUpdateRequestDto request);
+        Task<ResponseDto<IEnumerable<TicketDto>>> Update(TicketUpdateRequestDto request);
     }
 }
