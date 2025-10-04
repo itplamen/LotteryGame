@@ -1,4 +1,4 @@
-﻿namespace WalletService.Core.Models
+﻿namespace LotteryGame.Common.Models.Dto
 {
     public class ResponseDto
     {
@@ -15,7 +15,6 @@
     }
 
     public class ResponseDto<TResponse>
-        where TResponse : BaseDto
     {
         public ResponseDto() { }
 

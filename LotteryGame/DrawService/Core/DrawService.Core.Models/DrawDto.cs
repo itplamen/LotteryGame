@@ -1,6 +1,7 @@
 ﻿namespace DrawService.Core.Models
 {
     using DrawService.Data.Models;
+    using LotteryGame.Common.Models.Dto;
 
     public class DrawDto : BaseDto
     {

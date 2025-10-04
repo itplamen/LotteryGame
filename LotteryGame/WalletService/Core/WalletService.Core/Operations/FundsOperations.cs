@@ -3,8 +3,9 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
 
+    using LotteryGame.Common.Models.Dto;
+
     using WalletService.Core.Contracts;
-    using WalletService.Core.Models;
     using WalletService.Data.Contracts;
     using WalletService.Data.Models;
 
@@ -91,7 +92,7 @@
                 "Funds reserved",
                 reservation.TicketId);
 
-            return new ResponseDto<BaseDto>() { Data = new BaseDto(reservation.Id) };
+            return new ResponseDto<BaseDto>() { Data = new BaseDto(reservation.Id.ToString()) };
         }
 
         public async Task<ResponseDto> Capture(int reservationId, string ticketId)

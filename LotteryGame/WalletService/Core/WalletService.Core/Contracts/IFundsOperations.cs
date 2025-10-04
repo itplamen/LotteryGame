@@ -1,6 +1,6 @@
 ﻿namespace WalletService.Core.Contracts
 {
-    using WalletService.Core.Models;
+    using LotteryGame.Common.Models.Dto;
 
     public interface IFundsOperations
     {

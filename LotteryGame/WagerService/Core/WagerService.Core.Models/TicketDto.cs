@@ -1,5 +1,6 @@
 ﻿namespace WagerService.Core.Models
 {
+    using LotteryGame.Common.Models.Dto;
     using WagerService.Data.Models;
 
     public class TicketDto : BaseDto

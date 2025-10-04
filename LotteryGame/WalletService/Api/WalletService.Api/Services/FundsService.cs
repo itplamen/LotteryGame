@@ -5,10 +5,10 @@
     using AutoMapper;
     
     using Grpc.Core;
-    
+
+    using LotteryGame.Common.Models.Dto;
     using WalletService.Api.Models.Protos.Funds;
     using WalletService.Core.Contracts;
-    using WalletService.Core.Models;
 
     public class FundsService : Funds.FundsBase
     {

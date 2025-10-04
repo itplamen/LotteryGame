@@ -9,6 +9,7 @@
     using DrawService.Api.Models.Protos.Draws;
     using DrawService.Core.Contracts;
     using DrawService.Core.Models;
+    using LotteryGame.Common.Models.Dto;
 
     public class DrawsService : Draws.DrawsBase
     {

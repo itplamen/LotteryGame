@@ -1,7 +1,8 @@
 ﻿namespace WagerService.Core.Operations
 {
     using AutoMapper;
-
+   
+    using LotteryGame.Common.Models.Dto;
     using WagerService.Core.Contracts;
     using WagerService.Core.Models;
     using WagerService.Data.Contracts;

@@ -3,7 +3,8 @@ namespace WagerService.Api.Services
     using AutoMapper;
     
     using Grpc.Core;
-    
+   
+    using LotteryGame.Common.Models.Dto;
     using WagerService.Api.Models.Protos.Tickets;
     using WagerService.Core.Contracts;
     using WagerService.Core.Models;

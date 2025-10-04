@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\LotteryGame.Common.Models\LotteryGame.Common.Models.csproj" />
     <ProjectReference Include="..\..\Core\WalletService.Core\WalletService.Core.csproj" />
   </ItemGroup>
 

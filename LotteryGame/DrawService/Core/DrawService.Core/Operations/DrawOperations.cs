@@ -8,7 +8,8 @@
     using DrawService.Core.Models;
     using DrawService.Data.Contracts;
     using DrawService.Data.Models;
-    
+    using LotteryGame.Common.Models.Dto;
+
     public class DrawOperations : IDrawOperations
     {
         private readonly long ticketPriceInCents;

@@ -1,4 +1,4 @@
-﻿namespace DrawService.Core.Models
+﻿namespace LotteryGame.Common.Models.Dto
 {
     public class BaseDto
     {
