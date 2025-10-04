@@ -30,6 +30,8 @@ message FetchDrawResponse {
     google.protobuf.Timestamp drawDate = 4;
     DrawStatus status = 5;
     int64 ticketPriceInCents = 6;
+    int32 minTicketsPerPlayer = 7;
+    int32 maxTicketsPerPlayer = 8;
 }
 
 message JoinDrawRequest {

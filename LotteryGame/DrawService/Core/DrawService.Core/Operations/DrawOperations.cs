@@ -44,7 +44,11 @@
                 return new ResponseDto<DrawDto>("No open draws available");
             }
 
-            return mapper.Map<ResponseDto<DrawDto>>(openDraws.First());
+            DrawDto openDrawDto = mapper.Map<DrawDto>(openDraws.First());
+            openDrawDto.MinTicketsPerPlayer = minTicketsPerPlayer;
+            openDrawDto.MaxTicketsPerPlayer = maxTicketsPerPlayer;
+
+            return new ResponseDto<DrawDto>() { Data = openDrawDto };
         }
 
         public async Task<ResponseDto<DrawDto>> Create()

@@ -10,5 +10,9 @@
         public DrawStatus Status { get; set; }
 
         public long TicketPriceInCents { get; set; }
+
+        public int MinTicketsPerPlayer { get; set; }
+
+        public int MaxTicketsPerPlayer { get; set; }
     }
 }
