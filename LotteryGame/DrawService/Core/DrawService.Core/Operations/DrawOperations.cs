@@ -70,6 +70,11 @@
 
             if (draw.Status != DrawStatus.Pending)
             {
+                return new ResponseDto<DrawDto>("Invalid draw status");
+            }
+
+            if (draw.PlayerTickets.Count < minPlayersInDraw)
+            {
                 return new ResponseDto<DrawDto>("Draw cannot be started");
             }
 
