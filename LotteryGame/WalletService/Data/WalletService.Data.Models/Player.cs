@@ -7,6 +7,6 @@
         [Required]
         public string Name { get; set; }
 
-        public Wallet Wallet { get; set; } = new Wallet();
+        public Wallet Wallet { get; set; }
     }
 }

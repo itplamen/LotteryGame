@@ -9,6 +9,13 @@
         public WalletServiceDbContext(DbContextOptions<WalletServiceDbContext> options)
             : base(options) { }
 
+        public WalletServiceDbContext()
+            : base(new DbContextOptionsBuilder<WalletServiceDbContext>()
+                .UseSqlServer("Server=localhost,1433;Database=WalletServiceDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=true")
+                .Options)
+        {
+        }
+
         public DbSet<Player> Players { get; set; }
 
         public DbSet<Wallet> Wallets { get; set; }
@@ -145,6 +152,31 @@
 
             modelBuilder.Entity<ReservationTicket>()
                 .HasKey(x => new { x.ReservationId, x.TicketId });
+
+            var players = Enumerable.Range(1, 15)
+                .Select(x => new Player
+                {
+                    Id = x, 
+                    Name = $"Player {x}{(x > 1 ? " (CPU)" : "")}",
+                    CreatedOn = new DateTime(2025, 10, 04)
+                })
+                .ToArray();
+
+            var wallets = Enumerable.Range(1, 15)
+                .Select(x => new Wallet
+                {
+                    Id = x,      
+                    PlayerId = x,    
+                    RealMoney = 1000,
+                    BonusMoney = 500,
+                    LockedFunds = 0,
+                    LoyaltyPoints = 0,
+                    CreatedOn = new DateTime(2025, 10, 04)
+                })
+                .ToArray();
+
+            modelBuilder.Entity<Player>().HasData(players);
+            modelBuilder.Entity<Wallet>().HasData(wallets);
 
             base.OnModelCreating(modelBuilder);
         }
