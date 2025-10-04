@@ -39,7 +39,7 @@
 
         public override async Task<BaseResponse> Capture(CaptureRequest request, ServerCallContext context)
         {
-            ResponseDto responseDto = await fundsOperations.Capture(request.ReservationId, request.TicketId);
+            ResponseDto responseDto = await fundsOperations.Capture(request.ReservationId);
             BaseResponse response = mapper.Map<BaseResponse>(responseDto);
 
             return response;

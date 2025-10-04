@@ -13,7 +13,12 @@
             this.repository = repository;
         }
 
-        public async Task Record(int walletId, long oldBalance, long newBalance, BalanceType balanceType, string reason, string referenceId = null)
+        public async Task Record(
+            int walletId, 
+            long oldBalance, 
+            long newBalance, 
+            BalanceType balanceType, 
+            string reason)
         {
             var balanceHistory = new BalanceHistory()
             {
@@ -22,7 +27,6 @@
                 NewBalance = newBalance,
                 Type = balanceType,
                 Reason = reason,
-                ReferenceId = referenceId
             };
 
             await repository.AddAsync(balanceHistory);

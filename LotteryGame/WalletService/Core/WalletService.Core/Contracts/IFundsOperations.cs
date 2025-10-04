@@ -8,7 +8,7 @@
 
         Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount);
 
-        Task<ResponseDto> Capture(int reservationId, string ticketId);
+        Task<ResponseDto> Capture(int reservationId);
 
         Task<ResponseDto> Refund(int reservationId);
     }

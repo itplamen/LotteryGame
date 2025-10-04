@@ -68,8 +68,7 @@
             modelBuilder.Entity<BalanceHistory>(entity =>
             {
                 entity.HasKey(x => x.Id);
-                entity.HasIndex(x => x.WalletId);
-                entity.HasIndex(x => x.ReferenceId);
+                entity.HasIndex(x => x.WalletId);;
 
                 entity.Property(x => x.NewBalance)
                     .HasColumnType("bigint")
@@ -78,6 +77,16 @@
                 entity.Property(x => x.OldBalance)
                     .HasColumnType("bigint")
                     .IsRequired();
+
+                entity.HasOne(x => x.Wallet)
+                    .WithMany(x => x.BalanceHistories)
+                    .HasForeignKey(x => x.WalletId)
+                    .IsRequired();
+
+                entity.HasOne(b => b.Reservation)
+                      .WithMany(r => r.BalanceHistories)
+                      .HasForeignKey(b => b.ReservationId)
+                      .IsRequired(false);
 
                 entity.ToTable(x => x
                     .HasCheckConstraint(
@@ -92,24 +101,32 @@
                 entity.HasKey(x => x.Id);
 
                 entity.HasOne(x => x.Wallet)
-                      .WithMany(x => x.Reservations)
-                      .HasForeignKey(x => x.WalletId)
-                      .IsRequired();
+                    .WithMany(x => x.Reservations)
+                    .HasForeignKey(x => x.WalletId)
+                    .IsRequired();
 
                 entity.Property(x => x.Amount)
                     .HasColumnType("bigint")
                     .IsRequired();
 
                 entity.Property(x => x.ExpiresAt)
-                      .IsRequired();
+                    .IsRequired();
 
                 entity.Property(x => x.IsCaptured)
-                      .HasDefaultValue(false);
+                    .HasDefaultValue(false);
 
                 entity.HasIndex(x => x.WalletId);
 
-                entity.HasIndex(x => x.TicketId)
-                    .IsUnique();
+                entity.HasMany(x => x.Tickets)
+                    .WithOne(x => x.Reservation)
+                    .HasForeignKey(x => x.ReservationId)
+                    .IsRequired();
+
+                modelBuilder.Entity<Reservation>()
+                    .HasMany(x => x.BalanceHistories)
+                    .WithOne(x => x.Reservation)
+                    .HasForeignKey(x => x.ReservationId)
+                    .IsRequired(false);
 
                 entity.ToTable(x => x
                     .HasCheckConstraint(
@@ -118,6 +135,9 @@
                     )
                 );
             });
+
+            modelBuilder.Entity<ReservationTicket>()
+                .HasKey(x => new { x.ReservationId, x.TicketId });
 
             base.OnModelCreating(modelBuilder);
         }

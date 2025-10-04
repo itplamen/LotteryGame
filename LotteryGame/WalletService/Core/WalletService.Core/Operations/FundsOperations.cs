@@ -89,13 +89,12 @@
                 oldBalance,
                 wallet.TotalBalance, 
                 BalanceType.Reserve, 
-                "Funds reserved",
-                reservation.TicketId);
+                "Funds reserved");
 
             return new ResponseDto<BaseDto>() { Data = new BaseDto(reservation.Id.ToString()) };
         }
 
-        public async Task<ResponseDto> Capture(int reservationId, string ticketId)
+        public async Task<ResponseDto> Capture(int reservationId)
         {
             Reservation reservation = await reservationRepo.GetByIdAsync(reservationId);
             if (reservation == null || reservation.IsCaptured)
@@ -113,7 +112,6 @@
             wallet.LockedFunds -= reservation.Amount;
 
             reservation.IsCaptured = true;
-            reservation.TicketId = ticketId;
 
             await walletRepo.SaveChangesAsync();
 
@@ -122,8 +120,7 @@
                 oldBalance,
                 wallet.TotalBalance,
                 BalanceType.Capture,
-                "Funds captured",
-                reservation.TicketId);
+                "Funds captured");
 
             return new ResponseDto();
         }
@@ -159,8 +156,7 @@
                 oldBalance,
                 wallet.TotalBalance,
                 BalanceType.Refund,
-                "Funds refunded",
-                reservation.TicketId);
+                "Funds refunded");
 
             return new ResponseDto();
         }

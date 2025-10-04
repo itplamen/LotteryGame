@@ -11,11 +11,13 @@
 
         public bool IsCaptured { get; set; }
 
-        public string TicketId { get; set; }
-
         [Required]
         public int WalletId { get; set; }
 
         public Wallet Wallet { get; set; }
+
+        public IEnumerable<ReservationTicket> Tickets { get; set; } = new HashSet<ReservationTicket>();
+
+        public ICollection<BalanceHistory> BalanceHistories { get; set; } = new HashSet<BalanceHistory>();
     }
 }

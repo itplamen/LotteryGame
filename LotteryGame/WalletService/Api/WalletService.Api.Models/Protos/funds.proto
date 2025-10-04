@@ -34,7 +34,6 @@ message ReserveResponse {
 
 message CaptureRequest {
 	int32 reservationId = 1;
-	string ticketId = 2;
 }
 
 message RefundRequest {

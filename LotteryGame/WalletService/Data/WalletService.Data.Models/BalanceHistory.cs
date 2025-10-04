@@ -11,9 +11,6 @@
         public long NewBalance { get; set; }
 
         [Required]
-        public string ReferenceId { get; set; }
-
-        [Required]
         public BalanceType Type { get; set; }
 
         [Required]
@@ -23,5 +20,9 @@
         public int WalletId { get; set; }
 
         public Wallet Wallet { get; set; }
+
+        public int? ReservationId { get; set; }
+
+        public Reservation Reservation { get; set; }
     }
 }
