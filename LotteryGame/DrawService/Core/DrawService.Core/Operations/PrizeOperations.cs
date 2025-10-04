@@ -36,7 +36,7 @@
                 return new ResponseDto<IEnumerable<PrizeDto>>("Invalid draw status");
             }
 
-            if (draw.TicketIds == null || !draw.TicketIds.Any())
+            if (draw.PlayerTickets == null || !draw.PlayerTickets.Any())
             {
                 return new ResponseDto<IEnumerable<PrizeDto>>("No tickets for draw");
             }
