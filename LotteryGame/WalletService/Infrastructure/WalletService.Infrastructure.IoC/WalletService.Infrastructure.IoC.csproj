@@ -10,6 +10,7 @@
     <ProjectReference Include="..\..\..\Common\LotteryGame.Common.Models\LotteryGame.Common.Models.csproj" />
     <ProjectReference Include="..\..\Core\WalletService.Core\WalletService.Core.csproj" />
     <ProjectReference Include="..\..\Data\WalletService.Data\WalletService.Data.csproj" />
+    <ProjectReference Include="..\WalletService.Infrastructure.Mapping\WalletService.Infrastructure.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

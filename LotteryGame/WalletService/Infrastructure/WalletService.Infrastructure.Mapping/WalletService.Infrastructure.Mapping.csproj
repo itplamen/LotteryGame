@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\LotteryGame.Common.Models\LotteryGame.Common.Models.csproj" />
-    <ProjectReference Include="..\..\Api\WalletService.Api\WalletService.Api.csproj" />
     <ProjectReference Include="..\..\Core\WalletService.Core.Models\WalletService.Core.Models.csproj" />
   </ItemGroup>
 
