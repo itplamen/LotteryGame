@@ -9,16 +9,19 @@
     using LotteryGame.Common.Models.Dto;
     using WalletService.Api.Models.Protos.Funds;
     using WalletService.Core.Contracts;
+    using WalletService.Core.Models;
 
     public class FundsService : Funds.FundsBase
     {
         private readonly IMapper mapper;
         private readonly IFundsOperations fundsOperations;
+        private readonly IBalanceHistoryOperations balanceHistoryOperations;
 
-        public FundsService(IMapper mapper, IFundsOperations fundsOperations)
+        public FundsService(IMapper mapper, IFundsOperations fundsOperations, IBalanceHistoryOperations balanceHistoryOperations)
         {
             this.mapper = mapper;
             this.fundsOperations = fundsOperations;
+            this.balanceHistoryOperations = balanceHistoryOperations;
         }
 
         public override async Task<BaseResponse> HasEnoughFunds(EnoughFundsRequest request, ServerCallContext context)
@@ -49,6 +52,14 @@
         {
             ResponseDto responseDto = await fundsOperations.Refund(request.ReservationId);
             BaseResponse response = mapper.Map<BaseResponse>(responseDto);
+
+            return response;
+        }
+
+        public override async Task<HistoryResponseList> GetHistory(HistoryRequest request, ServerCallContext context)
+        {
+            IEnumerable<BalanceHistoryDto> historyDtos = await balanceHistoryOperations.Get(request.PlayerId);
+            HistoryResponseList response = mapper.Map<HistoryResponseList>(historyDtos);
 
             return response;
         }

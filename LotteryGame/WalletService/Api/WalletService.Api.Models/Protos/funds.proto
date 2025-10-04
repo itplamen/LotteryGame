@@ -1,5 +1,7 @@
 ﻿syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 option csharp_namespace = "WalletService.Api.Models.Protos.Funds";
 
 package funds;
@@ -9,6 +11,7 @@ service Funds {
 	rpc Reserve (ReserveRequest) returns (ReserveResponse);
 	rpc Capture (FundsRequest) returns (BaseResponse);
 	rpc Refund (FundsRequest) returns (BaseResponse);
+	rpc GetHistory(HistoryRequest) returns (HistoryResponseList);
 }
 
 message EnoughFundsRequest {
@@ -34,4 +37,33 @@ message ReserveResponse {
 
 message FundsRequest {
 	int32 reservationId = 1;
+}
+
+message HistoryRequest {
+	int32 playerId = 1;
+}
+
+enum BalanceType {
+    RESERVE = 0;
+    CAPTURE = 1;
+    REFUND = 2;
+    REAL_MONEY_PRIZE = 3;
+    BONUS_MONEY_PRIZE = 4;
+    LOYALTY_POINTS_PRIZE = 5;
+}
+
+message HistoryResponse {
+	bool success = 1;
+	string errorMsg = 2;
+	int64 amount = 3;
+	google.protobuf.Timestamp createdOn = 4;
+	int64 oldBalance = 5;
+	int64 newBalance = 6;
+	BalanceType type = 7;
+    string reason = 8;
+	bool isConfirmed = 9;
+}
+
+message HistoryResponseList {
+    repeated HistoryResponse items = 1;
 }
