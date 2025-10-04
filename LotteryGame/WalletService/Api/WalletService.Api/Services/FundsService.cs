@@ -37,7 +37,7 @@
             return response;
         }
 
-        public override async Task<BaseResponse> Capture(CaptureRequest request, ServerCallContext context)
+        public override async Task<BaseResponse> Capture(FundsRequest request, ServerCallContext context)
         {
             ResponseDto responseDto = await fundsOperations.Capture(request.ReservationId);
             BaseResponse response = mapper.Map<BaseResponse>(responseDto);
@@ -45,7 +45,7 @@
             return response;
         }
 
-        public override async Task<BaseResponse> Refund(RefundRequest request, ServerCallContext context)
+        public override async Task<BaseResponse> Refund(FundsRequest request, ServerCallContext context)
         {
             ResponseDto responseDto = await fundsOperations.Refund(request.ReservationId);
             BaseResponse response = mapper.Map<BaseResponse>(responseDto);

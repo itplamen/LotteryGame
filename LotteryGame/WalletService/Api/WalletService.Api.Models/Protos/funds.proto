@@ -7,8 +7,8 @@ package funds;
 service Funds {
 	rpc HasEnoughFunds (EnoughFundsRequest) returns (BaseResponse);
 	rpc Reserve (ReserveRequest) returns (ReserveResponse);
-	rpc Capture (CaptureRequest) returns (BaseResponse);
-	rpc Refund (RefundRequest) returns (BaseResponse);
+	rpc Capture (FundsRequest) returns (BaseResponse);
+	rpc Refund (FundsRequest) returns (BaseResponse);
 }
 
 message EnoughFundsRequest {
@@ -32,10 +32,6 @@ message ReserveResponse {
 	int32 reservationId = 3;
 }
 
-message CaptureRequest {
-	int32 reservationId = 1;
-}
-
-message RefundRequest {
+message FundsRequest {
 	int32 reservationId = 1;
 }
