@@ -26,15 +26,16 @@ message TicketCreateRequest {
 	int32 playerId = 1;
 	string drawId = 2;
 	int32 reservationId = 3;
+	int32 numberOfTickets = 4;
 }
 
 message TicketResponse {
 	bool success = 1;
 	string errorMsg = 2;
-	Ticket ticket = 3;
+	repeated Ticket tickets = 3;
 }
 
 message TicketUpdateRequest {
-	string ticketId = 1;
+	repeated string ticketIds = 1;
 	TicketStatus status = 2;
 }
