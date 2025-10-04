@@ -10,7 +10,7 @@
 
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter);
 
-        Task<TEntity> AddAsync(TEntity entity)
+        Task<TEntity> AddAsync(TEntity entity);
 
         Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities);
 

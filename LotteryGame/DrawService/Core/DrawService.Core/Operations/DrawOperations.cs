@@ -11,8 +11,12 @@
     
     public class DrawOperations : IDrawOperations
     {
-        private readonly long amount;
-        private readonly int drawDays;
+        private readonly long ticketPriceInCents;
+        private readonly int drawScheduleTime;
+        private readonly int minTicketsPerPlayer;
+        private readonly int maxTicketsPerPlayer;
+        private readonly int minPlayersInDraw;
+        private readonly int maxPlayersInDraw;
         private readonly IMapper mapper;
         private readonly IRepository<Draw> repository;
 
@@ -20,17 +24,35 @@
         {
             this.mapper = mapper;
             this.repository = repository;
-            this.drawDays = int.Parse(configuration["DrawDays"]);
-            this.amount = long.Parse(configuration["TicketPriceInCents"]);
+            this.ticketPriceInCents = long.Parse(configuration["TicketPriceInCents"]);
+            this.drawScheduleTime = int.Parse(configuration["DrawScheduleTime"]);
+            this.minTicketsPerPlayer = int.Parse(configuration["MinTicketsPerPlayer"]);
+            this.maxTicketsPerPlayer = int.Parse(configuration["MaxTicketsPerPlayer"]);
+            this.minPlayersInDraw = int.Parse(configuration["MinPlayersInDraw"]);
+            this.maxPlayersInDraw = int.Parse(configuration["MaxPlayersInDraw"]);
+        }
+
+        public async Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId)
+        {
+            IEnumerable<Draw> openDraws = await repository.FindAsync(x =>
+                x.Status == DrawStatus.Pending && 
+                !x.PlayerTickets.ContainsKey(playerId));
+
+            if (!openDraws.Any())
+            {
+                return new ResponseDto<DrawDto>("No open draws available");
+            }
+
+            return mapper.Map<ResponseDto<DrawDto>>(openDraws.First());
         }
 
         public async Task<ResponseDto<DrawDto>> Create()
         { 
             var draw = new Draw()
             {
-                DrawDate = DateTime.UtcNow.AddDays(drawDays),
                 Status = DrawStatus.Pending,
-                TicketPriceInCents = amount
+                TicketPriceInCents = ticketPriceInCents,
+                DrawDate = DateTime.UtcNow.AddMilliseconds(drawScheduleTime)
             };
 
             await repository.AddAsync(draw);
@@ -38,13 +60,8 @@
             return mapper.Map<ResponseDto<DrawDto>>(draw);
         }
 
-        public async Task<ResponseDto<DrawDto>> Start(string drawId, IEnumerable<string> ticketIds)
+        public async Task<ResponseDto<DrawDto>> Start(string drawId)
         {
-            if (ticketIds == null || !ticketIds.Any())
-            {
-                return new ResponseDto<DrawDto>("Missing tickets for draw");
-            }
-
             Draw draw = await repository.GetByIdAsync(drawId);
             if (draw == null)
             {
@@ -57,7 +74,42 @@
             }
 
             draw.Status = DrawStatus.InProgress;
-            draw.TicketIds = ticketIds.ToList();
+            draw.DrawDate = DateTime.UtcNow;
+
+            await repository.UpdateAsync(draw);
+
+            return mapper.Map<ResponseDto<DrawDto>>(draw);
+        }
+
+        public async Task<ResponseDto<DrawDto>> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
+        {
+            Draw draw = await repository.GetByIdAsync(drawId);
+            if (draw == null)
+            {
+                return new ResponseDto<DrawDto>("Draw not found");
+            }
+
+            if (draw.Status != DrawStatus.InProgress)
+            {
+                return new ResponseDto<DrawDto>("Draw not started");
+            }
+
+            if (draw.PlayerTickets.ContainsKey(playerId))
+            {
+                return new ResponseDto<DrawDto>("Player already joined the draw");
+            }
+
+            if (ticketIds.Count() < minTicketsPerPlayer || ticketIds.Count() > maxTicketsPerPlayer)
+            {
+                return new ResponseDto<DrawDto>($"Invalid number of tickets. Min: {minTicketsPerPlayer}, Max: {maxTicketsPerPlayer}");
+            }
+
+            if (draw.PlayerTickets.Count == maxPlayersInDraw)
+            {
+                return new ResponseDto<DrawDto>("Draw is full");
+            }
+
+            draw.PlayerTickets[playerId] = ticketIds.ToList();
 
             await repository.UpdateAsync(draw);
 
