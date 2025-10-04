@@ -26,8 +26,9 @@
 
   <ItemGroup>
 	<Protobuf Include="..\LotteryGame.Orchestrators.Models\Protos\purchase.proto" GrpcServices="Server" />
-	<Protobuf Include="..\..\WalletService\Api\WalletService.Api.Models\Protos\funds.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\DrawService\Api\DrawService.Api.Models\Protos\draws.proto" GrpcServices="Client" />
 	<Protobuf Include="..\..\WagerService\Api\WagerService.Api.Models\Protos\tickets.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\WalletService\Api\WalletService.Api.Models\Protos\funds.proto" GrpcServices="Client" />
   </ItemGroup>
  
 </Project>

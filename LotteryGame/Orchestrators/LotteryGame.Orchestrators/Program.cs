@@ -1,3 +1,4 @@
+using DrawService.Api.Models.Protos.Draws;
 using LotteryGame.Orchestrators.Services;
 using WagerService.Api.Models.Protos.Tickets;
 using WalletService.Api.Models.Protos.Funds;
@@ -21,6 +22,10 @@ builder.Services.AddGrpcClient<Funds.FundsClient>(x =>
 builder.Services.AddGrpcClient<Tickets.TicketsClient>(x =>
 {
     x.Address = new Uri("https://wagerservice:5002");
+});
+builder.Services.AddGrpcClient<Draws.DrawsClient>(x =>
+{
+    x.Address = new Uri("https://wagerservice:5003");
 });
 
 app.Run();

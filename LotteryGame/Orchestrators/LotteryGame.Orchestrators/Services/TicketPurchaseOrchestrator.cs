@@ -3,8 +3,7 @@ namespace LotteryGame.Orchestrators.Services
     using System.Threading.Tasks;
    
     using AutoMapper;
-    
-    using Google.Protobuf.WellKnownTypes;
+    using DrawService.Api.Models.Protos.Draws;
     
     using Grpc.Core;
     
@@ -14,119 +13,178 @@ namespace LotteryGame.Orchestrators.Services
 
     public class TicketPurchaseOrchestrator : TicketPurchase.TicketPurchaseBase
     {
+        private readonly int maxRetries;
+        private readonly int retryDelayMs;
         private readonly IMapper mapper;
         private readonly Funds.FundsClient fundsClient;
         private readonly Tickets.TicketsClient wagerClient;
+        private readonly Draws.DrawsClient drawClient;
 
-        public TicketPurchaseOrchestrator(IMapper mapper, Funds.FundsClient fundsClient, Tickets.TicketsClient wagerClient)
+        public TicketPurchaseOrchestrator(
+            IMapper mapper, 
+            Funds.FundsClient fundsClient, 
+            Tickets.TicketsClient wagerClient, 
+            Draws.DrawsClient drawClient, 
+            IConfiguration configuration)
         {
             this.mapper = mapper;
             this.fundsClient = fundsClient;
             this.wagerClient = wagerClient;
+            this.drawClient = drawClient;
+            this.maxRetries = int.Parse(configuration["MaxRetries"]);
+            this.retryDelayMs = int.Parse(configuration["RetryDelayMs"]);
         }
 
         public override async Task<PurchaseResponse> Purchase(PurchaseRequest request, ServerCallContext context)
         {
-            PriceResponse pricePerTicket = await wagerClient.GetPriceAsync(new Empty());
+            FetchDrawRequest fetchDrawRequest = new FetchDrawRequest()
+            {
+                PlayerId = request.PlayerId
+            };
+
+            FetchDrawResponse fetchDrawResponse = await drawClient.FetchDrawAsync(fetchDrawRequest);
+            if (!fetchDrawResponse.Success)
+            {
+                return mapper.Map<PurchaseResponse>(fetchDrawResponse);
+            }
+
+            if (request.NumberOfTickets < fetchDrawResponse.MinTicketsPerPlayer ||
+                request.NumberOfTickets > fetchDrawResponse.MaxTicketsPerPlayer)
+            {
+                return new PurchaseResponse()
+                {
+                    Success = false,
+                    ErrorMsg = $"Number of tickets must be between {fetchDrawResponse.MinTicketsPerPlayer} and {fetchDrawResponse.MaxTicketsPerPlayer}"
+                };
+            }
+
+            ReserveResponse reserveFundsResponse = await ReserveFuns(request, fetchDrawResponse.TicketPriceInCents);
+            if (!reserveFundsResponse.Success)
+            {
+                return mapper.Map<PurchaseResponse>(reserveFundsResponse); ;
+            }
+
+            return await PurchaseTickets(request, fetchDrawResponse.DrawId, reserveFundsResponse.ReservationId);
+        }
+
+        private async Task<ReserveResponse> ReserveFuns(PurchaseRequest request, long ticketPriceInCents)
+        {
             EnoughFundsRequest enoughFundsRequest = new EnoughFundsRequest()
             {
                 PlayerId = request.PlayerId,
-                CostAmount = pricePerTicket.Price * request.NumberOfTickets
+                CostAmount = ticketPriceInCents * request.NumberOfTickets
             };
 
             BaseResponse enoughFundsResponse = await fundsClient.HasEnoughFundsAsync(enoughFundsRequest);
 
             if (!enoughFundsResponse.Success)
             {
-                PurchaseResponse response = mapper.Map<PurchaseResponse>(enoughFundsResponse);
-                return response;
+                return mapper.Map<ReserveResponse>(enoughFundsResponse);
             }
 
-            for (int i = 1; i <= request.NumberOfTickets; i++)
-            {
-
-                await PurchaseTicket(request.PlayerId, pricePerTicket.Price);
-
-            }
-
-
-            return null; 
-        }
-
-        private async Task<PurchaseResponse> PurchaseTicket(int playerId, long amount)
-        {
             ReserveRequest reserveRequest = new ReserveRequest()
             {
-                PlayerId =  playerId,
-                Amount = amount
+                PlayerId = request.PlayerId,
+                Amount = enoughFundsRequest.CostAmount
             };
 
-            ReserveResponse reserveResponse = await fundsClient.ReserveAsync(reserveRequest);
+            return await fundsClient.ReserveAsync(reserveRequest);
+        }
 
-            if (!reserveResponse.Success)
-            {
-                PurchaseResponse response = mapper.Map<PurchaseResponse>(reserveResponse);
-                return response;
-            }
-
-            // TODO: Get DrawId from Draw Service
-
+        private async Task<PurchaseResponse> PurchaseTickets(PurchaseRequest request, string drawId, int reservationId)
+        {
             TicketCreateRequest ticketCreateRequest = new TicketCreateRequest()
             {
-                PlayerId = playerId,
-                DrawId = "1",
-                ReservationId = reserveResponse.ReservationId
+                PlayerId = request.PlayerId,
+                DrawId = drawId,
+                ReservationId = reservationId,
+                NumberOfTickets = request.NumberOfTickets
             };
-            
-            TicketResponse ticketResponse =  await wagerClient.CreateAsync(ticketCreateRequest);
 
-            if (!ticketResponse.Success)
+            TicketResponse createdTicketResponse = await wagerClient.CreateAsync(ticketCreateRequest);
+            if (!createdTicketResponse.Success)
             {
-                RefundRequest refundRequest = new RefundRequest() 
-                { 
-                    ReservationId = reserveResponse.ReservationId 
-                };
-
-                await fundsClient.RefundAsync(refundRequest);
-
-                PurchaseResponse response = mapper.Map<PurchaseResponse>(ticketResponse);
-                return response;
+                return await CompensateFunds(reservationId);
             }
 
-            CaptureRequest captureRequest = new CaptureRequest()
-            {
-                ReservationId = reserveResponse.ReservationId,
-                TicketId = ticketResponse.Ticket.Id   
-            };
-
-            BaseResponse captureResponse = await fundsClient.CaptureAsync(captureRequest);
+            BaseResponse captureResponse = await fundsClient.CaptureAsync(new FundsRequest() { ReservationId = reservationId });
             if (!captureResponse.Success)
             {
-                await wagerClient.UpdateAsync(new TicketUpdateRequest()
-                {
-                    TicketId = ticketResponse.Ticket.Id,
-                    Status = TicketStatus.Cancelled
-                });
-
-                RefundRequest refundRequest = new RefundRequest()
-                {
-                    ReservationId = reserveResponse.ReservationId
-                };
-
-                await fundsClient.RefundAsync(refundRequest);
-
-                PurchaseResponse response = mapper.Map<PurchaseResponse>(captureResponse);
-                return response;
+                await CancelTickets(createdTicketResponse, reservationId);
+                return await CompensateFunds(reservationId);
             }
 
-            await wagerClient.UpdateAsync(new TicketUpdateRequest()
+            var ticketUpdateRequest = new TicketUpdateRequest()
             {
-                TicketId = ticketResponse.Ticket.Id,
                 Status = TicketStatus.Confirmed
-            });
+            };
+            ticketUpdateRequest.TicketIds.AddRange(createdTicketResponse.Tickets.Select(x => x.Id));
 
+            TicketResponse confirmResponse = await RetryAsync(async () => await wagerClient.UpdateAsync(ticketUpdateRequest));
 
-            return new PurchaseResponse();
+            if (!confirmResponse.Success)
+            {
+                return new PurchaseResponse()
+                {
+                    Success = false,
+                    ErrorMsg = "Could not purchase tickets"
+                };
+            }
+
+            return new PurchaseResponse() { Success = true };
+        }
+
+        private async Task CancelTickets(TicketResponse ticketResponse, int reservationId)
+        {
+            var ticketUpdateRequest = new TicketUpdateRequest
+            {
+                Status = TicketStatus.Cancelled
+            };
+            ticketUpdateRequest.TicketIds.AddRange(ticketResponse.Tickets.Select(x => x.Id));
+
+            var updateResponse = await RetryAsync(async () => await wagerClient.UpdateAsync(ticketUpdateRequest));
+            if (!updateResponse.Success)
+            {
+                // log & alert — orphan tickets exist
+            }
+        }
+
+        private async Task<PurchaseResponse> CompensateFunds(int reservationId)
+        {
+            FundsRequest fundsRequest = new FundsRequest()
+            {
+                ReservationId = reservationId
+            };
+
+            BaseResponse refundResponse = await RetryAsync(async () => await fundsClient.RefundAsync(fundsRequest));
+
+            if (refundResponse.Success)
+            {
+                return new PurchaseResponse() { Success = true };
+            }
+
+            // TODO: Log refundResponse
+
+            return new PurchaseResponse() { Success = false, ErrorMsg = "Ticket purchase failed" };
+        }
+
+        private async Task<T> RetryAsync<T>(Func<Task<T>> action)
+        {
+            for (int i = 0; i < maxRetries; i++)
+            {
+                try
+                {
+                    return await action();
+                }
+                catch
+                {
+                    if (i == maxRetries - 1) throw;
+                    await Task.Delay(retryDelayMs * (i + 1)); 
+                }
+            }
+
+            throw new InvalidOperationException("Retry failed");
+            // TODO: log to orchestrator DB
         }
     }
 }
