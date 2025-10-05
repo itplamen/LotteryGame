@@ -161,21 +161,21 @@ namespace WalletService.Data.Migrations
                 columns: new[] { "Id", "BonusMoney", "CreatedOn", "DeletedOn", "LockedFunds", "LoyaltyPoints", "ModifiedOn", "PlayerId", "RealMoney" },
                 values: new object[,]
                 {
-                    { 1, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 1, 1000L },
-                    { 2, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 2, 1000L },
-                    { 3, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 3, 1000L },
-                    { 4, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 4, 1000L },
-                    { 5, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 5, 1000L },
-                    { 6, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 6, 1000L },
-                    { 7, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 7, 1000L },
-                    { 8, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 8, 1000L },
-                    { 9, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 9, 1000L },
-                    { 10, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 10, 1000L },
-                    { 11, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 11, 1000L },
-                    { 12, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 12, 1000L },
-                    { 13, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 13, 1000L },
-                    { 14, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 14, 1000L },
-                    { 15, 500L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 15, 1000L }
+                    { 1, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 1, 1000L },
+                    { 2, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 2, 1000L },
+                    { 3, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 3, 1000L },
+                    { 4, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 4, 1000L },
+                    { 5, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 5, 1000L },
+                    { 6, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 6, 1000L },
+                    { 7, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 7, 1000L },
+                    { 8, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 8, 1000L },
+                    { 9, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 9, 1000L },
+                    { 10, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 10, 1000L },
+                    { 11, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 11, 1000L },
+                    { 12, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 12, 1000L },
+                    { 13, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 13, 1000L },
+                    { 14, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 14, 1000L },
+                    { 15, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 15, 1000L }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,16 +1,38 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
+using WalletService.Api.IoC;
 using WalletService.Api.Services;
+using WalletService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddGrpc(options => options.EnableDetailedErrors = true);
 
-// Add services to the container.
-builder.Services.AddGrpc();
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+long startingBalanceInCents = long.Parse(builder.Configuration["StartingBalanceInCents"]);
+builder.Services.AddScoped(provider => new WalletServiceDbContext(connectionString, startingBalanceInCents));
+
+builder.Services.AddServices(builder.Configuration);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5001, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<WalletServiceDbContext>();
+
+    Console.WriteLine("Applying migrations");
+    db.Database.Migrate();
+    Console.WriteLine("Database migrations applied successfully");
+}
+
 app.MapGrpcService<FundsService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.MapGet("/", () => "gRPC service running on HTTP/2 localhost:5001");
 
 app.Run();

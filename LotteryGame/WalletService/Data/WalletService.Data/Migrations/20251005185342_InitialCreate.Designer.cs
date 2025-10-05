@@ -12,7 +12,7 @@ using WalletService.Data;
 namespace WalletService.Data.Migrations
 {
     [DbContext(typeof(WalletServiceDbContext))]
-    [Migration("20251004180103_InitialCreate")]
+    [Migration("20251005185342_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -291,7 +291,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 1,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -301,7 +301,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 2,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -311,7 +311,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 3,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -321,7 +321,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 4,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -331,7 +331,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 5,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -341,7 +341,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 6,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -351,7 +351,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 7,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -361,7 +361,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 8,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -371,7 +371,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 9,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -381,7 +381,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 10,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -391,7 +391,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 11,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -401,7 +401,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 12,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -411,7 +411,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 13,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -421,7 +421,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 14,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,
@@ -431,7 +431,7 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 15,
-                            BonusMoney = 500L,
+                            BonusMoney = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LockedFunds = 0L,
                             LoyaltyPoints = 0,

@@ -6,18 +6,13 @@
     
     public class WalletServiceDbContext : DbContext
     {
+        private readonly string connectionString;
         private readonly long startingBalanceInCents;
-        public WalletServiceDbContext(DbContextOptions<WalletServiceDbContext> options, long startingBalanceInCents)
-            : base(options) 
-        {
-            this.startingBalanceInCents = startingBalanceInCents;
-        }
 
-        public WalletServiceDbContext()
-            : base(new DbContextOptionsBuilder<WalletServiceDbContext>()
-                .UseSqlServer("Server=localhost,1433;Database=WalletServiceDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=true")
-                .Options)
+        public WalletServiceDbContext(string connectionString, long startingBalanceInCents)
         {
+            this.connectionString = connectionString;
+            this.startingBalanceInCents = startingBalanceInCents;
         }
 
         public DbSet<Player> Players { get; set; }
@@ -29,6 +24,11 @@
         public DbSet<Reservation> Reservations { get; set; }
 
         public DbSet<ReservationTicket> ReservationTickets { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(connectionString);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -158,19 +158,19 @@
                 .HasKey(x => new { x.ReservationId, x.TicketId });
 
             var players = Enumerable.Range(1, 15)
-                .Select(x => new Player
+                .Select(id => new Player
                 {
-                    Id = x, 
-                    Name = $"Player {x}{(x > 1 ? " (CPU)" : "")}",
+                    Id = id, 
+                    Name = $"Player {id}{(id > 1 ? " (CPU)" : "")}",
                     CreatedOn = new DateTime(2025, 10, 04)
                 })
                 .ToArray();
 
             var wallets = Enumerable.Range(1, 15)
-                .Select(x => new Wallet
+                .Select(id => new Wallet()
                 {
-                    Id = x,      
-                    PlayerId = x,    
+                    Id = id,      
+                    PlayerId = id,    
                     RealMoney = startingBalanceInCents,
                     BonusMoney = 0,
                     LockedFunds = 0,
