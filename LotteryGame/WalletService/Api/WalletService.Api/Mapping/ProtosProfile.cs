@@ -44,7 +44,7 @@
                 Data.Models.BalanceType.RealMoneyPrize => BalanceType.RealMoneyPrize,
                 Data.Models.BalanceType.BonusMoneyPrize => BalanceType.BonusMoneyPrize,
                 Data.Models.BalanceType.LoyaltyPointsPrize => BalanceType.LoyaltyPointsPrize,
-                _ => BalanceType.Reserve
+                _ => throw new ArgumentOutOfRangeException("Invalid balance type")
             };
         }
     }

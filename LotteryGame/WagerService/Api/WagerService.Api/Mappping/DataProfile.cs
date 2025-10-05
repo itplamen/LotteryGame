@@ -1,13 +1,13 @@
-﻿namespace WagerService.Infrastructure.Mapping
+﻿namespace WagerService.Api.Mappping
 {
     using AutoMapper;
-
+    
+    using WagerService.Api.Models.Protos.Tickets;
     using WagerService.Core.Models;
-    using WagerService.Data.Models;
 
-    public class DtoProfile : Profile
+    public class DataProfile : Profile
     {
-        public DtoProfile()
+        public DataProfile()
         {
             CreateMap<Ticket, TicketDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
