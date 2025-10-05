@@ -2,8 +2,8 @@
 {
     using AutoMapper;
     
-    using WagerService.Api.Models.Protos.Tickets;
     using WagerService.Core.Models;
+    using WagerService.Data.Models;
 
     public class DataProfile : Profile
     {

@@ -1,7 +1,8 @@
 ﻿namespace WagerService.Api.Mappping
 {
     using AutoMapper;
-    
+
+    using LotteryGame.Common.Models.Dto;
     using WagerService.Api.Models.Protos.Tickets;
     using WagerService.Core.Models;
 
@@ -22,6 +23,15 @@
 
             CreateMap<IEnumerable<TicketDto>, TicketResponse>()
                 .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src));
+
+            CreateMap<ResponseDto<IEnumerable<TicketDto>>, TicketResponse>()
+                .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
+
+            CreateMap<TicketUpdateRequest, TicketUpdateRequestDto>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (Data.Models.TicketStatus)src.Status))
+                .ForMember(dest => dest.TicketIds, opt => opt.MapFrom(src => src.TicketIds.ToList()));
         }
 
         private static TicketStatus MapTicketStatus(Data.Models.TicketStatus status)
