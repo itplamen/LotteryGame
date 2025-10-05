@@ -8,8 +8,8 @@
     {
         public SecondTierPrizeStrategy(IConfiguration configuration)
         {
-            RevenueShare = decimal.Parse(configuration["SecondPrizeRevenueShare"]);
-            TicketShare = decimal.Parse(configuration["SecondPrizeTicketShare"]);
+            RevenueShare = decimal.Parse(configuration["Prize:SecondPrizeRevenueShare"]);
+            TicketShare = decimal.Parse(configuration["Prize:SecondPrizeTicketShare"]);
             Tier = PrizeTier.Second;
         }
 

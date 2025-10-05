@@ -13,7 +13,7 @@
 
         public GrandPrizeStrategy(IConfiguration configuration)
         {
-            revenueShare = decimal.Parse(configuration["GrandPrizeRevenueShare"]);
+            revenueShare = decimal.Parse(configuration["Prize:GrandPrizeRevenueShare"]);
         }
 
         public IEnumerable<Prize> Calculate(Draw draw, List<string> remainingTicketIds, long totalRevenue)
