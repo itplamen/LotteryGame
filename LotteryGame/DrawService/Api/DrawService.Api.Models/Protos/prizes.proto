@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "DrawService.Api.Models.Protos.Prizes";
+
+package prizes;
+
+service Prizes {
+  rpc Determine (DeterminePrizeRequest) returns (DeterminePrizeResponse);
+} 
+
+enum PrizeTier {
+    GRAND = 0;
+    SECOND = 1;
+    THIRD = 2;
+}
+
+message Prize {
+    string id = 1;
+    string ticketId = 2;
+    int64 amount = 3;
+    PrizeTier tier = 4;
+    string drawId = 5;
+}
+
+message DeterminePrizeRequest {
+    string drawId = 1;
+}
+
+message DeterminePrizeResponse {
+    bool success = 1;
+    string errorMsg = 2;
+    repeated Prize prizes = 3;
+}
