@@ -39,7 +39,7 @@
                 .InsertOneAsync(entity);
         }
 
-        public async Task AddAsync(IEnumerable<TEntity> entities)
+        public async Task<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities)
         {
             IList<TEntity> range = entities.Select(x =>
             {
@@ -49,6 +49,8 @@
 
             await dbContext.GetCollection<TEntity>()
                 .InsertManyAsync(range);
+
+            return range;
         }
 
         public async Task<bool> UpdateAsync(TEntity entity)

@@ -13,7 +13,7 @@
 
         Task AddAsync(TEntity entity);
 
-        Task AddAsync(IEnumerable<TEntity> entities);
+        Task<IEnumerable<TEntity>> AddAsync(IEnumerable<TEntity> entities);
 
         Task<bool> UpdateAsync(TEntity entity);
 

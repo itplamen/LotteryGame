@@ -39,11 +39,12 @@
                     DrawId = request.DrawId,
                     ReservationId = request.ReservationId,
                     Status = TicketStatus.Pending
-                });
+                })
+                .ToList();
 
-            await repository.AddAsync(tickets);
+            IEnumerable<Ticket> created = await repository.AddAsync(tickets);
 
-            return new ResponseDto<IEnumerable<TicketDto>>() { Data = mapper.Map<IEnumerable<TicketDto>>(tickets) };
+            return new ResponseDto<IEnumerable<TicketDto>>() { Data = mapper.Map<IEnumerable<TicketDto>>(created) };
         }
 
         public async Task<ResponseDto<IEnumerable<TicketDto>>> Update(TicketUpdateRequestDto request)
