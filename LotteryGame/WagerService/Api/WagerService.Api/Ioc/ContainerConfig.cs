@@ -1,4 +1,4 @@
-﻿namespace WalletService.Api.IoC
+﻿namespace WagerService.Api.Ioc
 {
     using LotteryGame.Common.Models.IoC;
 
