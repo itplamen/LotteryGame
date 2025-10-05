@@ -7,8 +7,8 @@
         {
             IPackage[] packages =
             {
-                new DataPackage(),
-                new CorePackage()
+                new CorePackage(),
+                new DataPackage()
             };
 
             RegisterServices(services, packages);

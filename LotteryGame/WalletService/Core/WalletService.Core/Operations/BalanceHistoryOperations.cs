@@ -25,7 +25,8 @@
             long oldBalance, 
             long newBalance, 
             BalanceType balanceType, 
-            string reason)
+            string reason,
+            int reservationId)
         {
             var balanceHistory = new BalanceHistory()
             {
@@ -34,6 +35,7 @@
                 NewBalance = newBalance,
                 Type = balanceType,
                 Reason = reason,
+                ReservationId = reservationId
             };
 
             await repository.AddAsync(balanceHistory);

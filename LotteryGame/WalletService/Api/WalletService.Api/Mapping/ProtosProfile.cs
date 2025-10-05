@@ -1,6 +1,8 @@
 ﻿namespace WalletService.Api.Mapping
 {
     using AutoMapper;
+   
+    using Google.Protobuf.WellKnownTypes;
     
     using LotteryGame.Common.Models.Dto;
     using WalletService.Api.Models.Protos.Funds;
@@ -21,7 +23,7 @@
 
             CreateMap<BalanceHistoryDto, HistoryResponse>()
                 .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
-                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => src.CreatedOn))
+                .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.CreatedOn.ToUniversalTime())))
                 .ForMember(dest => dest.OldBalance, opt => opt.MapFrom(src => src.OldBalance))
                 .ForMember(dest => dest.NewBalance, opt => opt.MapFrom(src => src.NewBalance))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => MapBalanceType(src.Type)))

@@ -38,7 +38,7 @@
                 return new ResponseDto("Wallet not found");
             }
 
-            string errorMsg = wallet.TotalBalance >= costAmount ? null : "Insufficient funds";
+            string errorMsg = wallet.TotalBalance >= costAmount ? string.Empty : "Insufficient funds";
             return new ResponseDto() { ErrorMsg = errorMsg };
         }
 
@@ -89,7 +89,8 @@
                 oldBalance,
                 wallet.TotalBalance, 
                 BalanceType.Reserve, 
-                "Funds reserved");
+                "Funds reserved",
+                reservation.Id);
 
             return new ResponseDto<BaseDto>() { Data = new BaseDto(reservation.Id.ToString()) };
         }
@@ -97,9 +98,14 @@
         public async Task<ResponseDto> Capture(int reservationId)
         {
             Reservation reservation = await reservationRepo.GetByIdAsync(reservationId);
-            if (reservation == null || reservation.IsCaptured)
+            if (reservation == null)
             {
-                return new ResponseDto("Invalid reservation");
+                return new ResponseDto("Reservation not found");
+            }
+
+            if (reservation.IsCaptured)
+            {
+                return new ResponseDto("Reservation already captured");
             }
 
             Wallet wallet = await walletRepo.GetByIdAsync(reservation.WalletId);
@@ -120,7 +126,8 @@
                 oldBalance,
                 wallet.TotalBalance,
                 BalanceType.Capture,
-                "Funds captured");
+                "Funds captured",
+                reservation.Id);
 
             return new ResponseDto();
         }
@@ -128,9 +135,14 @@
         public async Task<ResponseDto> Refund(int reservationId)
         {
             Reservation reservation = await reservationRepo.GetByIdAsync(reservationId);
-            if (reservation == null || reservation.IsCaptured)
+            if (reservation == null)
             {
                 return new ResponseDto("Invalid reservation");
+            }
+
+            if (reservation.IsCaptured) 
+            {
+                return new ResponseDto("Reservation already captured");
             }
 
             Wallet wallet = await walletRepo.GetByIdAsync(reservation.WalletId);
@@ -156,7 +168,8 @@
                 oldBalance,
                 wallet.TotalBalance,
                 BalanceType.Refund,
-                "Funds refunded");
+                "Funds refunded",
+                reservation.Id);
 
             return new ResponseDto();
         }

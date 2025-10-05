@@ -5,7 +5,7 @@
 
     public interface IBalanceHistoryOperations
     {
-        Task Record(int walletId, long oldBalance, long newBalance, BalanceType balanceType, string reason);
+        Task Record(int walletId, long oldBalance, long newBalance, BalanceType balanceType, string reason, int reservationId);
 
         Task<IEnumerable<BalanceHistoryDto>> Get(int playerId);
     }

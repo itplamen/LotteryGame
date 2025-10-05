@@ -9,9 +9,9 @@
             ErrorMsg = errorMessage;
         }
 
-        public bool IsSuccess => !string.IsNullOrEmpty(ErrorMsg);
+        public bool IsSuccess => string.IsNullOrEmpty(ErrorMsg);
 
-        public string ErrorMsg { get; set; }
+        public string ErrorMsg { get; set; } = string.Empty;
     }
 
     public class ResponseDto<TResponse>
@@ -23,9 +23,9 @@
             ErrorMsg = errorMessage;
         }
 
-        public bool IsSuccess => !string.IsNullOrEmpty(ErrorMsg);
+        public bool IsSuccess => string.IsNullOrEmpty(ErrorMsg);
 
-        public string ErrorMsg { get; set; }
+        public string ErrorMsg { get; set; } = string.Empty;
 
         public TResponse Data { get; set; }
     }
