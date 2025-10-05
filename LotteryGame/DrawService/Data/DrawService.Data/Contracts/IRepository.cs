@@ -7,7 +7,7 @@
        where TEntity : BaseEntity
     {
         Task<TEntity> GetByIdAsync(string id);
-
+        
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter);
 
         Task<TEntity> AddAsync(TEntity entity);

@@ -6,8 +6,12 @@
     
     public class WalletServiceDbContext : DbContext
     {
-        public WalletServiceDbContext(DbContextOptions<WalletServiceDbContext> options)
-            : base(options) { }
+        private readonly long startingBalanceInCents;
+        public WalletServiceDbContext(DbContextOptions<WalletServiceDbContext> options, long startingBalanceInCents)
+            : base(options) 
+        {
+            this.startingBalanceInCents = startingBalanceInCents;
+        }
 
         public WalletServiceDbContext()
             : base(new DbContextOptionsBuilder<WalletServiceDbContext>()
@@ -167,8 +171,8 @@
                 {
                     Id = x,      
                     PlayerId = x,    
-                    RealMoney = 1000,
-                    BonusMoney = 500,
+                    RealMoney = startingBalanceInCents,
+                    BonusMoney = 0,
                     LockedFunds = 0,
                     LoyaltyPoints = 0,
                     CreatedOn = new DateTime(2025, 10, 04)

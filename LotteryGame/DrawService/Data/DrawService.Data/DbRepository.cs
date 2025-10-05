@@ -3,6 +3,7 @@
     using System.Linq.Expressions;
 
     using CouchDB.Driver;
+    using CouchDB.Driver.Extensions;
 
     using DrawService.Data.Contracts;
     using DrawService.Data.Models;
@@ -19,7 +20,7 @@
 
         public async Task<TEntity> GetByIdAsync(string id) => await database.FindAsync(id);
 
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter) => await database.QueryAsync(filter);
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter) => await database.Where(filter).ToListAsync();
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {

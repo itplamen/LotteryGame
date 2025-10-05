@@ -4,12 +4,13 @@
     using System.Threading.Tasks;
 
     using CouchDB.Driver;
+    using CouchDB.Driver.Options;
 
     using Microsoft.Extensions.Configuration;
 
     using DrawService.Data.Models;
-    
-    public class DrawServiceDbContext : IAsyncDisposable
+
+    public class DrawServiceDbContext : CouchContext
     {
         private readonly CouchClient client;
 
@@ -17,23 +18,27 @@
         {
             client = new CouchClient(x =>
             {
-                x.UseEndpoint(new Uri(configuration["ConnectionString"]));
-                x.UseBasicAuthentication(configuration["DB:Username"], configuration["DB:Password"]);
+                x.UseEndpoint(new Uri(configuration["CouchDB:Endpoint"]));
+                x.UseBasicAuthentication(configuration["CouchDB:Username"], configuration["CouchDB:Password"]);
             });
         }
 
         public async Task<ICouchDatabase<TEntity>> GetDatabase<TEntity>()
             where TEntity : BaseEntity
         {
-            return await client.GetOrCreateDatabaseAsync<TEntity>(typeof(TEntity).Name);
+            string dbName = typeof(TEntity).Name.ToLower();
+
+            return await client.GetOrCreateDatabaseAsync<TEntity>(dbName);
         }
 
-        public async ValueTask DisposeAsync()
+        protected override void OnConfiguring(CouchOptionsBuilder optionsBuilder)
         {
-            if (client != null)
-            {
-                await client.DisposeAsync();
-            }
-        } 
+            optionsBuilder
+              .UseEndpoint("http://localhost:5984/")
+              .EnsureDatabaseExists()
+              .UseBasicAuthentication(username: "admin", password: "admin");
+
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }

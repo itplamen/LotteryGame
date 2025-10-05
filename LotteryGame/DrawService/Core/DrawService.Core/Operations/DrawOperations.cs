@@ -35,9 +35,8 @@
 
         public async Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId)
         {
-            IEnumerable<Draw> openDraws = await repository.FindAsync(x =>
-                x.Status == DrawStatus.Pending && 
-                !x.PlayerTickets.ContainsKey(playerId));
+            IEnumerable<Draw> openDraws = await repository.FindAsync(x => x.Status == DrawStatus.Pending);
+            openDraws = openDraws.Where(x => !x.PlayerTickets.ContainsKey(playerId));
 
             if (!openDraws.Any())
             {
@@ -62,7 +61,7 @@
 
             await repository.AddAsync(draw);
 
-            return mapper.Map<ResponseDto<DrawDto>>(draw);
+            return new ResponseDto<DrawDto>() { Data = mapper.Map<DrawDto>(draw) };
         }
 
         public async Task<ResponseDto> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
@@ -73,9 +72,9 @@
                 return new ResponseDto("Draw not found");
             }
 
-            if (draw.Status != DrawStatus.InProgress)
+            if (draw.Status != DrawStatus.Pending)
             {
-                return new ResponseDto("Draw not started");
+                return new ResponseDto("Invalid draw status");
             }
 
             if (draw.PlayerTickets.ContainsKey(playerId))
@@ -97,7 +96,7 @@
 
             await repository.UpdateAsync(draw);
 
-            return mapper.Map<ResponseDto>(draw);
+            return new ResponseDto();
         }
 
         public async Task<ResponseDto> Start(string drawId)
@@ -123,7 +122,7 @@
 
             await repository.UpdateAsync(draw);
 
-            return mapper.Map<ResponseDto>(draw);
+            return new ResponseDto();
         }
     }
 }
