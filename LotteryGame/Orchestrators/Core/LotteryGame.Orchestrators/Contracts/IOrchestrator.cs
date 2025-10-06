@@ -1,6 +1,6 @@
 ﻿namespace LotteryGame.Orchestrators.Contracts
 {
-    using LotteryGame.Orchestrators.Models;
+    using LotteryGame.Orchestrators.Models.Base;
 
     public interface IOrchestrator<TRequest, TResponse>
     {

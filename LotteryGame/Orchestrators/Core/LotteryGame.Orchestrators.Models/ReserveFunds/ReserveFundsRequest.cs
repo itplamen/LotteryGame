@@ -1,4 +1,4 @@
-﻿namespace LotteryGame.Orchestrators.Models
+﻿namespace LotteryGame.Orchestrators.Models.ReserveFunds
 {
     public class ReserveFundsRequest
     {

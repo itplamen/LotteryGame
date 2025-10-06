@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LotteryGame.Orchestrators.Gateways\LotteryGame.Orchestrators.Gateways.csproj" />
+    <ProjectReference Include="..\LotteryGame.Orchestrators.Models\LotteryGame.Orchestrators.Models.csproj" />
   </ItemGroup>
 
 </Project>
