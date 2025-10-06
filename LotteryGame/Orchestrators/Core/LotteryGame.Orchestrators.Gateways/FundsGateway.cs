@@ -1,10 +1,11 @@
 ﻿namespace LotteryGame.Orchestrators.Gateways
 {
     using Microsoft.Extensions.Configuration;
-    
+
+    using LotteryGame.Orchestrators.Gateways.Contracts;
     using WalletService.Api.Models.Protos.Funds;
 
-    public class FundsGateway : BaseGateway
+    public class FundsGateway : BaseGateway, IFundsGateway
     {
         private readonly Funds.FundsClient fundsClient;
 
