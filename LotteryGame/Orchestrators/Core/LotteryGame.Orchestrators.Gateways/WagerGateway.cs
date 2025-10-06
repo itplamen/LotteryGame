@@ -28,10 +28,10 @@
             return await Execute(async () => await wagerClient.CreateAsync(ticketCreateRequest));
         }
 
-        public async Task<TicketResponse> UpdateTicketStatus(IEnumerable<string> ticketIds)
+        public async Task<TicketResponse> UpdateTicketStatus(TicketStatus status, IEnumerable<string> ticketIds)
         {
             var ticketUpdateRequest = new TicketUpdateRequest();
-            ticketUpdateRequest.Status = TicketStatus.Confirmed;
+            ticketUpdateRequest.Status = status;
             ticketUpdateRequest.TicketIds.AddRange(ticketIds);
 
             return await Execute(async () => await wagerClient.UpdateAsync(ticketUpdateRequest));

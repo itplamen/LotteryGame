@@ -6,6 +6,6 @@
     {
         Task<TicketResponse> PurchaseTickets(int playerId, string drawId, int reservationId, int numberOfTickets);
 
-        Task<TicketResponse> UpdateTicketStatus(IEnumerable<string> ticketIds);
+        Task<TicketResponse> UpdateTicketStatus(TicketStatus status, IEnumerable<string> ticketIds);
     }
 }
