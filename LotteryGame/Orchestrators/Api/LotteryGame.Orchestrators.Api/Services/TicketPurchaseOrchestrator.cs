@@ -1,16 +1,12 @@
-namespace LotteryGame.Orchestrators.Services
-{
-    using System.Threading.Tasks;
-   
-    using AutoMapper;
-    using DrawService.Api.Models.Protos.Draws;
-    
-    using Grpc.Core;
-    
-    using LotteryGame.Orchestrators.Models.Protos.TicketPurchase;
-    using WagerService.Api.Models.Protos.Tickets;
-    using WalletService.Api.Models.Protos.Funds;
+﻿using AutoMapper;
+using DrawService.Api.Models.Protos.Draws;
+using Grpc.Core;
+using LotteryGame.Orchestrators.Api.Models.Protos.TicketPurchase;
+using WagerService.Api.Models.Protos.Tickets;
+using WalletService.Api.Models.Protos.Funds;
 
+namespace LotteryGame.Orchestrators.Api.Services
+{
     public class TicketPurchaseOrchestrator : TicketPurchase.TicketPurchaseBase
     {
         private readonly int maxRetries;
@@ -21,18 +17,18 @@ namespace LotteryGame.Orchestrators.Services
         private readonly Draws.DrawsClient drawClient;
 
         public TicketPurchaseOrchestrator(
-            IMapper mapper, 
-            Funds.FundsClient fundsClient, 
-            Tickets.TicketsClient wagerClient, 
-            Draws.DrawsClient drawClient, 
+            IMapper mapper,
+            Funds.FundsClient fundsClient,
+            Tickets.TicketsClient wagerClient,
+            Draws.DrawsClient drawClient,
             IConfiguration configuration)
         {
             this.mapper = mapper;
             this.fundsClient = fundsClient;
             this.wagerClient = wagerClient;
             this.drawClient = drawClient;
-            this.maxRetries = int.Parse(configuration["MaxRetries"]);
-            this.retryDelayMs = int.Parse(configuration["RetryDelayMs"]);
+            this.maxRetries = int.Parse(configuration["Retry:Max"]);
+            this.retryDelayMs = int.Parse(configuration["Retry:DelayMs"]);
         }
 
         public override async Task<PurchaseResponse> Purchase(PurchaseRequest request, ServerCallContext context)
@@ -145,7 +141,7 @@ namespace LotteryGame.Orchestrators.Services
             var updateResponse = await RetryAsync(async () => await wagerClient.UpdateAsync(ticketUpdateRequest));
             if (!updateResponse.Success)
             {
-                // log & alert � orphan tickets exist
+                // log & alert — orphan tickets exist
             }
         }
 
@@ -179,7 +175,7 @@ namespace LotteryGame.Orchestrators.Services
                 catch
                 {
                     if (i == maxRetries - 1) throw;
-                    await Task.Delay(retryDelayMs * (i + 1)); 
+                    await Task.Delay(retryDelayMs * (i + 1));
                 }
             }
 
@@ -188,4 +184,3 @@ namespace LotteryGame.Orchestrators.Services
         }
     }
 }
-    

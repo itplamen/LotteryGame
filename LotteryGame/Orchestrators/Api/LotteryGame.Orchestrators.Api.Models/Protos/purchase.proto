@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "LotteryGame.Orchestrators.Models.Protos.TicketPurchase";
+option csharp_namespace = "LotteryGame.Orchestrators.Api.Models.Protos.TicketPurchase";
 
 package funds;
 
