@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.32.1" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.72.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Protobuf Include="..\..\..\DrawService\Api\DrawService.Api.Models\Protos\draws.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\..\WagerService\Api\WagerService.Api.Models\Protos\tickets.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\..\WalletService\Api\WalletService.Api.Models\Protos\funds.proto" GrpcServices="Client" />
+  </ItemGroup>
+</Project>
