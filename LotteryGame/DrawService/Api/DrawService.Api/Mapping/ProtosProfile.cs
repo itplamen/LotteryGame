@@ -24,6 +24,7 @@
                 .ForMember(dest => dest.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.Data.MaxTicketsPerPlayer))
                 .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.Data.MinPlayersInDraw))
                 .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.Data.MaxPlayersInDraw))
+                .ForMember(dest => dest.CurrentPlayersInDraw, opt => opt.MapFrom(src => src.Data.CurrentPlayersInDraw))
                 .ForMember(dest => dest.DrawDate, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.Data.DrawDate.ToUniversalTime())));
 
             CreateMap<ResponseDto, DrawResponse>()

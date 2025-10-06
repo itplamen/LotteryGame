@@ -18,5 +18,7 @@
         public int MinPlayersInDraw { get; set; }
 
         public int MaxPlayersInDraw { get; set; }
+
+        public int CurrentPlayersInDraw { get; set; }
     }
 }

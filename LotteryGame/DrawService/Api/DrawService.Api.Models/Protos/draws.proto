@@ -36,6 +36,7 @@ message FetchDrawResponse {
     int32 maxTicketsPerPlayer = 8;
     int32 minPlayersInDraw = 9;
     int32 maxPlayersInDraw = 10;
+    int32 currentPlayersInDraw = 11;
 }
 
 message JoinDrawRequest {

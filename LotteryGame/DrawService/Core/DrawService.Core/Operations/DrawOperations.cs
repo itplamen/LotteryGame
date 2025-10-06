@@ -88,14 +88,14 @@
                 return new ResponseDto<DrawDto>("Player already joined the draw");
             }
 
+            if (draw.PlayerTickets.Keys.Count >= draw.MaxPlayersInDraw)
+            {
+                return new ResponseDto<DrawDto>("Draw if full");
+            }
+
             if (ticketIds.Count() < minTicketsPerPlayer || ticketIds.Count() > maxTicketsPerPlayer)
             {
                 return new ResponseDto<DrawDto>($"Invalid number of tickets. Min: {minTicketsPerPlayer}, Max: {maxTicketsPerPlayer}");
-            }
-
-            if (draw.PlayerTickets.Count == maxPlayersInDraw)
-            {
-                return new ResponseDto<DrawDto>("Draw is full");
             }
 
             draw.PlayerTickets[playerId] = ticketIds.ToList();
