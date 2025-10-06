@@ -5,33 +5,33 @@
     using LotteryGame.Orchestrators.Gateways.Contracts;
     using WalletService.Api.Models.Protos.Funds;
 
-    public class FundsGateway : BaseGateway, IFundsGateway
+    public class WalletGateway : BaseGateway, IWalletGateway
     {
         private readonly Funds.FundsClient fundsClient;
 
-        public FundsGateway(Funds.FundsClient fundsClient, IConfiguration configuration)
+        public WalletGateway(Funds.FundsClient fundsClient, IConfiguration configuration)
             : base(configuration)
         {
             this.fundsClient = fundsClient;
         }
 
-        public async Task<BaseResponse> HasEnoughFunds(int playerId, int numberOfTickets, long ticketPriceInCents)
+        public async Task<BaseResponse> HasEnoughFunds(int playerId, long cost)
         {
             EnoughFundsRequest enoughFundsRequest = new EnoughFundsRequest()
             {
                 PlayerId = playerId,
-                CostAmount = numberOfTickets * ticketPriceInCents
+                Cost = cost
             };
 
             return await Execute(async () => await fundsClient.HasEnoughFundsAsync(enoughFundsRequest));
         }
 
-        public async Task<ReserveResponse> ReserveFunds(int playerId, long costAmount)
+        public async Task<ReserveResponse> ReserveFunds(int playerId, long amount)
         {
             ReserveRequest reserveRequest = new ReserveRequest()
             {
                 PlayerId = playerId,
-                Amount = costAmount
+                Amount = amount
             };
 
             return await Execute(async () => await fundsClient.ReserveAsync(reserveRequest));

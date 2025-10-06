@@ -2,11 +2,11 @@
 {
     using WalletService.Api.Models.Protos.Funds;
 
-    public interface IFundsGateway
+    public interface IWalletGateway
     {
-        Task<BaseResponse> HasEnoughFunds(int playerId, int numberOfTickets, long ticketPriceInCents);
+        Task<BaseResponse> HasEnoughFunds(int playerId, long cost);
 
-        Task<ReserveResponse> ReserveFunds(int playerId, long costAmount);
+        Task<ReserveResponse> ReserveFunds(int playerId, long amount);
 
         Task<BaseResponse> CaptureFunds(int reservationId);
 

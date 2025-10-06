@@ -26,7 +26,7 @@
 
         public override async Task<BaseResponse> HasEnoughFunds(EnoughFundsRequest request, ServerCallContext context)
         {
-            ResponseDto responseDto = await fundsOperations.HasEnoughFunds(request.PlayerId, request.CostAmount);
+            ResponseDto responseDto = await fundsOperations.HasEnoughFunds(request.PlayerId, request.Cost);
             BaseResponse response = mapper.Map<BaseResponse>(responseDto);
 
             return response;

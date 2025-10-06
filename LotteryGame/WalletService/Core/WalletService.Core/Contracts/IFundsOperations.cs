@@ -4,7 +4,7 @@
 
     public interface IFundsOperations
     {
-        Task<ResponseDto> HasEnoughFunds(int playerId, long costAmount);
+        Task<ResponseDto> HasEnoughFunds(int playerId, long cost);
 
         Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount);
 

@@ -68,7 +68,7 @@ namespace LotteryGame.Orchestrators.Api.Services
             EnoughFundsRequest enoughFundsRequest = new EnoughFundsRequest()
             {
                 PlayerId = request.PlayerId,
-                CostAmount = ticketPriceInCents * request.NumberOfTickets
+                Cost = ticketPriceInCents * request.NumberOfTickets
             };
 
             BaseResponse enoughFundsResponse = await fundsClient.HasEnoughFundsAsync(enoughFundsRequest);
@@ -81,7 +81,7 @@ namespace LotteryGame.Orchestrators.Api.Services
             ReserveRequest reserveRequest = new ReserveRequest()
             {
                 PlayerId = request.PlayerId,
-                Amount = enoughFundsRequest.CostAmount
+                Amount = enoughFundsRequest.Cost
             };
 
             return await fundsClient.ReserveAsync(reserveRequest);

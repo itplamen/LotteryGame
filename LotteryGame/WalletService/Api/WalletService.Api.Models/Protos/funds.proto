@@ -16,7 +16,7 @@ service Funds {
 
 message EnoughFundsRequest {
 	int32 playerId = 1;
-	int64 costAmount = 2;
+	int64 cost = 2;
 }
 
 message BaseResponse {
