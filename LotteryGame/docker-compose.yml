@@ -31,8 +31,36 @@ services:
     volumes:
         - ./UserDataService/Api/UserDataAccessService.Api/wwwroot/images:/app/wwwroot/images
 
+  mongo:
+    image: mongo:7.0
+    container_name: wagerdb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend
+
+  wagerservice.api:
+    build:
+      context: .
+      dockerfile: WagerService/Api/WagerService.Api/Dockerfile
+    container_name: wagerservice
+    depends_on:
+      - mongo
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MongoDb__Host=mongodb://mongo:27017
+      - MongoDb__DatabaseName=WagerServiceDb
+    ports:
+      - "5002:5002"
+    networks:
+      - backend
+
 volumes:
   sqlserver_data:
+  mongo_data:
 
 networks:
   backend:

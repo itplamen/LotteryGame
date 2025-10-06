@@ -1,11 +1,8 @@
 ﻿namespace WagerService.Api.Ioc
 {
-    using AutoMapper;
-
     using Microsoft.Extensions.DependencyInjection;
 
     using LotteryGame.Common.Models.IoC;
-    using WagerService.Api.Mappping;
     using WagerService.Core.Contracts;
     using WagerService.Core.NumberGenerators;
     using WagerService.Core.Operations;
@@ -14,8 +11,7 @@
     {
         public void RegisterServices(IServiceCollection services)
         {
-            services.AddAutoMapper(x => x.AddProfiles(new List<Profile>() { new DataProfile(), new ProtosProfile() }));
-            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddSingleton<RandomNumberGeneration>();
             services.AddSingleton<SequentialNumberGeneration>();

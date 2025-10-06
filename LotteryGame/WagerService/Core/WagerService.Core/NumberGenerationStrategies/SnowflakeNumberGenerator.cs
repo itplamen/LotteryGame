@@ -37,7 +37,7 @@
 
                 if (timestamp < lastTimestamp)
                 {
-                    throw new InvalidOperationException("Could not generate ticket number!");
+                    timestamp = WaitNextMillisecond(lastTimestamp);
                 }
 
                 if (timestamp == lastTimestamp)

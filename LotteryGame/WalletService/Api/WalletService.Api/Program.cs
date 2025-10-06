@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using WalletService.Api.IoC;
 using WalletService.Api.Services;
