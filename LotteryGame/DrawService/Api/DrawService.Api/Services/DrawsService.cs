@@ -3,7 +3,9 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-    
+
+    using Google.Protobuf.WellKnownTypes;
+
     using Grpc.Core;
 
     using DrawService.Api.Models.Protos.Draws;
@@ -25,13 +27,16 @@
         public override async Task<FetchDrawResponse> FetchDraw(FetchDrawRequest request, ServerCallContext context)
         {
             ResponseDto<DrawDto> openDrawDto = await drawOperations.GetOpenDraw(request.PlayerId);
-
-            if (!openDrawDto.IsSuccess)
-            {
-                openDrawDto = await drawOperations.Create();
-            }
-
             FetchDrawResponse response = mapper.Map<FetchDrawResponse>(openDrawDto);
+            
+            return response;
+        }
+
+        public async override Task<FetchDrawResponse> CreateDraw(Empty request, ServerCallContext context)
+        {
+            ResponseDto<DrawDto> createdDrawDto = await drawOperations.Create();
+            FetchDrawResponse response = mapper.Map<FetchDrawResponse>(createdDrawDto);
+
             return response;
         }
 

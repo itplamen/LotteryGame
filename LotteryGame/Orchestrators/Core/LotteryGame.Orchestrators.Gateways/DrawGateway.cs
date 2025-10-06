@@ -1,10 +1,12 @@
 ﻿namespace LotteryGame.Orchestrators.Gateways
 {
+    using Google.Protobuf.WellKnownTypes;
+
     using Microsoft.Extensions.Configuration;
 
     using DrawService.Api.Models.Protos.Draws;
     using LotteryGame.Orchestrators.Gateways.Contracts;
-    
+
     public class DrawGateway : BaseGateway, IDrawGateway
     {
         private readonly Draws.DrawsClient drawClient;
@@ -24,6 +26,8 @@
 
             return await Execute(async () => await drawClient.FetchDrawAsync(fetchDrawRequest));
         }
+
+        public async Task<FetchDrawResponse> CreateDraw() => await Execute(async () => await drawClient.CreateDrawAsync(new Empty()));
 
         public async Task<FetchDrawResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
         {

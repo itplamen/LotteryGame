@@ -6,6 +6,8 @@
     {
         Task<FetchDrawResponse> GetOpenDraw(int playerId);
 
+        Task<FetchDrawResponse> CreateDraw();
+
         Task<FetchDrawResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds);
 
         Task<DrawResponse> StartDraw(string drawId);
