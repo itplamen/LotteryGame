@@ -46,6 +46,8 @@
             DrawDto openDrawDto = mapper.Map<DrawDto>(openDraws.First());
             openDrawDto.MinTicketsPerPlayer = minTicketsPerPlayer;
             openDrawDto.MaxTicketsPerPlayer = maxTicketsPerPlayer;
+            openDrawDto.MinPlayersInDraw = minPlayersInDraw;
+            openDrawDto.MaxPlayersInDraw = maxPlayersInDraw;
 
             return new ResponseDto<DrawDto>() { Data = openDrawDto };
         }
@@ -56,7 +58,11 @@
             {
                 Status = DrawStatus.Pending,
                 TicketPriceInCents = ticketPriceInCents,
-                DrawDate = DateTime.UtcNow.AddMilliseconds(drawScheduleTime)
+                DrawDate = DateTime.UtcNow.AddMilliseconds(drawScheduleTime),
+                MinTicketsPerPlayer = minTicketsPerPlayer,
+                MaxTicketsPerPlayer = maxTicketsPerPlayer,
+                MinPlayersInDraw = minPlayersInDraw,
+                MaxPlayersInDraw = maxPlayersInDraw
             };
 
             await repository.AddAsync(draw);
@@ -64,39 +70,39 @@
             return new ResponseDto<DrawDto>() { Data = mapper.Map<DrawDto>(draw) };
         }
 
-        public async Task<ResponseDto> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
+        public async Task<ResponseDto<DrawDto>> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
         {
             Draw draw = await repository.GetByIdAsync(drawId);
             if (draw == null)
             {
-                return new ResponseDto("Draw not found");
+                return new ResponseDto<DrawDto>("Draw not found");
             }
 
             if (draw.Status != DrawStatus.Pending)
             {
-                return new ResponseDto("Invalid draw status");
+                return new ResponseDto<DrawDto>("Invalid draw status");
             }
 
             if (draw.PlayerTickets.ContainsKey(playerId))
             {
-                return new ResponseDto("Player already joined the draw");
+                return new ResponseDto<DrawDto>("Player already joined the draw");
             }
 
             if (ticketIds.Count() < minTicketsPerPlayer || ticketIds.Count() > maxTicketsPerPlayer)
             {
-                return new ResponseDto($"Invalid number of tickets. Min: {minTicketsPerPlayer}, Max: {maxTicketsPerPlayer}");
+                return new ResponseDto<DrawDto>($"Invalid number of tickets. Min: {minTicketsPerPlayer}, Max: {maxTicketsPerPlayer}");
             }
 
             if (draw.PlayerTickets.Count == maxPlayersInDraw)
             {
-                return new ResponseDto("Draw is full");
+                return new ResponseDto<DrawDto>("Draw is full");
             }
 
             draw.PlayerTickets[playerId] = ticketIds.ToList();
 
             await repository.UpdateAsync(draw);
 
-            return new ResponseDto();
+            return new ResponseDto<DrawDto>() { Data = mapper.Map<DrawDto>(draw) };
         }
 
         public async Task<ResponseDto> Start(string drawId)

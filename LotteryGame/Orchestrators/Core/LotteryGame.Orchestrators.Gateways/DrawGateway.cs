@@ -25,7 +25,7 @@
             return await Execute(async () => await drawClient.FetchDrawAsync(fetchDrawRequest));
         }
 
-        public async Task<DrawResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
+        public async Task<FetchDrawResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
         {
             JoinDrawRequest request = new JoinDrawRequest();
             request.PlayerId = playerId;

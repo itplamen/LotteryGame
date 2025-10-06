@@ -19,7 +19,11 @@
             CreateMap<Draw, DrawDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.TicketPriceInCents, opt => opt.MapFrom(src => src.TicketPriceInCents));
+                .ForMember(dest => dest.TicketPriceInCents, opt => opt.MapFrom(src => src.TicketPriceInCents))
+                .ForMember(dest => dest.MinTicketsPerPlayer, opt => opt.MapFrom(src => src.MinTicketsPerPlayer))
+                .ForMember(dest => dest.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.MaxTicketsPerPlayer))
+                .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.MinPlayersInDraw))
+                .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.MaxPlayersInDraw));
         }
     }
 }

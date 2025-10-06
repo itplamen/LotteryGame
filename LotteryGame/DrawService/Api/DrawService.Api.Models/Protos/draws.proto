@@ -8,7 +8,7 @@ package draws;
 
 service Draws {
   rpc FetchDraw (FetchDrawRequest) returns (FetchDrawResponse);
-  rpc JoinDraw (JoinDrawRequest) returns (DrawResponse);
+  rpc JoinDraw (JoinDrawRequest) returns (FetchDrawResponse);
   rpc StartDraw (StartDrawRequest) returns (DrawResponse);
 } 
 
@@ -32,6 +32,8 @@ message FetchDrawResponse {
     int64 ticketPriceInCents = 6;
     int32 minTicketsPerPlayer = 7;
     int32 maxTicketsPerPlayer = 8;
+    int32 minPlayersInDraw = 9;
+    int32 maxPlayersInDraw = 10;
 }
 
 message JoinDrawRequest {

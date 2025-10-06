@@ -20,6 +20,10 @@
                 .ForMember(dest => dest.TicketPriceInCents, opt => opt.MapFrom(src => src.Data.TicketPriceInCents))
                 .ForMember(dest => dest.MinTicketsPerPlayer, opt => opt.MapFrom(src => src.Data.MinTicketsPerPlayer))
                 .ForMember(dest => dest.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.Data.MaxTicketsPerPlayer))
+                .ForMember(dest => dest.MinTicketsPerPlayer, opt => opt.MapFrom(src => src.Data.MinTicketsPerPlayer))
+                .ForMember(dest => dest.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.Data.MaxTicketsPerPlayer))
+                .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.Data.MinPlayersInDraw))
+                .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.Data.MaxPlayersInDraw))
                 .ForMember(dest => dest.DrawDate, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.Data.DrawDate.ToUniversalTime())));
 
             CreateMap<ResponseDto, DrawResponse>()

@@ -35,10 +35,10 @@
             return response;
         }
 
-        public override async Task<DrawResponse> JoinDraw(JoinDrawRequest request, ServerCallContext context)
+        public override async Task<FetchDrawResponse> JoinDraw(JoinDrawRequest request, ServerCallContext context)
         {
-            ResponseDto responseDto = await drawOperations.Join(request.DrawId, request.PlayerId, request.TicketIds);
-            DrawResponse response = mapper.Map<DrawResponse>(responseDto);
+            ResponseDto<DrawDto> responseDto = await drawOperations.Join(request.DrawId, request.PlayerId, request.TicketIds);
+            FetchDrawResponse response = mapper.Map<FetchDrawResponse>(responseDto);
 
             return response;
         }
