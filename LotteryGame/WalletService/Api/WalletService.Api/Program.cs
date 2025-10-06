@@ -13,14 +13,6 @@ builder.Services.AddScoped(provider => new WalletServiceDbContext(connectionStri
 
 builder.Services.AddServices(builder.Configuration);
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenLocalhost(5001, listenOptions =>
-    {
-        listenOptions.Protocols = HttpProtocols.Http2;
-    });
-});
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
