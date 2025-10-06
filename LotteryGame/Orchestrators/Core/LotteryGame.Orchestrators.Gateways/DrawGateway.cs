@@ -24,5 +24,25 @@
 
             return await Execute(async () => await drawClient.FetchDrawAsync(fetchDrawRequest));
         }
+
+        public async Task<DrawResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
+        {
+            JoinDrawRequest request = new JoinDrawRequest();
+            request.PlayerId = playerId;
+            request.DrawId = drawId;
+            request.TicketIds.AddRange(ticketIds);
+
+            return await Execute(async () => await drawClient.JoinDrawAsync(request));
+        }
+
+        public async Task<DrawResponse> StartDraw(string drawId)
+        {
+            StartDrawRequest request = new StartDrawRequest()
+            {
+                DrawId = drawId
+            };
+
+            return await Execute(async () => await drawClient.StartDrawAsync(request));
+        }
     }
 }
