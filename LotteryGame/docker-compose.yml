@@ -58,9 +58,41 @@ services:
     networks:
       - backend
 
+  couchdb:
+    image: couchdb:3.3
+    container_name: couchdb
+    restart: always
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=admin
+    ports:
+      - "5984:5984"
+    volumes:
+      - couchdb_data:/opt/couchdb/data
+    networks:
+      - backend
+
+  drawservice.api:
+    build:
+      context: .
+      dockerfile: DrawService/Api/DrawService.Api/Dockerfile
+    container_name: drawservice
+    depends_on:
+      - couchdb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CouchDB__Endpoint=http://admin:admin@couchdb:5984/
+      - CouchDB__Username=admin
+      - CouchDB__Password=admin
+    ports:
+      - "5003:5003"
+    networks:
+      - backend
+
 volumes:
   sqlserver_data:
   mongo_data:
+  couchdb_data:
 
 networks:
   backend:

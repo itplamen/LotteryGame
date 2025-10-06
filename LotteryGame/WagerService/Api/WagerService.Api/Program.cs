@@ -8,7 +8,6 @@ builder.Services.AddGrpc(options => options.EnableDetailedErrors = true);
 builder.Services.AddSingleton<WagerServiceDbContext>();
 builder.Services.AddServices(builder.Configuration);
 
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
