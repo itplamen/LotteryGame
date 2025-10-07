@@ -9,7 +9,8 @@
             IPackage[] packages =
             {
                 new GatewaysPackage(configuration),
-                new OrchestratorsPackage()
+                new OrchestratorsPackage(),
+                new CachePackage(configuration)
             };
 
             RegisterServices(services, packages);

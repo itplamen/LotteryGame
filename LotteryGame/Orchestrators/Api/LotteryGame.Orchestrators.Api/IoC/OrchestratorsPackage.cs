@@ -13,6 +13,8 @@
     {
         public void RegisterServices(IServiceCollection services)
         {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddTransient<AvailableDrawOrchestrator>();
             services.AddTransient<DrawParticipationOrchestrator>();
             services.AddTransient<PurchaseTicketsOrchestrator>();

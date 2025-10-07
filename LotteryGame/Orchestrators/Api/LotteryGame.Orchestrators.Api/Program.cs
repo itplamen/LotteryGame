@@ -9,6 +9,6 @@ builder.Services.AddServices(builder.Configuration);
 var app = builder.Build();
 
 app.MapGrpcService<TicketPurchaseService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.MapGet("/", () => "gRPC service running on HTTP/2 localhost:5000");
 
 app.Run();

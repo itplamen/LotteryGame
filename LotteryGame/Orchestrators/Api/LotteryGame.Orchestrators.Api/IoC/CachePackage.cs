@@ -37,7 +37,7 @@
             {
                 services.AddStackExchangeRedisCache(options =>
                 {
-                    options.InstanceName = "BlazeAstroDb";
+                    options.InstanceName = "LotteryGameDb";
                     options.Configuration = configuration["Cache:ConnectionStrings:Redis"];
                 });
             }
