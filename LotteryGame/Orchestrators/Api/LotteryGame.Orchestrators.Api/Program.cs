@@ -24,12 +24,12 @@ builder.Services.AddGrpcClient<Draws.DrawsClient>(o =>
 });
 
 // Add orchestrator service
-builder.Services.AddScoped<TicketPurchaseOrchestrator>();
+builder.Services.AddScoped<TicketPurchaseService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<TicketPurchaseOrchestrator>();
+app.MapGrpcService<TicketPurchaseService>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
 
