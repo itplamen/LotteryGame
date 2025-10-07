@@ -29,7 +29,7 @@
             if (!ticketResponse.Success)
             {
                 BaseProtoResponse baseResponse = await walletGateway.RefundFunds(request.Payload.ReservationId);
-                return mapper.Map<OrchestratorResponse<PurchaseTicketsResponse>>(baseResponse);
+                return mapper.Map<OrchestratorResponse<PurchaseTicketsResponse>>(ticketResponse);
             }
 
             IEnumerable<string> ticketIds = ticketResponse.Tickets.Select(x => x.Id).ToList();
@@ -38,7 +38,7 @@
             if (!captureResponse.Success)
             {
                 TicketProtoResponse cancelledResponse = await wagerGateway.UpdateTicketStatus(TicketStatusProto.Cancelled, ticketIds);
-                return mapper.Map<OrchestratorResponse<PurchaseTicketsResponse>>(cancelledResponse);
+                return mapper.Map<OrchestratorResponse<PurchaseTicketsResponse>>(captureResponse);
             }
 
             TicketProtoResponse confirmedResponse = await wagerGateway.UpdateTicketStatus(TicketStatusProto.Confirmed, ticketIds);
