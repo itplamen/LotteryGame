@@ -1,6 +1,6 @@
 ﻿namespace DrawService.Workers
 {
-    public class ScopedHostedService<TWorker> : IHostedService 
+    public class ScopedHostedService<TWorker> : IHostedService
         where TWorker : BackgroundService
     {
         private readonly IServiceScopeFactory scopeFactory;
@@ -14,7 +14,7 @@
         {
             var scope = scopeFactory.CreateScope();
             var worker = scope.ServiceProvider.GetRequiredService<TWorker>();
-            
+
             return worker.StartAsync(cancellationToken);
         }
 
@@ -22,7 +22,7 @@
         {
             var scope = scopeFactory.CreateScope();
             var worker = scope.ServiceProvider.GetRequiredService<TWorker>();
-            
+
             return worker.StopAsync(cancellationToken);
         }
     }

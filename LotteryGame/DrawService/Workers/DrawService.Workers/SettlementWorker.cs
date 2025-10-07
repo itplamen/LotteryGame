@@ -3,10 +3,10 @@ namespace DrawService.Workers
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
-    
+
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    
+
     using DrawService.Core.Contracts;
 
     public class SettlementWorker : BackgroundService
@@ -45,7 +45,7 @@ namespace DrawService.Workers
                     else
                     {
                         logger.LogInformation("Processing {Count} draws for settlement.", drawIds.Count());
-                        
+
                         var tasks = drawIds.Select(drawId => prizeOperations.DeterminePrizes(drawId));
                         var results = await Task.WhenAll(tasks);
 
