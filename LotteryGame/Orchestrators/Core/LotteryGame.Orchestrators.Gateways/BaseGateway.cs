@@ -21,7 +21,7 @@
                 {
                     return await action();
                 }
-                catch
+                catch (Exception ex)
                 {
                     if (i == maxRetries - 1) throw;
                     await Task.Delay(retryDelayMs * (i + 1));

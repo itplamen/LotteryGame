@@ -60,6 +60,13 @@
                         drawParticipationRequest.Payload.TicketIds = purchaseTicketsResponse.Data.Tickets.Select(x => x.Id).ToList();
 
                         await drawParticipation.Orchestrate(drawParticipationRequest);
+
+                        PurchaseResponse purchaseResponse = new PurchaseResponse();
+                        purchaseResponse.Success = true;
+                        purchaseResponse.TotalCost = reserveFundsResponse.Data.TotalCost;
+                        purchaseResponse.TicketNumbers.Add(purchaseTicketsResponse.Data.Tickets.Select(x => x.Number).ToList());
+
+                        return purchaseResponse;
                     }
                 }
             }

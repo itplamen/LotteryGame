@@ -30,7 +30,14 @@
             }
 
             ReserveProtoResponse reserveResponse = await walletGateway.ReserveFunds(request.Payload.PlayerId, cost);
-            return mapper.Map<OrchestratorResponse<ReserveFundsResponse>>(reserveResponse);
+            var response = mapper.Map<OrchestratorResponse<ReserveFundsResponse>>(reserveResponse);
+
+            if (response.Success)
+            {
+                response.Data.TotalCost = cost;
+            }
+
+            return response;
         }
     }
 }

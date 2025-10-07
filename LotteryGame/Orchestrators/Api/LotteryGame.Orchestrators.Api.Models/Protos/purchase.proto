@@ -16,4 +16,6 @@ message PurchaseRequest {
 message PurchaseResponse {
   bool success = 1;
   string errorMsg = 2;
+  int64 totalCost = 3;
+  repeated string ticketNumbers = 4; 
 }
