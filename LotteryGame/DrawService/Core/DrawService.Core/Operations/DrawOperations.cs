@@ -52,6 +52,13 @@
             return new ResponseDto<DrawDto>() { Data = openDrawDto };
         }
 
+        public async Task<IEnumerable<string>> GetDrawsForSettlement()
+        {
+            IEnumerable<Draw> draws = await repository.FindAsync(x => x.Status == DrawStatus.InProgress);
+
+            return draws?.Select(x => x.Id)?.ToList() ?? new List<string>();
+        } 
+
         public async Task<ResponseDto<DrawDto>> Create()
         { 
             var draw = new Draw()

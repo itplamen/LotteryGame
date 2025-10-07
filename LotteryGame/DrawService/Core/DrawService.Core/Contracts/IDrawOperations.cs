@@ -7,6 +7,8 @@
     {
         Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId);
 
+        Task<IEnumerable<string>> GetDrawsForSettlement();
+
         Task<ResponseDto<DrawDto>> Create();
 
         Task<ResponseDto<DrawDto>> Join(string drawId, int playerId, IEnumerable<string> ticketIds);

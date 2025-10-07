@@ -46,6 +46,8 @@
             IEnumerable<Prize> created = await prizeRepository.AddRangeAsync(prizes);
 
             draw.PrizeIds = created.Select(x => x.Id).ToList();
+            draw.Status = DrawStatus.Completed;
+
             await drawRepository.UpdateAsync(draw);
 
             return new ResponseDto<IEnumerable<PrizeDto>>()
