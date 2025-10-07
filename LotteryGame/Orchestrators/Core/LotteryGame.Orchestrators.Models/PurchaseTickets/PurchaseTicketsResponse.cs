@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LotteryGame.Orchestrators.Models.PurchaseTickets
+﻿namespace LotteryGame.Orchestrators.Models.PurchaseTickets
 {
     public class PurchaseTicketsResponse
     {
+        public IEnumerable<PurchaseTicket> Tickets { get; set; }
     }
 }
