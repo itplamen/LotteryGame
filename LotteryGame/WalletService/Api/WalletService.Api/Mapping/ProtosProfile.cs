@@ -7,21 +7,22 @@
     using LotteryGame.Common.Models.Dto;
     using WalletService.Api.Models.Protos.Funds;
     using WalletService.Core.Models;
+    using WalletService.Data.Models;
 
     public class ProtosProfile : Profile
     {
         public ProtosProfile()
         {
-            CreateMap<ResponseDto, BaseResponse>()
+            CreateMap<ResponseDto, BaseProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
 
-            CreateMap<ResponseDto<BaseDto>, ReserveResponse>()
+            CreateMap<ResponseDto<BaseDto>, ReserveProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
                 .ForMember(dest => dest.ReservationId, opt => opt.MapFrom(src => src.Data.Id));
 
-            CreateMap<BalanceHistoryDto, HistoryResponse>()
+            CreateMap<BalanceHistoryDto, HistoryProtoResponse>()
                 .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
                 .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.CreatedOn.ToUniversalTime())))
                 .ForMember(dest => dest.OldBalance, opt => opt.MapFrom(src => src.OldBalance))
@@ -30,20 +31,20 @@
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.Reason))
                 .ForMember(dest => dest.IsConfirmed, opt => opt.MapFrom(src => src.IsConfirmed));
 
-            CreateMap<IEnumerable<BalanceHistoryDto>, HistoryResponseList>()
+            CreateMap<IEnumerable<BalanceHistoryDto>, HistoryProtoResponseList>()
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src));
         }
 
-        private static BalanceType MapBalanceType(Data.Models.BalanceType type)
+        private static BalanceTypeProto MapBalanceType(BalanceType type)
         {
             return type switch
             {
-                Data.Models.BalanceType.Reserve => BalanceType.Reserve,
-                Data.Models.BalanceType.Capture => BalanceType.Capture,
-                Data.Models.BalanceType.Refund => BalanceType.Refund,
-                Data.Models.BalanceType.RealMoneyPrize => BalanceType.RealMoneyPrize,
-                Data.Models.BalanceType.BonusMoneyPrize => BalanceType.BonusMoneyPrize,
-                Data.Models.BalanceType.LoyaltyPointsPrize => BalanceType.LoyaltyPointsPrize,
+                BalanceType.Reserve => BalanceTypeProto.Reserve,
+                BalanceType.Capture => BalanceTypeProto.Capture,
+                BalanceType.Refund => BalanceTypeProto.Refund,
+                BalanceType.RealMoneyPrize => BalanceTypeProto.RealMoneyPrize,
+                BalanceType.BonusMoneyPrize => BalanceTypeProto.BonusMoneyPrize,
+                BalanceType.LoyaltyPointsPrize => BalanceTypeProto.LoyaltyPointsPrize,
                 _ => throw new ArgumentOutOfRangeException("Invalid balance type")
             };
         }

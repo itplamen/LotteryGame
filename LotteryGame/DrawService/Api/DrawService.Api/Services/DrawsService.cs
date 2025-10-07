@@ -24,34 +24,34 @@
             this.drawOperations = drawOperations;
         }
 
-        public override async Task<FetchDrawResponse> FetchDraw(FetchDrawRequest request, ServerCallContext context)
+        public override async Task<FetchDrawProtoResponse> FetchDraw(FetchDrawProtoRequest request, ServerCallContext context)
         {
             ResponseDto<DrawDto> openDrawDto = await drawOperations.GetOpenDraw(request.PlayerId);
-            FetchDrawResponse response = mapper.Map<FetchDrawResponse>(openDrawDto);
+            FetchDrawProtoResponse response = mapper.Map<FetchDrawProtoResponse>(openDrawDto);
             
             return response;
         }
 
-        public async override Task<FetchDrawResponse> CreateDraw(Empty request, ServerCallContext context)
+        public async override Task<FetchDrawProtoResponse> CreateDraw(Empty request, ServerCallContext context)
         {
             ResponseDto<DrawDto> createdDrawDto = await drawOperations.Create();
-            FetchDrawResponse response = mapper.Map<FetchDrawResponse>(createdDrawDto);
+            FetchDrawProtoResponse response = mapper.Map<FetchDrawProtoResponse>(createdDrawDto);
 
             return response;
         }
 
-        public override async Task<FetchDrawResponse> JoinDraw(JoinDrawRequest request, ServerCallContext context)
+        public override async Task<FetchDrawProtoResponse> JoinDraw(JoinDrawProtoRequest request, ServerCallContext context)
         {
             ResponseDto<DrawDto> responseDto = await drawOperations.Join(request.DrawId, request.PlayerId, request.TicketIds);
-            FetchDrawResponse response = mapper.Map<FetchDrawResponse>(responseDto);
+            FetchDrawProtoResponse response = mapper.Map<FetchDrawProtoResponse>(responseDto);
 
             return response;
         }
 
-        public override async Task<DrawResponse> StartDraw(StartDrawRequest request, ServerCallContext context)
+        public override async Task<DrawProtoResponse> StartDraw(StartDrawProtoRequest request, ServerCallContext context)
         {
             ResponseDto responseDto = await drawOperations.Start(request.DrawId);
-            DrawResponse response = mapper.Map<DrawResponse>(responseDto);
+            DrawProtoResponse response = mapper.Map<DrawProtoResponse>(responseDto);
 
             return response;
         }

@@ -4,8 +4,8 @@
 
     public interface IWagerGateway
     {
-        Task<TicketResponse> PurchaseTickets(int playerId, string drawId, int reservationId, int numberOfTickets);
+        Task<TicketProtoResponse> PurchaseTickets(int playerId, string drawId, int reservationId, int numberOfTickets);
 
-        Task<TicketResponse> UpdateTicketStatus(TicketStatus status, IEnumerable<string> ticketIds);
+        Task<TicketProtoResponse> UpdateTicketStatus(TicketStatusProto status, IEnumerable<string> ticketIds);
     }
 }

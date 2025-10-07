@@ -7,43 +7,43 @@ option csharp_namespace = "WalletService.Api.Models.Protos.Funds";
 package funds;
 
 service Funds {
-	rpc HasEnoughFunds (EnoughFundsRequest) returns (BaseResponse);
-	rpc Reserve (ReserveRequest) returns (ReserveResponse);
-	rpc Capture (FundsRequest) returns (BaseResponse);
-	rpc Refund (FundsRequest) returns (BaseResponse);
-	rpc GetHistory(HistoryRequest) returns (HistoryResponseList);
+	rpc HasEnoughFunds (EnoughFundsProtoRequest) returns (BaseProtoResponse);
+	rpc Reserve (ReserveProtoRequest) returns (ReserveProtoResponse);
+	rpc Capture (FundsProtoRequest) returns (BaseProtoResponse);
+	rpc Refund (FundsProtoRequest) returns (BaseProtoResponse);
+	rpc GetHistory(HistoryProtoRequest) returns (HistoryProtoResponseList);
 }
 
-message EnoughFundsRequest {
+message EnoughFundsProtoRequest {
 	int32 playerId = 1;
 	int64 cost = 2;
 }
 
-message BaseResponse {
+message BaseProtoResponse {
 	bool success = 1;
 	string errorMsg = 2;
 }
 
-message ReserveRequest {
+message ReserveProtoRequest {
 	int32 playerId = 1;
 	int64 amount = 2;
 }
 
-message ReserveResponse {
+message ReserveProtoResponse {
 	bool success = 1;
 	string errorMsg = 2;
 	int32 reservationId = 3;
 }
 
-message FundsRequest {
+message FundsProtoRequest {
 	int32 reservationId = 1;
 }
 
-message HistoryRequest {
+message HistoryProtoRequest {
 	int32 playerId = 1;
 }
 
-enum BalanceType {
+enum BalanceTypeProto {
     RESERVE = 0;
     CAPTURE = 1;
     REFUND = 2;
@@ -52,16 +52,16 @@ enum BalanceType {
     LOYALTY_POINTS_PRIZE = 5;
 }
 
-message HistoryResponse {
+message HistoryProtoResponse {
 	int64 amount = 1;
 	google.protobuf.Timestamp createdOn = 2;
 	int64 oldBalance = 3;
 	int64 newBalance = 4;
-	BalanceType type = 5;
+	BalanceTypeProto type = 5;
     string reason = 6;
 	bool isConfirmed = 7;
 }
 
-message HistoryResponseList {
-    repeated HistoryResponse items = 1;
+message HistoryProtoResponseList {
+    repeated HistoryProtoResponse items = 1;
 }

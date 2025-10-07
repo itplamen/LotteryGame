@@ -15,9 +15,9 @@
             this.fundsClient = fundsClient;
         }
 
-        public async Task<BaseResponse> HasEnoughFunds(int playerId, long cost)
+        public async Task<BaseProtoResponse> HasEnoughFunds(int playerId, long cost)
         {
-            EnoughFundsRequest enoughFundsRequest = new EnoughFundsRequest()
+            EnoughFundsProtoRequest enoughFundsRequest = new EnoughFundsProtoRequest()
             {
                 PlayerId = playerId,
                 Cost = cost
@@ -26,9 +26,9 @@
             return await Execute(async () => await fundsClient.HasEnoughFundsAsync(enoughFundsRequest));
         }
 
-        public async Task<ReserveResponse> ReserveFunds(int playerId, long amount)
+        public async Task<ReserveProtoResponse> ReserveFunds(int playerId, long amount)
         {
-            ReserveRequest reserveRequest = new ReserveRequest()
+            ReserveProtoRequest reserveRequest = new ReserveProtoRequest()
             {
                 PlayerId = playerId,
                 Amount = amount
@@ -37,9 +37,9 @@
             return await Execute(async () => await fundsClient.ReserveAsync(reserveRequest));
         }
 
-        public async Task<BaseResponse> CaptureFunds(int reservationId)
+        public async Task<BaseProtoResponse> CaptureFunds(int reservationId)
         {
-            FundsRequest request = new FundsRequest()
+            FundsProtoRequest request = new FundsProtoRequest()
             {
                 ReservationId = reservationId
             };
@@ -47,9 +47,9 @@
             return await Execute(async () => await fundsClient.CaptureAsync(request));
         }
 
-        public async Task<BaseResponse> RefundFunds(int reservationId)
+        public async Task<BaseProtoResponse> RefundFunds(int reservationId)
         {
-            FundsRequest fundsRequest = new FundsRequest()
+            FundsProtoRequest fundsRequest = new FundsProtoRequest()
             {
                 ReservationId = reservationId
             };

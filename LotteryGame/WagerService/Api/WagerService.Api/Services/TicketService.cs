@@ -20,20 +20,20 @@ namespace WagerService.Api.Services
             this.ticketOperations = ticketOperations;
         }
 
-        public override async Task<TicketResponse> Create(TicketCreateRequest request, ServerCallContext context)
+        public override async Task<TicketProtoResponse> Create(TicketCreateProtoRequest request, ServerCallContext context)
         {
             TicketCreateRequestDto requestDto = mapper.Map<TicketCreateRequestDto>(request);
             ResponseDto<IEnumerable<TicketDto>> responseDto = await ticketOperations.Create(requestDto);
-            TicketResponse response = mapper.Map<TicketResponse>(responseDto);
+            TicketProtoResponse response = mapper.Map<TicketProtoResponse>(responseDto);
 
             return response;
         }
 
-        public override async Task<TicketResponse> Update(TicketUpdateRequest request, ServerCallContext context)
+        public override async Task<TicketProtoResponse> Update(TicketUpdateProtoRequest request, ServerCallContext context)
         {
             TicketUpdateRequestDto requestDto = mapper.Map<TicketUpdateRequestDto>(request);
             ResponseDto<IEnumerable<TicketDto>> responseDto = await ticketOperations.Update(requestDto);
-            TicketResponse response = mapper.Map<TicketResponse>(responseDto);
+            TicketProtoResponse response = mapper.Map<TicketProtoResponse>(responseDto);
 
             return response;
         }

@@ -15,9 +15,9 @@
             this.wagerClient = wagerClient;
         }
 
-        public async Task<TicketResponse> PurchaseTickets(int playerId, string drawId, int reservationId, int numberOfTickets)
+        public async Task<TicketProtoResponse> PurchaseTickets(int playerId, string drawId, int reservationId, int numberOfTickets)
         {
-            TicketCreateRequest ticketCreateRequest = new TicketCreateRequest()
+            TicketCreateProtoRequest ticketCreateRequest = new TicketCreateProtoRequest()
             {
                 PlayerId = playerId,
                 DrawId = drawId,
@@ -28,9 +28,9 @@
             return await Execute(async () => await wagerClient.CreateAsync(ticketCreateRequest));
         }
 
-        public async Task<TicketResponse> UpdateTicketStatus(TicketStatus status, IEnumerable<string> ticketIds)
+        public async Task<TicketProtoResponse> UpdateTicketStatus(TicketStatusProto status, IEnumerable<string> ticketIds)
         {
-            var ticketUpdateRequest = new TicketUpdateRequest();
+            var ticketUpdateRequest = new TicketUpdateProtoRequest();
             ticketUpdateRequest.Status = status;
             ticketUpdateRequest.TicketIds.AddRange(ticketIds);
 

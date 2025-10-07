@@ -17,9 +17,9 @@
             this.drawClient = drawClient;
         }
 
-        public async Task<FetchDrawResponse> GetOpenDraw(int playerId)
+        public async Task<FetchDrawProtoResponse> GetOpenDraw(int playerId)
         {
-            FetchDrawRequest fetchDrawRequest = new FetchDrawRequest()
+            FetchDrawProtoRequest fetchDrawRequest = new FetchDrawProtoRequest()
             {
                 PlayerId = playerId
             };
@@ -27,11 +27,11 @@
             return await Execute(async () => await drawClient.FetchDrawAsync(fetchDrawRequest));
         }
 
-        public async Task<FetchDrawResponse> CreateDraw() => await Execute(async () => await drawClient.CreateDrawAsync(new Empty()));
+        public async Task<FetchDrawProtoResponse> CreateDraw() => await Execute(async () => await drawClient.CreateDrawAsync(new Empty()));
 
-        public async Task<FetchDrawResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
+        public async Task<FetchDrawProtoResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
         {
-            JoinDrawRequest request = new JoinDrawRequest();
+            JoinDrawProtoRequest request = new JoinDrawProtoRequest();
             request.PlayerId = playerId;
             request.DrawId = drawId;
             request.TicketIds.AddRange(ticketIds);
@@ -39,9 +39,9 @@
             return await Execute(async () => await drawClient.JoinDrawAsync(request));
         }
 
-        public async Task<DrawResponse> StartDraw(string drawId)
+        public async Task<DrawProtoResponse> StartDraw(string drawId)
         {
-            StartDrawRequest request = new StartDrawRequest()
+            StartDrawProtoRequest request = new StartDrawProtoRequest()
             {
                 DrawId = drawId
             };

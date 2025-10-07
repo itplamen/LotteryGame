@@ -21,7 +21,7 @@
 
         public async Task<OrchestratorResponse<DrawParticipationResponse>> Orchestrate(OrchestratorRequest<DrawParticipationRequest> request)
         {
-            FetchDrawResponse joinedResponse = await drawGateway.JoinDraw(request.Payload.PlayerId, request.Payload.DrawId, request.Payload.TicketIds);
+            FetchDrawProtoResponse joinedResponse = await drawGateway.JoinDraw(request.Payload.PlayerId, request.Payload.DrawId, request.Payload.TicketIds);
 
             if (joinedResponse.Success && joinedResponse.CurrentPlayersInDraw >= joinedResponse.MaxPlayersInDraw)
             {

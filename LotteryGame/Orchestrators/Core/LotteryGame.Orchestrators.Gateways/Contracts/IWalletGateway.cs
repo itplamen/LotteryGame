@@ -4,12 +4,12 @@
 
     public interface IWalletGateway
     {
-        Task<BaseResponse> HasEnoughFunds(int playerId, long cost);
+        Task<BaseProtoResponse> HasEnoughFunds(int playerId, long cost);
 
-        Task<ReserveResponse> ReserveFunds(int playerId, long amount);
+        Task<ReserveProtoResponse> ReserveFunds(int playerId, long amount);
 
-        Task<BaseResponse> CaptureFunds(int reservationId);
+        Task<BaseProtoResponse> CaptureFunds(int reservationId);
 
-        Task<BaseResponse> RefundFunds(int reservationId);
+        Task<BaseProtoResponse> RefundFunds(int reservationId);
     }
 }

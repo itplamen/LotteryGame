@@ -5,29 +5,29 @@ option csharp_namespace = "DrawService.Api.Models.Protos.Prizes";
 package prizes;
 
 service Prizes {
-  rpc Determine (DeterminePrizeRequest) returns (DeterminePrizeResponse);
+  rpc Determine (DeterminePrizeProtoRequest) returns (DeterminePrizeProtoResponse);
 } 
 
-enum PrizeTier {
+enum PrizeTierProto {
     GRAND = 0;
     SECOND = 1;
     THIRD = 2;
 }
 
-message Prize {
+message PrizeProto {
     string id = 1;
     string ticketId = 2;
     int64 amount = 3;
-    PrizeTier tier = 4;
+    PrizeTierProto tier = 4;
     string drawId = 5;
 }
 
-message DeterminePrizeRequest {
+message DeterminePrizeProtoRequest {
     string drawId = 1;
 }
 
-message DeterminePrizeResponse {
+message DeterminePrizeProtoResponse {
     bool success = 1;
     string errorMsg = 2;
-    repeated Prize prizes = 3;
+    repeated PrizeProto prizes = 3;
 }

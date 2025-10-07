@@ -5,37 +5,37 @@ option csharp_namespace = "WagerService.Api.Models.Protos.Tickets";
 package tickets;
 
 service Tickets {
-	rpc Create (TicketCreateRequest) returns (TicketResponse);
-	rpc Update (TicketUpdateRequest) returns (TicketResponse);
+	rpc Create (TicketCreateProtoRequest) returns (TicketProtoResponse);
+	rpc Update (TicketUpdateProtoRequest) returns (TicketProtoResponse);
 }
 
-enum TicketStatus {
+enum TicketStatusProto {
 	PENDING = 0;
 	CONFIRMED = 1;
 	CANCELLED = 2;
 	SETTLED = 3;
 }
 
-message Ticket {
+message TicketProto {
 	string id = 1;
 	string ticketNumber = 2;
-	TicketStatus status = 3;
+	TicketStatusProto status = 3;
 }
 
-message TicketCreateRequest {
+message TicketCreateProtoRequest {
 	int32 playerId = 1;
 	string drawId = 2;
 	int32 reservationId = 3;
 	int32 numberOfTickets = 4;
 }
 
-message TicketResponse {
+message TicketProtoResponse {
 	bool success = 1;
 	string errorMsg = 2;
-	repeated Ticket tickets = 3;
+	repeated TicketProto tickets = 3;
 }
 
-message TicketUpdateRequest {
+message TicketUpdateProtoRequest {
 	repeated string ticketIds = 1;
-	TicketStatus status = 2;
+	TicketStatusProto status = 2;
 }

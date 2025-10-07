@@ -24,24 +24,24 @@
 
         public async Task<OrchestratorResponse<PurchaseTicketsResponse>> Orchestrate(OrchestratorRequest<PurchaseTicketsRequest> request)
         {
-            TicketResponse ticketResponse = await wagerGateway.PurchaseTickets(request.Payload.PlayerId, request.Payload.DrawId, request.Payload.ReservationId, request.Payload.NumberOfTickets);
+            TicketProtoResponse ticketResponse = await wagerGateway.PurchaseTickets(request.Payload.PlayerId, request.Payload.DrawId, request.Payload.ReservationId, request.Payload.NumberOfTickets);
             
             if (!ticketResponse.Success)
             {
-                BaseResponse baseResponse = await walletGateway.RefundFunds(request.Payload.ReservationId);
+                BaseProtoResponse baseResponse = await walletGateway.RefundFunds(request.Payload.ReservationId);
                 return mapper.Map<OrchestratorResponse<PurchaseTicketsResponse>>(baseResponse);
             }
 
             IEnumerable<string> ticketIds = ticketResponse.Tickets.Select(x => x.Id).ToList();
-            BaseResponse captureResponse = await walletGateway.CaptureFunds(request.Payload.ReservationId);
+            BaseProtoResponse captureResponse = await walletGateway.CaptureFunds(request.Payload.ReservationId);
 
             if (!captureResponse.Success)
             {
-                TicketResponse cancelledResponse = await wagerGateway.UpdateTicketStatus(TicketStatus.Cancelled, ticketIds);
+                TicketProtoResponse cancelledResponse = await wagerGateway.UpdateTicketStatus(TicketStatusProto.Cancelled, ticketIds);
                 return mapper.Map<OrchestratorResponse<PurchaseTicketsResponse>>(cancelledResponse);
             }
 
-            TicketResponse confirmedResponse = await wagerGateway.UpdateTicketStatus(TicketStatus.Confirmed, ticketIds);
+            TicketProtoResponse confirmedResponse = await wagerGateway.UpdateTicketStatus(TicketStatusProto.Confirmed, ticketIds);
             return mapper.Map<OrchestratorResponse<PurchaseTicketsResponse>>(confirmedResponse);
         }
     }

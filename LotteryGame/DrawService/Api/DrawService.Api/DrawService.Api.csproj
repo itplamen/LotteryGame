@@ -23,6 +23,6 @@
 
   <ItemGroup>
     <Protobuf Include="..\DrawService.Api.Models\Protos\draws.proto" GrpcServices="Server" />
-	  <Protobuf Include="..\DrawService.Api.Models\Protos\prizes.proto" GrpcServices="Server" />
+	<Protobuf Include="..\DrawService.Api.Models\Protos\prizes.proto" GrpcServices="Server" />
   </ItemGroup>
 </Project>

@@ -4,9 +4,9 @@
 
     using Grpc.Core;
 
-    using DrawService.Api.Models.Protos.Prizes;
     using DrawService.Core.Contracts;
     using DrawService.Core.Models;
+    using DrawService.Api.Models.Protos.Prizes;
     using LotteryGame.Common.Models.Dto;
 
     public class PrizeService : Prizes.PrizesBase
@@ -20,10 +20,10 @@
             this.prizeOperations = prizeOperations;
         }
 
-        public override async Task<DeterminePrizeResponse> Determine(DeterminePrizeRequest request, ServerCallContext context)
+        public override async Task<DeterminePrizeProtoResponse> Determine(DeterminePrizeProtoRequest request, ServerCallContext context)
         {
             ResponseDto<IEnumerable<PrizeDto>> responseDto = await prizeOperations.DeterminePrizes(request.DrawId);
-            DeterminePrizeResponse response = mapper.Map<DeterminePrizeResponse>(responseDto);
+            DeterminePrizeProtoResponse response = mapper.Map<DeterminePrizeProtoResponse>(responseDto);
 
             return response;
         }
