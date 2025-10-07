@@ -85,6 +85,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotteryGame.Orchestrators",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotteryGame.Orchestrators.Models", "Orchestrators\Core\LotteryGame.Orchestrators.Models\LotteryGame.Orchestrators.Models.csproj", "{CF68AC96-C49F-4D00-B0D2-227BA76EC079}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotteryGame.Orchestrators.Cache", "Orchestrators\Core\LotteryGame.Orchestrators.Cache\LotteryGame.Orchestrators.Cache.csproj", "{49AC8B50-8721-4CF6-A55A-570CC2647218}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -191,6 +193,10 @@ Global
 		{CF68AC96-C49F-4D00-B0D2-227BA76EC079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF68AC96-C49F-4D00-B0D2-227BA76EC079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF68AC96-C49F-4D00-B0D2-227BA76EC079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49AC8B50-8721-4CF6-A55A-570CC2647218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49AC8B50-8721-4CF6-A55A-570CC2647218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49AC8B50-8721-4CF6-A55A-570CC2647218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49AC8B50-8721-4CF6-A55A-570CC2647218}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -231,6 +237,7 @@ Global
 		{6135314E-E23F-4C23-A9A7-0679D862A9B5} = {D028F62A-5296-45B2-9EE5-B826A2D17014}
 		{6F851886-DFA5-482C-A588-844D6B414B49} = {D028F62A-5296-45B2-9EE5-B826A2D17014}
 		{CF68AC96-C49F-4D00-B0D2-227BA76EC079} = {D028F62A-5296-45B2-9EE5-B826A2D17014}
+		{49AC8B50-8721-4CF6-A55A-570CC2647218} = {D028F62A-5296-45B2-9EE5-B826A2D17014}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9249E1F-2CB1-4A37-8CF0-65A46AFFDF89}
