@@ -2,6 +2,8 @@
 {
     public class OrchestratorRequest<TData>
     {
+        public OrchestratorRequest() { }
+
         public OrchestratorRequest(TData payload)
         {
             Payload = payload;
