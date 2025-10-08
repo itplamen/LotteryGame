@@ -3,8 +3,10 @@
     using AutoMapper;
    
     using LotteryGame.Common.Models.Dto;
+    using LotteryGame.Common.Utils.Validation;
     using WagerService.Core.Contracts;
     using WagerService.Core.Models;
+    using WagerService.Core.Validation.Contexts;
     using WagerService.Data.Contracts;
     using WagerService.Data.Models;
 
@@ -13,24 +15,36 @@
         private readonly IMapper mapper;
         private readonly IRepository<Ticket> repository;
         private readonly INumberGeneration numberGeneration;
+        private readonly OperationPipeline<TicketOperationContext> createPipeline;
+        private readonly OperationPipeline<TicketOperationContext> updatePipeline;
 
-        public TicketOperations(IMapper mapper, IRepository<Ticket> repository, INumberGeneration numberGeneration)
+        public TicketOperations(
+            IMapper mapper,
+            IRepository<Ticket> repository,
+            INumberGeneration numberGeneration,
+            OperationPipeline<TicketOperationContext> createPipeline,
+            OperationPipeline<TicketOperationContext> updatePipeline)
         {
             this.mapper = mapper;
             this.repository = repository;
             this.numberGeneration = numberGeneration;
+            this.createPipeline = createPipeline;
+            this.updatePipeline = updatePipeline;
         }
 
         public async Task<ResponseDto<IEnumerable<TicketDto>>> Create(TicketCreateRequestDto request)
         {
-            if (request.NumberOfTickets < 0)
+            var context = new TicketOperationContext()
             {
-                return new ResponseDto<IEnumerable<TicketDto>>()
-                {
-                    ErrorMsg = "Invalid number of tickets to create"
-                };
+                NumberOfTickets = request.NumberOfTickets
+            };
+
+            ResponseDto validationResult = await createPipeline.ExecuteAsync(context);
+            if (!validationResult.IsSuccess)
+            {
+                return new ResponseDto<IEnumerable<TicketDto>> { ErrorMsg = validationResult.ErrorMsg };
             }
-            
+
             IEnumerable<Ticket> tickets = Enumerable.Range(0, request.NumberOfTickets)
                 .Select(_ => new Ticket()
                 {
@@ -49,30 +63,24 @@
 
         public async Task<ResponseDto<IEnumerable<TicketDto>>> Update(TicketUpdateRequestDto request)
         {
-            if (request.TicketIds == null || !request.TicketIds.Any())
+            var context = new TicketOperationContext
             {
-                return new ResponseDto<IEnumerable<TicketDto>>("No ticket ids provided");
+                TicketIds = request.TicketIds
+            };
+
+            ResponseDto validationResult = await updatePipeline.ExecuteAsync(context);
+            if (!validationResult.IsSuccess)
+            {
+                return new ResponseDto<IEnumerable<TicketDto>> { ErrorMsg = validationResult.ErrorMsg };
             }
 
-            IEnumerable<Ticket> tickets = await repository.FindAsync(x => request.TicketIds.Contains(x.Id));
-
-            if (tickets == null)
+            IEnumerable<Ticket> updatedTickets = context.Tickets.Select(x =>
             {
-                return new ResponseDto<IEnumerable<TicketDto>>("Tickets not found");
-            }
+                x.Status = request.Status;
+                return x;
+            }).ToList();
 
-            IEnumerable<Ticket> updatedTickets = tickets.Select(ticket =>
-            {
-                ticket.Status = request.Status;
-                return ticket;
-            });
-
-            bool success = await repository.UpdateAsync(updatedTickets);
-
-            if (!success)
-            {
-                return new ResponseDto<IEnumerable<TicketDto>>("Unsucessful ticket update");
-            }
+            await repository.UpdateAsync(updatedTickets);
 
             return new ResponseDto<IEnumerable<TicketDto>>() 
             { 

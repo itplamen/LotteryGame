@@ -3,9 +3,12 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using LotteryGame.Common.Models.IoC;
+    using LotteryGame.Common.Utils.Validation;
     using WagerService.Core.Contracts;
     using WagerService.Core.NumberGenerators;
     using WagerService.Core.Operations;
+    using WagerService.Core.Validation.Contexts;
+    using WagerService.Core.Validation.Policies;
 
     public sealed class CorePackage : IPackage
     {
@@ -30,6 +33,20 @@
                     _ => throw new InvalidOperationException("Invalid number generation strategy")
                 };
             });
+
+            services.AddScoped<IOperationPolicy<TicketOperationContext>, ValidateNumberOfTicketsPolicy>();
+            services.AddScoped(x =>
+                new OperationPipeline<TicketOperationContext>(
+                    x.GetServices<IOperationPolicy<TicketOperationContext>>()
+                )
+            );
+
+            services.AddScoped<IOperationPolicy<TicketOperationContext>, ValidateTicketsExistPolicy>();
+            services.AddScoped(x =>
+                new OperationPipeline<TicketOperationContext>(
+                    x.GetServices<IOperationPolicy<TicketOperationContext>>()
+                )
+            );
 
             services.AddScoped<ITicketOperations, TicketOperations>();
         }
