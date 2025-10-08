@@ -39,43 +39,48 @@
             OrchestratorRequest<AvailableDrawRequest> availableDrawRequest = new (new AvailableDrawRequest { PlayerId = request.PlayerId });
             OrchestratorResponse<AvailableDrawResponse> availableDrawResponse = await availableDraw.Orchestrate(availableDrawRequest);
 
-            if (availableDrawResponse.Success)
+            if (!availableDrawResponse.Success)
             {
-                OrchestratorRequest<ReserveFundsRequest> reserveFundsRequest = mapper.Map<OrchestratorRequest<ReserveFundsRequest>>(request);
-                reserveFundsRequest.Payload.TicketPriceInCents = availableDrawResponse.Data.TicketPriceInCents;
-
-                OrchestratorResponse<ReserveFundsResponse> reserveFundsResponse = await reserveFunds.Orchestrate(reserveFundsRequest);
-
-                if (reserveFundsResponse.Success)
-                {
-                    OrchestratorRequest<PurchaseTicketsRequest> purchaseTicketsRequest = mapper.Map<OrchestratorRequest<PurchaseTicketsRequest>>(request);
-                    purchaseTicketsRequest.Payload.ReservationId = reserveFundsResponse.Data.ReservationId;
-                    purchaseTicketsRequest.Payload.DrawId = availableDrawResponse.Data.DrawId;
-
-                    OrchestratorResponse<PurchaseTicketsResponse> purchaseTicketsResponse = await purchaseTickets.Orchestrate(purchaseTicketsRequest);
-
-                    if (purchaseTicketsResponse.Success)
-                    {
-                        OrchestratorRequest<DrawParticipationRequest> drawParticipationRequest = mapper.Map<OrchestratorRequest<DrawParticipationRequest>>(purchaseTicketsRequest);
-                        drawParticipationRequest.Payload.TicketIds = purchaseTicketsResponse.Data.Tickets.Select(x => x.Id).ToList();
-
-                        await drawParticipation.Orchestrate(drawParticipationRequest);
-
-                        PurchaseResponse purchaseResponse = new PurchaseResponse();
-                        purchaseResponse.Success = true;
-                        purchaseResponse.TotalCost = reserveFundsResponse.Data.TotalCost;
-                        purchaseResponse.TicketNumbers.Add(purchaseTicketsResponse.Data.Tickets.Select(x => x.Number).ToList());
-
-                        return purchaseResponse;
-                    }
-                }
+                return mapper.Map<PurchaseResponse>(availableDrawResponse);
             }
 
-            return new PurchaseResponse()
+            OrchestratorRequest<ReserveFundsRequest> reserveFundsRequest = mapper.Map<OrchestratorRequest<ReserveFundsRequest>>(request);
+            reserveFundsRequest.Payload.TicketPriceInCents = availableDrawResponse.Data.TicketPriceInCents;
+
+            OrchestratorResponse<ReserveFundsResponse> reserveFundsResponse = await reserveFunds.Orchestrate(reserveFundsRequest);
+
+            if (!reserveFundsResponse.Success)
             {
-                Success = false,
-                ErrorMsg = "Could not purchase tickets"
-            };
+                return mapper.Map<PurchaseResponse>(reserveFundsResponse);
+            }
+
+            OrchestratorRequest<PurchaseTicketsRequest> purchaseTicketsRequest = mapper.Map<OrchestratorRequest<PurchaseTicketsRequest>>(request);
+            purchaseTicketsRequest.Payload.ReservationId = reserveFundsResponse.Data.ReservationId;
+            purchaseTicketsRequest.Payload.DrawId = availableDrawResponse.Data.DrawId;
+
+            OrchestratorResponse<PurchaseTicketsResponse> purchaseTicketsResponse = await purchaseTickets.Orchestrate(purchaseTicketsRequest);
+
+            if (!purchaseTicketsResponse.Success)
+            {
+                return mapper.Map<PurchaseResponse>(purchaseTicketsResponse);
+            }
+
+            OrchestratorRequest<DrawParticipationRequest> drawParticipationRequest = mapper.Map<OrchestratorRequest<DrawParticipationRequest>>(purchaseTicketsRequest);
+            drawParticipationRequest.Payload.TicketIds = purchaseTicketsResponse.Data.Tickets.Select(x => x.Id).ToList();
+
+           OrchestratorResponse<DrawParticipationResponse> drawParticipationResponse = await drawParticipation.Orchestrate(drawParticipationRequest);
+
+            if (!drawParticipationResponse.Success)
+            {
+                return mapper.Map<PurchaseResponse>(drawParticipationResponse);
+            }
+
+            PurchaseResponse purchaseResponse = new PurchaseResponse();
+            purchaseResponse.Success = true;
+            purchaseResponse.TotalCost = reserveFundsResponse.Data.TotalCost;
+            purchaseResponse.TicketNumbers.Add(purchaseTicketsResponse.Data.Tickets.Select(x => x.Number).ToList());
+
+            return purchaseResponse;
         }
     }
 }

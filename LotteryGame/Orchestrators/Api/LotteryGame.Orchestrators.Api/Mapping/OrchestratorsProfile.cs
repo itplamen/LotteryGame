@@ -16,6 +16,22 @@
     {
         public OrchestratorsProfile()
         {
+            CreateMap<OrchestratorResponse<AvailableDrawResponse>, PurchaseResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
+
+            CreateMap<OrchestratorResponse<ReserveFundsResponse>, PurchaseResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
+
+            CreateMap<OrchestratorResponse<PurchaseTicketsResponse>, PurchaseResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
+
+            CreateMap<OrchestratorResponse<DrawParticipationResponse>, PurchaseResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
+
             CreateMap<FetchDrawProtoResponse, OrchestratorResponse<AvailableDrawResponse>>()
                 .ForPath(dest => dest.Data.DrawId, opt => opt.MapFrom(src => src.DrawId))
                 .ForPath(dest => dest.Data.DrawDate, opt => opt.MapFrom(src => src.DrawDate.ToDateTime()))
