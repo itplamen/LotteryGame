@@ -1,6 +1,5 @@
 ﻿namespace WalletService.Core.Operations
 {
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
 
     using LotteryGame.Common.Models.Dto;
@@ -8,6 +7,8 @@
     using WalletService.Core.Contracts;
     using WalletService.Data.Contracts;
     using WalletService.Data.Models;
+    using LotteryGame.Common.Utils.Validation;
+    using WalletService.Core.Validation.Contexts;
 
     public class FundsOperations : IFundsOperations
     {
@@ -15,48 +16,48 @@
         private readonly IRepository<Wallet> walletRepo;
         private readonly IRepository<Reservation> reservationRepo;
         private readonly IBalanceHistoryOperations balanceHistoryOperations;
+        private readonly OperationPipeline<WalletOperationContext> walletPipeline;
+        private readonly OperationPipeline<ReservationOperationContext> reservationPipeline;
 
         public FundsOperations(
             IRepository<Wallet> walletRepo, 
             IRepository<Reservation> reservationRepo, 
             IBalanceHistoryOperations balanceHistoryOperations, 
+            OperationPipeline<WalletOperationContext> walletPipeline,
+            OperationPipeline<ReservationOperationContext> reservationPipeline,
             IConfiguration config)
         {
             this.walletRepo = walletRepo;
             this.reservationRepo = reservationRepo;
             this.balanceHistoryOperations = balanceHistoryOperations;
+            this.walletPipeline = walletPipeline;
+            this.reservationPipeline = reservationPipeline;
             this.reservationExpiryMins = int.Parse(config["Reservation:ExpiryMins"]);
         }
 
         public async Task<ResponseDto> HasEnoughFunds(int playerId, long cost)
         {
-            Wallet wallet = await walletRepo.Filter()
-                .FirstOrDefaultAsync(x => x.PlayerId == playerId);
-
-            if (wallet == null)
-            {
-                return new ResponseDto("Wallet not found");
-            }
-
-            string errorMsg = wallet.TotalBalance >= cost ? string.Empty : "Insufficient funds";
-            return new ResponseDto() { ErrorMsg = errorMsg };
+            var context = new WalletOperationContext { PlayerId = playerId, Amount = cost };
+            ResponseDto validation = await walletPipeline.ExecuteAsync(context);
+            
+            return validation;
         }
 
         public async Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount)
         {
-            Wallet wallet = await walletRepo.Filter()
-                .FirstOrDefaultAsync(x => x.PlayerId == playerId);
-
-            if (wallet == null)
+            var context = new WalletOperationContext()
             {
-                return new ResponseDto<BaseDto>("Wallet not found");
+                PlayerId = playerId,
+                Amount = amount
+            };
+
+            ResponseDto validation = await walletPipeline.ExecuteAsync(context);
+            if (!validation.IsSuccess)
+            {
+                return new ResponseDto<BaseDto>(validation.ErrorMsg);
             }
 
-            if (wallet.RealMoney + wallet.BonusMoney < amount)
-            {
-                return new ResponseDto<BaseDto>("Insufficient funds");
-            }
-
+            Wallet wallet = context.Wallet!;
             long oldBalance = wallet.TotalBalance;
             long remaining = amount;
 
@@ -97,26 +98,22 @@
 
         public async Task<ResponseDto> Capture(int reservationId)
         {
-            Reservation reservation = await reservationRepo.GetByIdAsync(reservationId);
-            if (reservation == null)
+            var context = new ReservationOperationContext()
             {
-                return new ResponseDto("Reservation not found");
-            }
+                ReservationId = reservationId
+            };
 
-            if (reservation.IsCaptured)
+            ResponseDto validation = await reservationPipeline.ExecuteAsync(context);
+            if (!validation.IsSuccess)
             {
-                return new ResponseDto("Reservation already captured");
-            }
+                return validation;
+            }    
 
-            Wallet wallet = await walletRepo.GetByIdAsync(reservation.WalletId);
-            if (wallet == null)
-            {
-                 return new ResponseDto("Wallet not found");
-            }
+            Wallet wallet = context.Wallet!;
+            Reservation reservation = context.Reservation!;
 
             long oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
-
             reservation.IsCaptured = true;
 
             await walletRepo.SaveChangesAsync();
@@ -134,27 +131,19 @@
 
         public async Task<ResponseDto> Refund(int reservationId)
         {
-            Reservation reservation = await reservationRepo.GetByIdAsync(reservationId);
-            if (reservation == null)
+            var context = new ReservationOperationContext()
             {
-                return new ResponseDto("Invalid reservation");
+                ReservationId = reservationId
+            };
+
+            ResponseDto validation = await reservationPipeline.ExecuteAsync(context);
+            if (!validation.IsSuccess)
+            {
+                return validation;
             }
 
-            if (reservation.IsCaptured) 
-            {
-                return new ResponseDto("Reservation already captured");
-            }
-
-            Wallet wallet = await walletRepo.GetByIdAsync(reservation.WalletId);
-            if (wallet == null)
-            {
-                return new ResponseDto("Wallet not found");
-            }
-
-            if (wallet.LockedFunds < reservation.Amount)
-            {
-                return new ResponseDto("Insufficient locked funds to process refund");
-            }
+            Wallet wallet = context.Wallet!;
+            Reservation reservation = context.Reservation!;
 
             long oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
