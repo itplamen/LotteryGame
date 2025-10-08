@@ -22,8 +22,9 @@
                 .ForPath(dest => dest.Data.CurrentPlayersInDraw, opt => opt.MapFrom(src => src.CurrentPlayersInDraw))
                 .ForPath(dest => dest.Data.MinPlayersInDraw, opt => opt.MapFrom(src => src.MinPlayersInDraw))
                 .ForPath(dest => dest.Data.MaxPlayersInDraw, opt => opt.MapFrom(src => src.MaxPlayersInDraw))
+                .ForPath(dest => dest.Data.MinTicketsPerPlayer, opt => opt.MapFrom(src => src.MinTicketsPerPlayer))
                 .ForPath(dest => dest.Data.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.MaxTicketsPerPlayer))
-                .ForPath(dest => dest.Data.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.MaxTicketsPerPlayer));
+                .ForPath(dest => dest.Data.TicketPriceInCents, opt => opt.MapFrom(src => src.TicketPriceInCents));
 
             CreateMap<FetchDrawProtoResponse, OrchestratorResponse<DrawParticipationResponse>>()
                 .ForPath(dest => dest.Data.DrawId, opt => opt.MapFrom(src => src.DrawId))

@@ -26,6 +26,12 @@ services:
         - ConnectionStrings__Default=Server=sqlserver;Database=UserDataAccessServiceDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
     ports:
         - "5001:5001"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'YourStrong!Passw0rd' -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     networks:
         - backend
     volumes:
@@ -105,6 +111,39 @@ services:
     restart: always
     networks:
       - backend
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    restart: always
+    ports:
+      - "5005:6379"
+    networks:
+      - backend
+
+  orchestrator.api:
+    build:
+      context: .
+      dockerfile: Orchestrators/Api/LotteryGame.Orchestrators.Api/Dockerfile
+    container_name: orchestrator
+    depends_on:
+      - walletservice.api
+      - wagerservice.api
+      - drawservice.api
+      - redis
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Cache__UseInMemoryCache=false
+      - Cache__ConnectionStrings__Redis=redis:6379
+      - Grpc__WalletServiceUrl=http://walletservice:5001
+      - Grpc__WagerServiceUrl=http://wagerservice:5002
+      - Grpc__DrawServiceUrl=http://drawservice:5003
+      - Kestrel__Endpoints__Grpc__Url=http://0.0.0.0:5000
+    ports:
+      - "5000:5000"
+    networks:
+      - backend
+
 
 volumes:
   sqlserver_data:

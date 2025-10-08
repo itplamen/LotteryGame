@@ -18,9 +18,27 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<WalletServiceDbContext>();
 
-    Console.WriteLine("Applying migrations");
-    db.Database.Migrate();
-    Console.WriteLine("Database migrations applied successfully");
+    Console.WriteLine("Applying migrations...");
+
+    var retryCount = 5;
+    var delayMs = 5000;
+
+    for (int i = 0; i < retryCount; i++)
+    {
+        try
+        {
+            db.Database.Migrate();
+            Console.WriteLine("Database migrations applied successfully");
+            break; // success, exit the loop
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Migration attempt {i + 1} failed: {ex.Message}");
+            if (i == retryCount - 1)
+                throw; // last attempt failed, rethrow
+            Thread.Sleep(delayMs);
+        }
+    }
 }
 
 app.MapGrpcService<FundsService>();
