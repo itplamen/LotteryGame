@@ -19,10 +19,10 @@
         {
             repository = new Mock<IRepository<TEntity>>();
 
-            Init(initialData);
+            Setup(initialData);
         }
 
-        private void Init(IEnumerable<TEntity> initialData = null)
+        private void Setup(IEnumerable<TEntity> initialData = null)
         {
             Data = initialData?.ToList() ?? new List<TEntity> { };
 

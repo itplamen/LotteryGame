@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WalletService.Data.Models;
-
-namespace WalletService.Tests.Utils.Stubs
+﻿namespace WalletService.Tests.Utils.Stubs
 {
+    using WalletService.Data.Models;
+
     public static class WalletStubs
     {
         public static List<Wallet> GetWallets()
