@@ -1,10 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+
+using LotteryGame.Common.Utils;
 using WalletService.Api.IoC;
 using WalletService.Api.Services;
 using WalletService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddGrpc(options => options.EnableDetailedErrors = true);
+builder.Services.AddGrpc(options =>
+{
+    options.EnableDetailedErrors = true;
+    options.Interceptors.Add<GrpcExceptionInterceptor>();
+});
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 long startingBalanceInCents = long.Parse(builder.Configuration["StartingBalanceInCents"]);
@@ -29,14 +35,15 @@ using (var scope = app.Services.CreateScope())
         {
             db.Database.Migrate();
             Console.WriteLine("Database migrations applied successfully");
-            break; // success, exit the loop
+            break;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Migration attempt {i + 1} failed: {ex.Message}");
             if (i == retryCount - 1)
-                throw; // last attempt failed, rethrow
-            Thread.Sleep(delayMs);
+            {
+                Thread.Sleep(delayMs);
+            }
         }
     }
 }

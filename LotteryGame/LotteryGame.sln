@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawService.Workers.Infrast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawService.Workers", "DrawService\Workers\DrawService.Workers\DrawService.Workers.csproj", "{2F4BC1F8-D5B2-4EC0-B462-020A1223664C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotteryGame.Common.Utils", "Common\LotteryGame.Common.Utils\LotteryGame.Common.Utils.csproj", "{E62AAAA8-A3C9-4292-82E0-9911D494704E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -213,6 +215,10 @@ Global
 		{2F4BC1F8-D5B2-4EC0-B462-020A1223664C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F4BC1F8-D5B2-4EC0-B462-020A1223664C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F4BC1F8-D5B2-4EC0-B462-020A1223664C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62AAAA8-A3C9-4292-82E0-9911D494704E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E62AAAA8-A3C9-4292-82E0-9911D494704E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E62AAAA8-A3C9-4292-82E0-9911D494704E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E62AAAA8-A3C9-4292-82E0-9911D494704E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,6 +263,7 @@ Global
 		{942FC08C-2BAB-4842-8402-D99AF28CDCE9} = {B4C43FD1-D889-4B64-84D3-4209D69DB332}
 		{B2359040-1E0B-48BD-87CF-A69F59C593EB} = {942FC08C-2BAB-4842-8402-D99AF28CDCE9}
 		{2F4BC1F8-D5B2-4EC0-B462-020A1223664C} = {942FC08C-2BAB-4842-8402-D99AF28CDCE9}
+		{E62AAAA8-A3C9-4292-82E0-9911D494704E} = {FD643353-5F77-4C2F-9ED1-99E93AD7F346}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9249E1F-2CB1-4A37-8CF0-65A46AFFDF89}

@@ -1,9 +1,14 @@
 using LotteryGame.Orchestrators.Api.IoC;
 using LotteryGame.Orchestrators.Api.Services;
+using LotteryGame.Common.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options =>
+{
+    options.EnableDetailedErrors = true;
+    options.Interceptors.Add<GrpcExceptionInterceptor>();
+});
 builder.Services.AddServices(builder.Configuration);
 
 var app = builder.Build();

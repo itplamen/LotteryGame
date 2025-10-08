@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\LotteryGame.Common.Utils\LotteryGame.Common.Utils.csproj" />
     <ProjectReference Include="..\..\Core\DrawService.Core\DrawService.Core.csproj" />
   </ItemGroup>
 

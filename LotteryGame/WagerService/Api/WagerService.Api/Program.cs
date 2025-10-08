@@ -1,10 +1,15 @@
+using LotteryGame.Common.Utils;
 using WagerService.Api.Ioc;
 using WagerService.Api.Services;
 using WagerService.Data;
  
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGrpc(options => options.EnableDetailedErrors = true);
+builder.Services.AddGrpc(options =>
+{
+    options.EnableDetailedErrors = true;
+    options.Interceptors.Add<GrpcExceptionInterceptor>();
+});
 builder.Services.AddSingleton<WagerServiceDbContext>();
 builder.Services.AddServices(builder.Configuration);
 
