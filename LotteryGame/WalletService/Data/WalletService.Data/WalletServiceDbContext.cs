@@ -1,7 +1,8 @@
 ﻿namespace WalletService.Data
 {
     using Microsoft.EntityFrameworkCore;
-
+    using Microsoft.Extensions.Configuration;
+    
     using WalletService.Data.Models;
     
     public class WalletServiceDbContext : DbContext
@@ -9,10 +10,10 @@
         private readonly string connectionString;
         private readonly long startingBalanceInCents;
 
-        public WalletServiceDbContext(string connectionString, long startingBalanceInCents)
+        public WalletServiceDbContext(DbContextOptions<WalletServiceDbContext> options, IConfiguration configuration)
+            : base(options)
         {
-            this.connectionString = connectionString;
-            this.startingBalanceInCents = startingBalanceInCents;
+            startingBalanceInCents = long.Parse(configuration["StartingBalanceInCents"]);
         }
 
         public DbSet<Player> Players { get; set; }
@@ -24,11 +25,6 @@
         public DbSet<Reservation> Reservations { get; set; }
 
         public DbSet<ReservationTicket> ReservationTickets { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(connectionString);
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

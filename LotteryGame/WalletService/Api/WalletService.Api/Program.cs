@@ -12,9 +12,15 @@ builder.Services.AddGrpc(options =>
     options.Interceptors.Add<GrpcExceptionInterceptor>();
 });
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-long startingBalanceInCents = long.Parse(builder.Configuration["StartingBalanceInCents"]);
-builder.Services.AddScoped(provider => new WalletServiceDbContext(connectionString, startingBalanceInCents));
+builder.Services.AddDbContext<WalletServiceDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlServerOptions => sqlServerOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: null
+        )
+    ));
 
 builder.Services.AddServices(builder.Configuration);
 
@@ -22,30 +28,12 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
+    Console.WriteLine("Applying migrations... ");
+    
     var db = scope.ServiceProvider.GetRequiredService<WalletServiceDbContext>();
+    db.Database.Migrate();
 
-    Console.WriteLine("Applying migrations...");
-
-    var retryCount = 5;
-    var delayMs = 5000;
-
-    for (int i = 0; i < retryCount; i++)
-    {
-        try
-        {
-            db.Database.Migrate();
-            Console.WriteLine("Database migrations applied successfully");
-            break;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Migration attempt {i + 1} failed: {ex.Message}");
-            if (i == retryCount - 1)
-            {
-                Thread.Sleep(delayMs);
-            }
-        }
-    }
+    Console.WriteLine("Migrations successfully applied!");
 }
 
 app.MapGrpcService<FundsService>();
