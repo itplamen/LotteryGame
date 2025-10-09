@@ -4,7 +4,7 @@
     using LotteryGame.Orchestrators.Cache.Contracts;
     using LotteryGame.Orchestrators.Contracts;
     using LotteryGame.Orchestrators.Models.AvailableDraw;
-    using LotteryGame.Orchestrators.Models.Base;
+    using LotteryGame.Orchestrators.Models.Cache;
     using LotteryGame.Orchestrators.Models.DrawParticipation;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
     using LotteryGame.Orchestrators.Models.ReserveFunds;
@@ -34,7 +34,7 @@
             services.AddTransient<IOrchestrator<TRequest, TResponse>>(x =>
             {
                 var inner = x.GetRequiredService<TOrchestrator>();
-                var cache = x.GetRequiredService<ICacheService<IDictionary<TRequest, OrchestratorResponse<TResponse>>>>();
+                var cache = x.GetRequiredService<ICacheService<OrchestratorCacheEntry<TRequest, TResponse>>>();
 
                 return new LoggingOrchestratorDecorator<TRequest, TResponse>(inner, cache);
             });

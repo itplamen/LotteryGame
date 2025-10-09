@@ -4,9 +4,9 @@
     using LotteryGame.Common.Utils.Validation;
     using WagerService.Core.Validation.Contexts;
 
-    public class ValidateNumberOfTicketsPolicy : IOperationPolicy<TicketOperationContext>
+    public class ValidateNumberOfTicketsPolicy : IOperationPolicy<CreateTicketOperationContext>
     {
-        public Task<ResponseDto> ExecuteAsync(TicketOperationContext context)
+        public Task<ResponseDto> ExecuteAsync(CreateTicketOperationContext context)
         {
             if (context.NumberOfTickets < 0)
             {

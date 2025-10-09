@@ -31,10 +31,10 @@
             repositoryMock = new DbRepositoryMock<Ticket>();
             numberGenerationMock = new NumberGeneratorMock();
 
-            var createPolicies = new List<IOperationPolicy<TicketOperationContext>>{new  ValidateNumberOfTicketsPolicy()};
-            var createPipeline = new OperationPipeline<TicketOperationContext>(createPolicies);
-            var updatePolicies = new List<IOperationPolicy<TicketOperationContext>>{new  ValidateTicketsExistPolicy(repositoryMock.Mock)};
-            var updatePipeline = new OperationPipeline<TicketOperationContext>(updatePolicies);
+            var createPolicies = new List<IOperationPolicy<CreateTicketOperationContext>>{new  ValidateNumberOfTicketsPolicy()};
+            var createPipeline = new OperationPipeline<CreateTicketOperationContext>(createPolicies);
+            var updatePolicies = new List<IOperationPolicy<UpdateTicketOperationContext>>{new  ValidateTicketsExistPolicy(repositoryMock.Mock)};
+            var updatePipeline = new OperationPipeline<UpdateTicketOperationContext>(updatePolicies);
 
             operations = new TicketOperations(
                 mapperMock.Mock,

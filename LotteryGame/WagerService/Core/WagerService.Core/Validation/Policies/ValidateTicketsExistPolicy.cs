@@ -11,7 +11,7 @@
     using WagerService.Data.Contracts;
     using WagerService.Data.Models;
 
-    public class ValidateTicketsExistPolicy : IOperationPolicy<TicketOperationContext>
+    public class ValidateTicketsExistPolicy : IOperationPolicy<UpdateTicketOperationContext>
     {
         private readonly IRepository<Ticket> repository;
 
@@ -20,7 +20,7 @@
             this.repository = repository;
         }
 
-        public async Task<ResponseDto> ExecuteAsync(TicketOperationContext context)
+        public async Task<ResponseDto> ExecuteAsync(UpdateTicketOperationContext context)
         {
             if (context.TicketIds == null || !context.TicketIds.Any())
             {

@@ -15,15 +15,15 @@
         private readonly IMapper mapper;
         private readonly IRepository<Ticket> repository;
         private readonly INumberGeneration numberGeneration;
-        private readonly OperationPipeline<TicketOperationContext> createPipeline;
-        private readonly OperationPipeline<TicketOperationContext> updatePipeline;
+        private readonly OperationPipeline<CreateTicketOperationContext> createPipeline;
+        private readonly OperationPipeline<UpdateTicketOperationContext> updatePipeline;
 
         public TicketOperations(
             IMapper mapper,
             IRepository<Ticket> repository,
             INumberGeneration numberGeneration,
-            OperationPipeline<TicketOperationContext> createPipeline,
-            OperationPipeline<TicketOperationContext> updatePipeline)
+            OperationPipeline<CreateTicketOperationContext> createPipeline,
+            OperationPipeline<UpdateTicketOperationContext> updatePipeline)
         {
             this.mapper = mapper;
             this.repository = repository;
@@ -34,7 +34,7 @@
 
         public async Task<ResponseDto<IEnumerable<TicketDto>>> Create(TicketCreateRequestDto request)
         {
-            var context = new TicketOperationContext()
+            var context = new CreateTicketOperationContext()
             {
                 NumberOfTickets = request.NumberOfTickets
             };
@@ -63,7 +63,7 @@
 
         public async Task<ResponseDto<IEnumerable<TicketDto>>> Update(TicketUpdateRequestDto request)
         {
-            var context = new TicketOperationContext
+            var context = new UpdateTicketOperationContext()
             {
                 TicketIds = request.TicketIds
             };

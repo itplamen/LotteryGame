@@ -34,8 +34,11 @@
                 };
             });
 
-            services.AddScoped<IOperationPolicy<TicketOperationContext>, ValidateNumberOfTicketsPolicy>();
-            services.AddScoped<IOperationPolicy<TicketOperationContext>, ValidateTicketsExistPolicy>();
+            services.AddScoped<IOperationPolicy<CreateTicketOperationContext>, ValidateNumberOfTicketsPolicy>();
+            services.AddScoped<IOperationPolicy<UpdateTicketOperationContext>, ValidateTicketsExistPolicy>();
+
+            services.AddScoped<OperationPipeline<CreateTicketOperationContext>>();
+            services.AddScoped<OperationPipeline<UpdateTicketOperationContext>>();
 
             services.AddScoped<ITicketOperations, TicketOperations>();
         }

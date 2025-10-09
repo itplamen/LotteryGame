@@ -7,7 +7,7 @@
     using LotteryGame.Orchestrators.Cache;
     using LotteryGame.Orchestrators.Cache.Contracts;
     using LotteryGame.Orchestrators.Models.AvailableDraw;
-    using LotteryGame.Orchestrators.Models.Base;
+    using LotteryGame.Orchestrators.Models.Cache;
     using LotteryGame.Orchestrators.Models.DrawParticipation;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
     using LotteryGame.Orchestrators.Models.ReserveFunds;
@@ -28,10 +28,11 @@
         public void RegisterServices(IServiceCollection services)
         {
             services.AddMemoryCache();
-            RegisterCacheService<IDictionary<AvailableDrawRequest, OrchestratorResponse<AvailableDrawResponse>>>(services);
-            RegisterCacheService<IDictionary<DrawParticipationRequest, OrchestratorResponse<DrawParticipationResponse>>>(services);
-            RegisterCacheService<IDictionary<PurchaseTicketsRequest, OrchestratorResponse<PurchaseTicketsResponse>>>(services);
-            RegisterCacheService<IDictionary<ReserveFundsRequest, OrchestratorResponse<ReserveFundsResponse>>>(services);
+
+            RegisterCacheService<OrchestratorCacheEntry<AvailableDrawRequest, AvailableDrawResponse>>(services);
+            RegisterCacheService<OrchestratorCacheEntry<DrawParticipationRequest, DrawParticipationResponse>>(services);
+            RegisterCacheService<OrchestratorCacheEntry<PurchaseTicketsRequest, PurchaseTicketsResponse>>(services);
+            RegisterCacheService<OrchestratorCacheEntry<ReserveFundsRequest, ReserveFundsResponse>>(services);
 
             if (!useInMemoryCache)
             {

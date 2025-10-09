@@ -29,12 +29,9 @@
             services.AddScoped<IOperationPolicy<DrawOperationContext>, DrawCapacityPolicy>();
             services.AddScoped<IOperationPolicy<DrawOperationContext>, TicketsCountPolicy>();
             services.AddScoped<IOperationPolicy<DrawOperationContext>, DrawStartPolicy>();
-            
-            services.AddScoped(sp =>
-            {
-                var policies = sp.GetServices<IOperationPolicy<DrawOperationContext>>();
-                return new OperationPipeline<DrawOperationContext>(policies);
-            });
+
+            services.AddScoped<OperationPipeline<PrizeOperationContext>>();
+            services.AddScoped<OperationPipeline<DrawOperationContext>>();
 
             services.AddScoped<IDrawOperations, DrawOperations>();
             services.AddScoped<IPrizeOperations, PrizeOperations>();
