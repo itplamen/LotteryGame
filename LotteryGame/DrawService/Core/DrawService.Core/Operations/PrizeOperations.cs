@@ -4,9 +4,11 @@
     
     using DrawService.Core.Contracts;
     using DrawService.Core.Models;
+    using DrawService.Core.Validation.Contexts;
     using DrawService.Data.Contracts;
     using DrawService.Data.Models;
     using LotteryGame.Common.Models.Dto;
+    using LotteryGame.Common.Utils.Validation;
 
     public class PrizeOperations : IPrizeOperations
     {
@@ -14,33 +16,37 @@
         private readonly IRepository<Draw> drawRepository;
         private readonly IRepository<Prize> prizeRepository;
         private readonly IPrizeDeterminationStrategy prizeDeterminationStrategy;
+        private readonly OperationPipeline<PrizeOperationContext> operationPipeline;
 
-        public PrizeOperations(IMapper mapper, IRepository<Draw> drawRepository, IRepository<Prize> prizeRepository, IPrizeDeterminationStrategy prizeDeterminationStrategy)
+        public PrizeOperations(
+            IMapper mapper, 
+            IRepository<Draw> drawRepository,
+            IRepository<Prize> prizeRepository, 
+            IPrizeDeterminationStrategy prizeDeterminationStrategy,
+            OperationPipeline<PrizeOperationContext> operationPipeline)
         {
             this.mapper = mapper;
             this.drawRepository = drawRepository;
             this.prizeRepository = prizeRepository;
             this.prizeDeterminationStrategy = prizeDeterminationStrategy;
+            this.operationPipeline = operationPipeline;
         }
 
         public async Task<ResponseDto<IEnumerable<PrizeDto>>> DeterminePrizes(string drawId)
         {
-            Draw draw = await drawRepository.GetByIdAsync(drawId);
+            var context = new PrizeOperationContext() 
+            { 
+                DrawId = drawId, 
+                Status = DrawStatus.InProgress 
+            };
+            var validationResult = await operationPipeline.ExecuteAsync(context);
 
-            if (draw == null)
+            if (!validationResult.IsSuccess)
             {
-                return new ResponseDto<IEnumerable<PrizeDto>>("Draw not found");
+                return new ResponseDto<IEnumerable<PrizeDto>>(validationResult.ErrorMsg);
             }
 
-            if (draw.Status != DrawStatus.InProgress)
-            {
-                return new ResponseDto<IEnumerable<PrizeDto>>("Invalid draw status");
-            }
-
-            if (draw.PlayerTickets == null || !draw.PlayerTickets.Any())
-            {
-                return new ResponseDto<IEnumerable<PrizeDto>>("No tickets for draw");
-            }
+            var draw = context.Draw;
 
             IEnumerable<Prize> prizes = prizeDeterminationStrategy.DeterminePrizes(draw);
             IEnumerable<Prize> created = await prizeRepository.AddRangeAsync(prizes);

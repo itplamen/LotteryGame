@@ -3,12 +3,14 @@
     using Microsoft.Extensions.Configuration;
 
     using AutoMapper;
-
+    
     using DrawService.Core.Contracts;
     using DrawService.Core.Models;
+    using DrawService.Core.Validation.Contexts;
     using DrawService.Data.Contracts;
     using DrawService.Data.Models;
     using LotteryGame.Common.Models.Dto;
+    using LotteryGame.Common.Utils.Validation;
 
     public class DrawOperations : IDrawOperations
     {
@@ -20,8 +22,13 @@
         private readonly int maxPlayersInDraw;
         private readonly IMapper mapper;
         private readonly IRepository<Draw> repository;
+        private readonly OperationPipeline<DrawOperationContext> operationPipeline;
 
-        public DrawOperations(IMapper mapper, IRepository<Draw> repository, IConfiguration configuration)
+        public DrawOperations(
+            IMapper mapper, 
+            IRepository<Draw> repository, 
+            IConfiguration configuration,
+            OperationPipeline<DrawOperationContext> operationPipeline)
         {
             this.mapper = mapper;
             this.repository = repository;
@@ -31,6 +38,7 @@
             this.maxTicketsPerPlayer = int.Parse(configuration["MaxTicketsPerPlayer"]);
             this.minPlayersInDraw = int.Parse(configuration["MinPlayersInDraw"]);
             this.maxPlayersInDraw = int.Parse(configuration["MaxPlayersInDraw"]);
+            this.operationPipeline = operationPipeline;
         }
 
         public async Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId)
@@ -79,32 +87,24 @@
 
         public async Task<ResponseDto<DrawDto>> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
         {
-            Draw draw = await repository.GetByIdAsync(drawId);
-            if (draw == null)
+            var context = new DrawOperationContext() 
             {
-                return new ResponseDto<DrawDto>("Draw not found");
+                DrawId = drawId,
+                PlayerId = playerId,
+                Status = DrawStatus.Pending,
+                TicketIds = ticketIds,
+                MinTicketsPerPlayer = minTicketsPerPlayer,
+                MaxTicketsPerPlayer = maxTicketsPerPlayer,
+                Join = true
+            };
+
+            var validationResult = await operationPipeline.ExecuteAsync(context);
+            if (!validationResult.IsSuccess)
+            {
+                return new ResponseDto<DrawDto>(validationResult.ErrorMsg);
             }
 
-            if (draw.Status != DrawStatus.Pending)
-            {
-                return new ResponseDto<DrawDto>("Invalid draw status");
-            }
-
-            if (draw.PlayerTickets.ContainsKey(playerId))
-            {
-                return new ResponseDto<DrawDto>("Player already joined the draw");
-            }
-
-            if (draw.PlayerTickets.Keys.Count >= draw.MaxPlayersInDraw)
-            {
-                return new ResponseDto<DrawDto>("Draw if full");
-            }
-
-            if (ticketIds.Count() < minTicketsPerPlayer || ticketIds.Count() > maxTicketsPerPlayer)
-            {
-                return new ResponseDto<DrawDto>($"Invalid number of tickets. Min: {minTicketsPerPlayer}, Max: {maxTicketsPerPlayer}");
-            }
-
+            Draw draw = context.Draw;
             draw.PlayerTickets[playerId] = ticketIds.ToList();
 
             await repository.UpdateAsync(draw);
@@ -114,21 +114,22 @@
 
         public async Task<ResponseDto> Start(string drawId)
         {
-            Draw draw = await repository.GetByIdAsync(drawId);
-            if (draw == null)
+            var context = new DrawOperationContext() 
             {
-                return new ResponseDto("Draw not found");
+                DrawId = drawId,
+                Status = DrawStatus.Pending,
+                MinTicketsPerPlayer = minTicketsPerPlayer,
+                MaxTicketsPerPlayer = maxTicketsPerPlayer,
+                Start = true
+            };
+
+            var validationResult = await operationPipeline.ExecuteAsync(context);
+            if (!validationResult.IsSuccess)
+            {
+                return validationResult;
             }
 
-            if (draw.Status != DrawStatus.Pending)
-            {
-                return new ResponseDto("Invalid draw status");
-            }
-
-            if (draw.PlayerTickets.Count < minPlayersInDraw)
-            {
-                return new ResponseDto("Draw cannot be started");
-            }
+            Draw draw = context.Draw;
 
             draw.Status = DrawStatus.InProgress;
             draw.DrawDate = DateTime.UtcNow;
