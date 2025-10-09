@@ -4,9 +4,9 @@
     using LotteryGame.Common.Models.Dto;
     using LotteryGame.Common.Utils.Validation;
 
-    public class DrawCapacityPolicy : IOperationPolicy<DrawOperationContext>
+    public class DrawCapacityPolicy : IOperationPolicy<JoinDrawOperationContext>
     {
-        public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
+        public Task<ResponseDto> ExecuteAsync(JoinDrawOperationContext context)
         {
             if (context.Draw.PlayerTickets.Count >= context.Draw.MaxPlayersInDraw)
             {

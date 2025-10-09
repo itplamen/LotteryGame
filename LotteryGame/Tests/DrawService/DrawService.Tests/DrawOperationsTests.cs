@@ -43,25 +43,25 @@
 
             drawRepositoryMock = new DbRepositoryMock<Draw>();
 
-            var joinDrawPolicies = new List<IOperationPolicy<DrawOperationContext>>()
+            var joinDrawPolicies = new List<IOperationPolicy<JoinDrawOperationContext>>()
             {
-                new DrawMustExistPolicy<DrawOperationContext>(drawRepositoryMock.Mock),
-                new DrawInValidStatusPolicy<DrawOperationContext>(),
+                new DrawMustExistPolicy<JoinDrawOperationContext>(drawRepositoryMock.Mock),
+                new DrawInValidStatusPolicy<JoinDrawOperationContext>(),
                 new PlayerNotAlreadyJoinedPolicy(),
                 new DrawCapacityPolicy(),
                 new TicketsCountPolicy(),
             };
 
-            var joinDrawPipeline = new OperationPipeline<DrawOperationContext>(joinDrawPolicies);
+            var joinDrawPipeline = new OperationPipeline<JoinDrawOperationContext>(joinDrawPolicies);
 
-            var startDrawPolicies = new List<IOperationPolicy<DrawOperationContext>>()
+            var startDrawPolicies = new List<IOperationPolicy<StartDrawOperationContext>>()
             {
-                new DrawMustExistPolicy<DrawOperationContext>(drawRepositoryMock.Mock),
-                new DrawInValidStatusPolicy<DrawOperationContext>(),
+                new DrawMustExistPolicy<StartDrawOperationContext>(drawRepositoryMock.Mock),
+                new DrawInValidStatusPolicy<StartDrawOperationContext>(),
                 new DrawStartPolicy()
             };
 
-            var startDrawPipeline = new OperationPipeline<DrawOperationContext>(startDrawPolicies);
+            var startDrawPipeline = new OperationPipeline<StartDrawOperationContext>(startDrawPolicies);
 
             drawOperations = new DrawOperations(mapperMock.Object, drawRepositoryMock.Mock, configuration, joinDrawPipeline, startDrawPipeline);
         }

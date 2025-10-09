@@ -4,9 +4,9 @@
     using LotteryGame.Common.Models.Dto;
     using LotteryGame.Common.Utils.Validation;
 
-    public class TicketsCountPolicy : IOperationPolicy<DrawOperationContext>
+    public class TicketsCountPolicy : IOperationPolicy<JoinDrawOperationContext>
     {
-        public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
+        public Task<ResponseDto> ExecuteAsync(JoinDrawOperationContext context)
         {
             int count = context.TicketIds?.Count() ?? 0;
             if (count < context.MinTicketsPerPlayer || count > context.MaxTicketsPerPlayer)

@@ -4,9 +4,9 @@
     using LotteryGame.Common.Models.Dto;
     using LotteryGame.Common.Utils.Validation;
 
-    public class DrawStartPolicy : IOperationPolicy<DrawOperationContext>
+    public class DrawStartPolicy : IOperationPolicy<StartDrawOperationContext>
     {
-        public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
+        public Task<ResponseDto> ExecuteAsync(StartDrawOperationContext context)
         {
             if (context.Draw.PlayerTickets.Count < context.MinTicketsPerPlayer)
             {

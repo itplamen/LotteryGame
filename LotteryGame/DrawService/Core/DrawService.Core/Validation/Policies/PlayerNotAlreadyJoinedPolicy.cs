@@ -4,9 +4,9 @@
     using LotteryGame.Common.Models.Dto;
     using LotteryGame.Common.Utils.Validation;
 
-    public class PlayerNotAlreadyJoinedPolicy : IOperationPolicy<DrawOperationContext>
+    public class PlayerNotAlreadyJoinedPolicy : IOperationPolicy<JoinDrawOperationContext>
     {
-        public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
+        public Task<ResponseDto> ExecuteAsync(JoinDrawOperationContext context)
         {
             if (context.Draw.PlayerTickets.ContainsKey(context.PlayerId))
             {

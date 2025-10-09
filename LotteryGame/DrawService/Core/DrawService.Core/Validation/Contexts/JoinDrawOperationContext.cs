@@ -1,6 +1,6 @@
 ﻿namespace DrawService.Core.Validation.Contexts
 {
-    public class DrawOperationContext : BaseDrawContext
+    public class JoinDrawOperationContext : BaseDrawContext
     {
         public int PlayerId { get; set; }
 

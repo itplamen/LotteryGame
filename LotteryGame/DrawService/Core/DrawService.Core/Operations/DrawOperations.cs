@@ -22,15 +22,15 @@
         private readonly int maxPlayersInDraw;
         private readonly IMapper mapper;
         private readonly IRepository<Draw> repository;
-        private readonly OperationPipeline<DrawOperationContext> joinDrawPipeline;
-        private readonly OperationPipeline<DrawOperationContext> startDrawPipeline;
+        private readonly OperationPipeline<JoinDrawOperationContext> joinDrawPipeline;
+        private readonly OperationPipeline<StartDrawOperationContext> startDrawPipeline;
 
         public DrawOperations(
             IMapper mapper, 
             IRepository<Draw> repository, 
             IConfiguration configuration,
-            OperationPipeline<DrawOperationContext> joinDrawPipeline,
-            OperationPipeline<DrawOperationContext> startDrawPipeline)
+            OperationPipeline<JoinDrawOperationContext> joinDrawPipeline,
+            OperationPipeline<StartDrawOperationContext> startDrawPipeline)
         {
             this.mapper = mapper;
             this.repository = repository;
@@ -90,7 +90,7 @@
 
         public async Task<ResponseDto<DrawDto>> Join(string drawId, int playerId, IEnumerable<string> ticketIds)
         {
-            var context = new DrawOperationContext() 
+            var context = new JoinDrawOperationContext() 
             {
                 DrawId = drawId,
                 PlayerId = playerId,
@@ -116,7 +116,7 @@
 
         public async Task<ResponseDto> Start(string drawId)
         {
-            var context = new DrawOperationContext() 
+            var context = new StartDrawOperationContext() 
             {
                 DrawId = drawId,
                 Status = DrawStatus.Pending,

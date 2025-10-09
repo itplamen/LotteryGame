@@ -23,15 +23,16 @@
             services.AddScoped<IOperationPolicy<PrizeOperationContext>, DrawInValidStatusPolicy<PrizeOperationContext>>();
             services.AddScoped<IOperationPolicy<PrizeOperationContext>, DrawHasTicketsPolicy>();
 
-            services.AddScoped<IOperationPolicy<DrawOperationContext>, DrawMustExistPolicy<DrawOperationContext>>();
-            services.AddScoped<IOperationPolicy<DrawOperationContext>, DrawInValidStatusPolicy<DrawOperationContext>>();
-            services.AddScoped<IOperationPolicy<DrawOperationContext>, PlayerNotAlreadyJoinedPolicy>();
-            services.AddScoped<IOperationPolicy<DrawOperationContext>, DrawCapacityPolicy>();
-            services.AddScoped<IOperationPolicy<DrawOperationContext>, TicketsCountPolicy>();
-            services.AddScoped<IOperationPolicy<DrawOperationContext>, DrawStartPolicy>();
+            services.AddScoped<IOperationPolicy<StartDrawOperationContext>, DrawMustExistPolicy<StartDrawOperationContext>>();
+            services.AddScoped<IOperationPolicy<StartDrawOperationContext>, DrawInValidStatusPolicy<StartDrawOperationContext>>();
+            services.AddScoped<IOperationPolicy<StartDrawOperationContext>, DrawStartPolicy>();
+            services.AddScoped<IOperationPolicy<JoinDrawOperationContext>, PlayerNotAlreadyJoinedPolicy>();
+            services.AddScoped<IOperationPolicy<JoinDrawOperationContext>, DrawCapacityPolicy>();
+            services.AddScoped<IOperationPolicy<JoinDrawOperationContext>, TicketsCountPolicy>();
 
             services.AddScoped<OperationPipeline<PrizeOperationContext>>();
-            services.AddScoped<OperationPipeline<DrawOperationContext>>();
+            services.AddScoped<OperationPipeline<StartDrawOperationContext>>();
+            services.AddScoped<OperationPipeline<JoinDrawOperationContext>>();
 
             services.AddScoped<IDrawOperations, DrawOperations>();
             services.AddScoped<IPrizeOperations, PrizeOperations>();
