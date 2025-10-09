@@ -35,18 +35,7 @@
             });
 
             services.AddScoped<IOperationPolicy<TicketOperationContext>, ValidateNumberOfTicketsPolicy>();
-            services.AddScoped(x =>
-                new OperationPipeline<TicketOperationContext>(
-                    x.GetServices<IOperationPolicy<TicketOperationContext>>()
-                )
-            );
-
             services.AddScoped<IOperationPolicy<TicketOperationContext>, ValidateTicketsExistPolicy>();
-            services.AddScoped(x =>
-                new OperationPipeline<TicketOperationContext>(
-                    x.GetServices<IOperationPolicy<TicketOperationContext>>()
-                )
-            );
 
             services.AddScoped<ITicketOperations, TicketOperations>();
         }
