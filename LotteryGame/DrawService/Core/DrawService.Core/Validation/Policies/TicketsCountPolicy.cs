@@ -9,7 +9,7 @@
         public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
         {
             int count = context.TicketIds?.Count() ?? 0;
-            if (context.Join && count < context.MinTicketsPerPlayer || count > context.MaxTicketsPerPlayer)
+            if (count < context.MinTicketsPerPlayer || count > context.MaxTicketsPerPlayer)
             {
                 return Task.FromResult(new ResponseDto($"Invalid number of tickets. Min: {context.MinTicketsPerPlayer}, Max: {context.MaxTicketsPerPlayer}"));
             }

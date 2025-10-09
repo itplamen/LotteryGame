@@ -8,7 +8,7 @@
     {
         public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
         {
-            if (context.Join && context.Draw.PlayerTickets.Count >= context.Draw.MaxPlayersInDraw)
+            if (context.Draw.PlayerTickets.Count >= context.Draw.MaxPlayersInDraw)
             {
                 return Task.FromResult(new ResponseDto("Draw is full"));
             }

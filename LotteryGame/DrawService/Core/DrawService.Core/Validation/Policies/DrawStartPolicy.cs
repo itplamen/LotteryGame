@@ -8,7 +8,7 @@
     {
         public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
         {
-            if (context.Start && context.Draw.PlayerTickets.Count < context.MinTicketsPerPlayer)
+            if (context.Draw.PlayerTickets.Count < context.MinTicketsPerPlayer)
             {
                 return Task.FromResult(new ResponseDto("Draw cannot be started"));
             }

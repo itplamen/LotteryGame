@@ -8,7 +8,7 @@
     {
         public Task<ResponseDto> ExecuteAsync(DrawOperationContext context)
         {
-            if (context.Join && context.Draw.PlayerTickets.ContainsKey(context.PlayerId))
+            if (context.Draw.PlayerTickets.ContainsKey(context.PlayerId))
             {
                 return Task.FromResult(new ResponseDto("Player already joined the draw"));
             }

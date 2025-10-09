@@ -34,7 +34,7 @@
             prizeRepositoryMock = new DbRepositoryMock<Prize>();
             prizeDeterminationStrategyMock = new Mock<IPrizeDeterminationStrategy>();
 
-            var policies = new IOperationPolicy<PrizeOperationContext>[]
+            var policies = new List<IOperationPolicy<PrizeOperationContext>>()
             {
                 new DrawMustExistPolicy<PrizeOperationContext>(drawRepositoryMock.Mock),
                 new DrawInValidStatusPolicy<PrizeOperationContext>(),

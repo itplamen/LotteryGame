@@ -37,24 +37,26 @@ namespace WalletService.Tests
             };
             configs = new ConfigurationBuilder().AddInMemoryCollection(configDict).Build();
 
-            var walletPipeline = new OperationPipeline<WalletOperationContext>(
-                new IOperationPolicy<WalletOperationContext>[]
-                {
-                    new ValidatePlayerIdPolicy(),
-                    new ValidateWalletExistsPolicy(walletRepoMock.Mock),
-                    new ValidateSufficientFundsPolicy()
-                });
+            var walletPolicies = new List<IOperationPolicy<WalletOperationContext>>()
+            {
+                new ValidatePlayerIdPolicy(),
+                new ValidateWalletExistsPolicy(walletRepoMock.Mock),
+                new ValidateSufficientFundsPolicy()
+            };
 
-            var reservationPipeline = new OperationPipeline<ReservationOperationContext>(
-                new IOperationPolicy<ReservationOperationContext>[]
-                {
-                    new ValidateReservationExistsPolicy(reservationRepoMock.Mock),
-                    new ValidateWalletForReservationPolicy(walletRepoMock.Mock),
-                    new ValidateReservationNotCapturedPolicy(),
-                    new ValidateReservationNotExpiredPolicy(),
-                    new ValidateReservationNotRefundedPolicy(),
-                    new ValidateRefundableFundsPolicy()
-                });
+            var walletPipeline = new OperationPipeline<WalletOperationContext>(walletPolicies);
+
+            var reservationPolicies = new List<IOperationPolicy<ReservationOperationContext>>()
+            {
+                new ValidateReservationExistsPolicy(reservationRepoMock.Mock),
+                new ValidateWalletForReservationPolicy(walletRepoMock.Mock),
+                new ValidateReservationNotCapturedPolicy(),
+                new ValidateReservationNotExpiredPolicy(),
+                new ValidateReservationNotRefundedPolicy(),
+                new ValidateRefundableFundsPolicy()
+            };
+
+            var reservationPipeline = new OperationPipeline<ReservationOperationContext>(reservationPolicies);
 
             fundsOperations = new FundsOperations(
                 walletRepoMock.Mock,

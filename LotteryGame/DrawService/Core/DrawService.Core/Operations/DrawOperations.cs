@@ -22,13 +22,15 @@
         private readonly int maxPlayersInDraw;
         private readonly IMapper mapper;
         private readonly IRepository<Draw> repository;
-        private readonly OperationPipeline<DrawOperationContext> operationPipeline;
+        private readonly OperationPipeline<DrawOperationContext> joinDrawPipeline;
+        private readonly OperationPipeline<DrawOperationContext> startDrawPipeline;
 
         public DrawOperations(
             IMapper mapper, 
             IRepository<Draw> repository, 
             IConfiguration configuration,
-            OperationPipeline<DrawOperationContext> operationPipeline)
+            OperationPipeline<DrawOperationContext> joinDrawPipeline,
+            OperationPipeline<DrawOperationContext> startDrawPipeline)
         {
             this.mapper = mapper;
             this.repository = repository;
@@ -38,7 +40,8 @@
             this.maxTicketsPerPlayer = int.Parse(configuration["MaxTicketsPerPlayer"]);
             this.minPlayersInDraw = int.Parse(configuration["MinPlayersInDraw"]);
             this.maxPlayersInDraw = int.Parse(configuration["MaxPlayersInDraw"]);
-            this.operationPipeline = operationPipeline;
+            this.joinDrawPipeline = joinDrawPipeline;
+            this.startDrawPipeline = startDrawPipeline;
         }
 
         public async Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId)
@@ -94,11 +97,10 @@
                 Status = DrawStatus.Pending,
                 TicketIds = ticketIds,
                 MinTicketsPerPlayer = minTicketsPerPlayer,
-                MaxTicketsPerPlayer = maxTicketsPerPlayer,
-                Join = true
+                MaxTicketsPerPlayer = maxTicketsPerPlayer
             };
 
-            var validationResult = await operationPipeline.ExecuteAsync(context);
+            var validationResult = await joinDrawPipeline.ExecuteAsync(context);
             if (!validationResult.IsSuccess)
             {
                 return new ResponseDto<DrawDto>(validationResult.ErrorMsg);
@@ -119,11 +121,10 @@
                 DrawId = drawId,
                 Status = DrawStatus.Pending,
                 MinTicketsPerPlayer = minTicketsPerPlayer,
-                MaxTicketsPerPlayer = maxTicketsPerPlayer,
-                Start = true
+                MaxTicketsPerPlayer = maxTicketsPerPlayer
             };
 
-            var validationResult = await operationPipeline.ExecuteAsync(context);
+            var validationResult = await startDrawPipeline.ExecuteAsync(context);
             if (!validationResult.IsSuccess)
             {
                 return validationResult;

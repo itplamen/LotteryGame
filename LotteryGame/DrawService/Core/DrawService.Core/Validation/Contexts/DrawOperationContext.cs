@@ -9,9 +9,5 @@
         public int MinTicketsPerPlayer { get; set; }
 
         public int MaxTicketsPerPlayer { get; set; }
-
-        public bool Join { get; set; }
-
-        public bool Start { get; set; }
     }
 }

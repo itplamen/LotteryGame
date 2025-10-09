@@ -22,7 +22,6 @@
         private Mock<IMapper> mapperMock;
         private IConfiguration configuration;
         private DbRepositoryMock<Draw> drawRepositoryMock;
-        private OperationPipeline<DrawOperationContext> operationPipeline;
         private DrawOperations drawOperations;
         private IDictionary<string, string> inMemoryConfig;
 
@@ -44,21 +43,28 @@
 
             drawRepositoryMock = new DbRepositoryMock<Draw>();
 
-            var policies = new IOperationPolicy<DrawOperationContext>[]
+            var joinDrawPolicies = new List<IOperationPolicy<DrawOperationContext>>()
             {
                 new DrawMustExistPolicy<DrawOperationContext>(drawRepositoryMock.Mock),
                 new DrawInValidStatusPolicy<DrawOperationContext>(),
                 new PlayerNotAlreadyJoinedPolicy(),
                 new DrawCapacityPolicy(),
                 new TicketsCountPolicy(),
+            };
+
+            var joinDrawPipeline = new OperationPipeline<DrawOperationContext>(joinDrawPolicies);
+
+            var startDrawPolicies = new List<IOperationPolicy<DrawOperationContext>>()
+            {
+                new DrawMustExistPolicy<DrawOperationContext>(drawRepositoryMock.Mock),
+                new DrawInValidStatusPolicy<DrawOperationContext>(),
                 new DrawStartPolicy()
             };
 
-            operationPipeline = new OperationPipeline<DrawOperationContext>(policies);
+            var startDrawPipeline = new OperationPipeline<DrawOperationContext>(startDrawPolicies);
 
-            drawOperations = new DrawOperations(mapperMock.Object, drawRepositoryMock.Mock, configuration, operationPipeline);
+            drawOperations = new DrawOperations(mapperMock.Object, drawRepositoryMock.Mock, configuration, joinDrawPipeline, startDrawPipeline);
         }
-
 
         [Test]
         public async Task GetOpenDraw_ShouldReturnError_WhenNoPendingDraws()
