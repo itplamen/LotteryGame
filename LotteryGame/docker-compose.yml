@@ -23,7 +23,7 @@ services:
         - sqlserver
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - ConnectionStrings__Default=Server=sqlserver;Database=UserDataAccessServiceDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+        - ConnectionStrings__Default=Server=sqlserver,1433;Database=WalletServiceDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=true;
     ports:
         - "5001:5001"
     healthcheck:
@@ -77,6 +77,11 @@ services:
       - couchdb_data:/opt/couchdb/data
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://admin:admin@localhost:5984/ || exit 1"]
+      interval: 5s
+      retries: 10
+      start_period: 10s
 
   drawservice.api:
     build:
@@ -101,7 +106,8 @@ services:
       dockerfile: DrawService/Workers/DrawService.Workers/Dockerfile
     container_name: drawservice.workers
     depends_on:
-      - couchdb
+      couchdb:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - WorkerDelay=1000
