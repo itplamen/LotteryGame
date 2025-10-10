@@ -1,13 +1,13 @@
-﻿namespace DrawService.Api.Mapping
+﻿namespace DrawService.Workers.Infrastructure
 {
     using AutoMapper;
     
     using DrawService.Core.Models;
     using DrawService.Data.Models;
 
-    public class DataProfile : Profile
+    public class MapProfile : Profile
     {
-        public DataProfile()
+        public MapProfile() 
         {
             CreateMap<Prize, PrizeDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

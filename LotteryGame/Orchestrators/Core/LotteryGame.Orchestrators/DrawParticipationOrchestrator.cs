@@ -23,7 +23,7 @@
         {
             FetchDrawProtoResponse joinedResponse = await drawGateway.JoinDraw(request.Payload.PlayerId, request.Payload.DrawId, request.Payload.TicketIds);
 
-            if (joinedResponse.Success && joinedResponse.CurrentPlayersInDraw >= joinedResponse.MaxPlayersInDraw)
+            if (joinedResponse.Success && joinedResponse.CurrentPlayersInDraw >= joinedResponse.MinPlayersInDraw)
             {
                 await drawGateway.StartDraw(request.Payload.DrawId);
             }

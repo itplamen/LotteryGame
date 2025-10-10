@@ -1,5 +1,7 @@
 ﻿namespace DrawService.Data.Models
 {
+    using Newtonsoft.Json;
+
     public class Draw : BaseEntity
     {
         public DateTime DrawDate { get; set; }
@@ -21,5 +23,8 @@
         public ICollection<string> PrizeIds { get; set; } = new HashSet<string>();
 
         public IDictionary<int, ICollection<string>> PlayerTickets { get; set; } = new Dictionary<int, ICollection<string>>();
+
+        [JsonIgnore]
+        public int CurrentPlayersInDraw => PlayerTickets.Keys.Count;
     }
 }

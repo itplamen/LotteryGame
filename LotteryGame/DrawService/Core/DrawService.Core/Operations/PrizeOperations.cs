@@ -17,19 +17,22 @@
         private readonly IRepository<Prize> prizeRepository;
         private readonly IPrizeDeterminationStrategy prizeDeterminationStrategy;
         private readonly OperationPipeline<PrizeOperationContext> operationPipeline;
+        private readonly OperationPipeline<GetPrizeOperationContext> getPrizeOperationPipeline;
 
         public PrizeOperations(
             IMapper mapper, 
             IRepository<Draw> drawRepository,
             IRepository<Prize> prizeRepository, 
             IPrizeDeterminationStrategy prizeDeterminationStrategy,
-            OperationPipeline<PrizeOperationContext> operationPipeline)
+            OperationPipeline<PrizeOperationContext> operationPipeline,
+            OperationPipeline<GetPrizeOperationContext> getPrizeOperationPipeline)
         {
             this.mapper = mapper;
             this.drawRepository = drawRepository;
             this.prizeRepository = prizeRepository;
             this.prizeDeterminationStrategy = prizeDeterminationStrategy;
             this.operationPipeline = operationPipeline;
+            this.getPrizeOperationPipeline = getPrizeOperationPipeline;
         }
 
         public async Task<ResponseDto<IEnumerable<PrizeDto>>> DeterminePrizes(string drawId)
@@ -59,6 +62,28 @@
             return new ResponseDto<IEnumerable<PrizeDto>>()
             {
                 Data = mapper.Map<IEnumerable<PrizeDto>>(created)
+            };
+        }
+
+        public async Task<ResponseDto<IEnumerable<PrizeDto>>> GetPrizes(string drawId)
+        {
+            var context = new GetPrizeOperationContext()
+            {
+                DrawId = drawId,
+                Status = DrawStatus.Completed
+            };
+            var validationResult = await getPrizeOperationPipeline.ExecuteAsync(context);
+
+            if (!validationResult.IsSuccess)
+            {
+                return new ResponseDto<IEnumerable<PrizeDto>>(validationResult.ErrorMsg);
+            }
+
+            IEnumerable<Prize> prizes = await prizeRepository.FindAsync(x => context.Draw.PrizeIds.Contains(x.Id));
+
+            return new ResponseDto<IEnumerable<PrizeDto>>()
+            {
+                Data = mapper.Map<IEnumerable<PrizeDto>>(prizes)
             };
         }
     }
