@@ -76,20 +76,76 @@
         }
 
         [Test]
-        public async Task GetOpenDraw_ShouldReturnDraw_WhenPendingAndPlayerNotJoined()
+        public async Task GetOpenDraw_ShouldReturnNewDraw_WhenPendingAndPlayerNotJoined()
         {
+            int playerId = 1;
+
             var draw = new Draw()
             {
                 Id = "draw1",
                 Status = DrawStatus.Pending,
+                MinPlayersInDraw = 2,
+                MaxTicketsPerPlayer = 1,
                 PlayerTickets = new Dictionary<int, ICollection<string>>()
+                { { playerId, new List<string>() { "t1" } } }
+            };
+
+            var newDraw = new Draw()
+            {
+                Id = "draw2",
+                Status = DrawStatus.Pending,
+                MinPlayersInDraw = 2,
+                MaxTicketsPerPlayer = 1,
+                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                { { 3, new List<string>() { "t3" } } }
+            };
+
+            drawRepositoryMock.Data.Add(draw);
+            drawRepositoryMock.Data.Add(newDraw);
+
+            mapperMock
+                .Setup(m => m.Map<DrawDto>(It.IsAny<Draw>()))
+                .Returns((Draw d) => new DrawDto
+                {
+                    Id = d.Id,
+                    MinTicketsPerPlayer = int.Parse(inMemoryConfig["MinTicketsPerPlayer"]),
+                    MaxTicketsPerPlayer = int.Parse(inMemoryConfig["MaxTicketsPerPlayer"]),
+                    MinPlayersInDraw = int.Parse(inMemoryConfig["MinPlayersInDraw"]),
+                    MaxPlayersInDraw = int.Parse(inMemoryConfig["MaxPlayersInDraw"])
+                });
+
+            var result = await drawOperations.GetOpenDraw(playerId);
+
+            result.IsSuccess.Should().BeTrue();
+            result.Data.Id.Should().Be(newDraw.Id);
+            result.Data.MinTicketsPerPlayer.Should().Be(int.Parse(inMemoryConfig["MinTicketsPerPlayer"]));
+            result.Data.MaxTicketsPerPlayer.Should().Be(int.Parse(inMemoryConfig["MaxTicketsPerPlayer"]));
+            result.Data.MinPlayersInDraw.Should().Be(int.Parse(inMemoryConfig["MinPlayersInDraw"]));
+            result.Data.MaxPlayersInDraw.Should().Be(int.Parse(inMemoryConfig["MaxPlayersInDraw"]));
+        }
+
+
+        [Test]
+        public async Task GetOpenDraw_ShouldReturnSameDraw_WhenPendingAndPlayerJoinedWithFewTickets()
+        {
+            int playerId = 1;
+            var draw = new Draw()
+            {
+                Id = "draw1",
+                Status = DrawStatus.Pending,
+                MinPlayersInDraw = 2,
+                MaxTicketsPerPlayer = 3,
+                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                {
+                    {playerId, new List<string>() { "t1" } }
+                }
             };
             drawRepositoryMock.Data.Add(draw);
 
             mapperMock.Setup(m => m.Map<DrawDto>(It.IsAny<Draw>()))
                       .Returns(new DrawDto { Id = draw.Id });
 
-            var result = await drawOperations.GetOpenDraw(1);
+            var result = await drawOperations.GetOpenDraw(playerId);
 
             result.IsSuccess.Should().BeTrue();
             result.Data.Id.Should().Be("draw1");

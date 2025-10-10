@@ -88,5 +88,18 @@
 
             repository.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(entity);
         }
+
+        public void SetupFind(Expression<Func<TEntity, bool>> filter, IEnumerable<TEntity> result)
+        {
+            repository
+                .Setup(x => x.FindAsync(It.IsAny<Expression<Func<TEntity, bool>>>()))
+                .ReturnsAsync((Expression<Func<TEntity, bool>> actualFilter) =>
+                {
+                    var compiled = actualFilter.Compile();
+                    return Data.Where(compiled).Any()
+                        ? Data.Where(compiled).ToList()
+                        : result.ToList();
+                });
+        }
     }
 }
