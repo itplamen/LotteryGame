@@ -63,6 +63,18 @@
             return new ResponseDto<DrawDto>() { Data = openDrawDto };
         }
 
+        public async Task<IEnumerable<string>> GetDrawsReadyToStart()
+        {
+            IEnumerable<Draw> draws = await repository.FindAsync(x =>
+                x.DrawDate <= DateTime.UtcNow &&
+                x.Status == DrawStatus.Pending);
+
+            return draws?.Where(x => 
+                x.CurrentPlayersInDraw >= x.MinPlayersInDraw && 
+                x.CurrentPlayersInDraw <= x.MaxPlayersInDraw)?
+                .Select(x => x.Id)?.ToList() ?? new List<string>();
+        }
+
         public async Task<IEnumerable<string>> GetDrawsForSettlement()
         {
             IEnumerable<Draw> draws = await repository.FindAsync(x => x.Status == DrawStatus.InProgress);

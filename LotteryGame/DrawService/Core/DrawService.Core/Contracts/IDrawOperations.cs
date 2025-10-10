@@ -7,6 +7,8 @@
     {
         Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId);
 
+        Task<IEnumerable<string>> GetDrawsReadyToStart();
+
         Task<IEnumerable<string>> GetDrawsForSettlement();
 
         Task<ResponseDto<DrawDto>> Create();
