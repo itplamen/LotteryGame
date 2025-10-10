@@ -5,15 +5,15 @@ option csharp_namespace = "LotteryGame.Orchestrators.Api.Models.Protos.TicketPur
 package funds;
 
 service TicketPurchase {
-  rpc Purchase (PurchaseRequest) returns (PurchaseResponse);
+  rpc Purchase (PurchaseProtoRequest) returns (PurchaseProtoResponse);
 }
 
-message PurchaseRequest {
+message PurchaseProtoRequest {
   int32 playerId = 1;
   int32 numberOfTickets = 2;
 }
 
-message PurchaseResponse {
+message PurchaseProtoResponse {
   bool success = 1;
   string errorMsg = 2;
   int64 totalCost = 3;

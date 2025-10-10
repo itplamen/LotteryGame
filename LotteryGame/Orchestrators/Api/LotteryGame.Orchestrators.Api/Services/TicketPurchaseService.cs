@@ -34,14 +34,14 @@
             this.drawParticipation = drawParticipation;
         }
 
-        public async override Task<PurchaseResponse> Purchase(PurchaseRequest request, ServerCallContext context)
+        public async override Task<PurchaseProtoResponse> Purchase(PurchaseProtoRequest request, ServerCallContext context)
         {
             OrchestratorRequest<AvailableDrawRequest> availableDrawRequest = new (new AvailableDrawRequest { PlayerId = request.PlayerId });
             OrchestratorResponse<AvailableDrawResponse> availableDrawResponse = await availableDraw.Orchestrate(availableDrawRequest);
 
             if (!availableDrawResponse.Success)
             {
-                return mapper.Map<PurchaseResponse>(availableDrawResponse);
+                return mapper.Map<PurchaseProtoResponse>(availableDrawResponse);
             }
 
             OrchestratorRequest<ReserveFundsRequest> reserveFundsRequest = mapper.Map<OrchestratorRequest<ReserveFundsRequest>>(request);
@@ -51,7 +51,7 @@
 
             if (!reserveFundsResponse.Success)
             {
-                return mapper.Map<PurchaseResponse>(reserveFundsResponse);
+                return mapper.Map<PurchaseProtoResponse>(reserveFundsResponse);
             }
 
             OrchestratorRequest<PurchaseTicketsRequest> purchaseTicketsRequest = mapper.Map<OrchestratorRequest<PurchaseTicketsRequest>>(request);
@@ -62,7 +62,7 @@
 
             if (!purchaseTicketsResponse.Success)
             {
-                return mapper.Map<PurchaseResponse>(purchaseTicketsResponse);
+                return mapper.Map<PurchaseProtoResponse>(purchaseTicketsResponse);
             }
 
             OrchestratorRequest<DrawParticipationRequest> drawParticipationRequest = mapper.Map<OrchestratorRequest<DrawParticipationRequest>>(purchaseTicketsRequest);
@@ -72,10 +72,10 @@
 
             if (!drawParticipationResponse.Success)
             {
-                return mapper.Map<PurchaseResponse>(drawParticipationResponse);
+                return mapper.Map<PurchaseProtoResponse>(drawParticipationResponse);
             }
 
-            PurchaseResponse purchaseResponse = new PurchaseResponse();
+            PurchaseProtoResponse purchaseResponse = new PurchaseProtoResponse();
             purchaseResponse.Success = true;
             purchaseResponse.TotalCost = reserveFundsResponse.Data.TotalCost;
             purchaseResponse.TicketNumbers.Add(purchaseTicketsResponse.Data.Tickets.Select(x => x.Number).ToList());

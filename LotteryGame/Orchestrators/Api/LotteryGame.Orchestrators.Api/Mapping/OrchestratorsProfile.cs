@@ -16,19 +16,19 @@
     {
         public OrchestratorsProfile()
         {
-            CreateMap<OrchestratorResponse<AvailableDrawResponse>, PurchaseResponse>()
+            CreateMap<OrchestratorResponse<AvailableDrawResponse>, PurchaseProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
 
-            CreateMap<OrchestratorResponse<ReserveFundsResponse>, PurchaseResponse>()
+            CreateMap<OrchestratorResponse<ReserveFundsResponse>, PurchaseProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
 
-            CreateMap<OrchestratorResponse<PurchaseTicketsResponse>, PurchaseResponse>()
+            CreateMap<OrchestratorResponse<PurchaseTicketsResponse>, PurchaseProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
 
-            CreateMap<OrchestratorResponse<DrawParticipationResponse>, PurchaseResponse>()
+            CreateMap<OrchestratorResponse<DrawParticipationResponse>, PurchaseProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
 
@@ -74,11 +74,11 @@
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
 
-            CreateMap<PurchaseRequest, OrchestratorRequest<ReserveFundsRequest>>()
+            CreateMap<PurchaseProtoRequest, OrchestratorRequest<ReserveFundsRequest>>()
                 .ForPath(dest => dest.Payload.PlayerId, opt => opt.MapFrom(src => src.PlayerId))
                 .ForPath(dest => dest.Payload.NumberOfTickets, opt => opt.MapFrom(src => src.NumberOfTickets));
 
-            CreateMap<PurchaseRequest, OrchestratorRequest<PurchaseTicketsRequest>>()
+            CreateMap<PurchaseProtoRequest, OrchestratorRequest<PurchaseTicketsRequest>>()
                 .ForPath(dest => dest.Payload.PlayerId, opt => opt.MapFrom(src => src.PlayerId))
                 .ForPath(dest => dest.Payload.NumberOfTickets, opt => opt.MapFrom(src => src.NumberOfTickets));
 
