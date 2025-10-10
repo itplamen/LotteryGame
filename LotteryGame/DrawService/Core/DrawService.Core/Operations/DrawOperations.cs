@@ -46,14 +46,8 @@
 
         public async Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId)
         {
-            IEnumerable<Draw> openDraws = await repository.FindAsync(x => 
-                x.Status == DrawStatus.Pending &&
-                x.CurrentPlayersInDraw < x.MinPlayersInDraw);
-
-            openDraws = openDraws.Where(x => 
-                (x.PlayerTickets.Keys.Contains(playerId) &&
-                x.PlayerTickets[playerId].Count < x.MaxTicketsPerPlayer) || 
-                (!x.PlayerTickets.ContainsKey(playerId)));
+            IEnumerable<Draw> openDraws = await repository.FindAsync(x => x.Status == DrawStatus.Pending);
+            openDraws = openDraws.Where(x => !x.PlayerTickets.ContainsKey(playerId));
 
             if (!openDraws.Any())
             {

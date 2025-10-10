@@ -20,7 +20,7 @@
                 return new List<Prize>();
             }
 
-            int winnerCount = Math.Max(1, (int)Math.Round(remainingTicketIds.Count * TicketShare));
+            int winnerCount = Math.Max(1, (int)Math.Floor(remainingTicketIds.Count * TicketShare));
             long prizePerTicket = (long)(totalRevenue * RevenueShare / winnerCount);
 
             var winners = new List<string>();

@@ -86,6 +86,7 @@
                 Status = DrawStatus.Pending,
                 MinPlayersInDraw = 2,
                 MaxTicketsPerPlayer = 1,
+                MaxPlayersInDraw = 10,
                 PlayerTickets = new Dictionary<int, ICollection<string>>()
                 { { playerId, new List<string>() { "t1" } } }
             };
@@ -96,6 +97,7 @@
                 Status = DrawStatus.Pending,
                 MinPlayersInDraw = 2,
                 MaxTicketsPerPlayer = 1,
+                MaxPlayersInDraw = 10,
                 PlayerTickets = new Dictionary<int, ICollection<string>>()
                 { { 3, new List<string>() { "t3" } } }
             };
@@ -126,7 +128,7 @@
 
 
         [Test]
-        public async Task GetOpenDraw_ShouldReturnSameDraw_WhenPendingAndPlayerJoinedWithFewTickets()
+        public async Task GetOpenDraw_ShouldReturnNoOpenRounds_WhenPendingAndPlayerJoinedWithFewTickets()
         {
             int playerId = 1;
             var draw = new Draw()
@@ -135,6 +137,7 @@
                 Status = DrawStatus.Pending,
                 MinPlayersInDraw = 2,
                 MaxTicketsPerPlayer = 3,
+                MaxPlayersInDraw = 10,
                 PlayerTickets = new Dictionary<int, ICollection<string>>()
                 {
                     {playerId, new List<string>() { "t1" } }
@@ -142,17 +145,21 @@
             };
             drawRepositoryMock.Data.Add(draw);
 
-            mapperMock.Setup(m => m.Map<DrawDto>(It.IsAny<Draw>()))
-                      .Returns(new DrawDto { Id = draw.Id });
+            mapperMock
+                .Setup(m => m.Map<DrawDto>(It.IsAny<Draw>()))
+                .Returns((Draw d) => new DrawDto
+                {
+                    Id = d.Id,
+                    MinTicketsPerPlayer = int.Parse(inMemoryConfig["MinTicketsPerPlayer"]),
+                    MaxTicketsPerPlayer = int.Parse(inMemoryConfig["MaxTicketsPerPlayer"]),
+                    MinPlayersInDraw = int.Parse(inMemoryConfig["MinPlayersInDraw"]),
+                    MaxPlayersInDraw = int.Parse(inMemoryConfig["MaxPlayersInDraw"])
+                });
 
             var result = await drawOperations.GetOpenDraw(playerId);
 
-            result.IsSuccess.Should().BeTrue();
-            result.Data.Id.Should().Be("draw1");
-            result.Data.MinTicketsPerPlayer.Should().Be(int.Parse(inMemoryConfig["MinTicketsPerPlayer"]));
-            result.Data.MaxTicketsPerPlayer.Should().Be(int.Parse(inMemoryConfig["MaxTicketsPerPlayer"]));
-            result.Data.MinPlayersInDraw.Should().Be(int.Parse(inMemoryConfig["MinPlayersInDraw"]));
-            result.Data.MaxPlayersInDraw.Should().Be(int.Parse(inMemoryConfig["MaxPlayersInDraw"]));
+            result.IsSuccess.Should().BeFalse();
+            result.ErrorMsg.Should().Be("No open draws available");
         }
 
         [Test]
