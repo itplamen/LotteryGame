@@ -101,10 +101,18 @@
             {
                 Id = "draw1",
                 Status = DrawStatus.InProgress,
-                PlayerTickets = new Dictionary<int, ICollection<string>>
+                PlayerTickets = new List<PlayerTicketInfo>()
                 {
-                    { 1, new List<string> { "t1", "t2" } },
-                    { 2, new List<string> { "t3" } }
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 1,
+                        Tickets = new List<string>() { "t1", "t2" }
+                    },
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 2,
+                        Tickets = new List<string>() { "t3" }
+                    }
                 }
             };
 

@@ -14,7 +14,7 @@
 
         public IEnumerable<Prize> DeterminePrizes(Draw draw)
         {
-            List<string> ticketIds = draw.PlayerTickets.SelectMany(x => x.Value).ToList();
+            List<string> ticketIds = draw.PlayerTickets.SelectMany(x => x.Tickets).ToList();
             var remainingTicketIds = new List<string>(ticketIds);
             long totalRevenue = ticketIds.Count * draw.TicketPriceInCents;
             var prizes = new List<Prize>();

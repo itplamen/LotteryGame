@@ -10,7 +10,7 @@
         {
             ResponseDto responseDto = new ResponseDto();
 
-            if (context.Wallet!.TotalBalance < context.Amount)
+            if (context.Amount.HasValue && context.Amount > context.Wallet.TotalBalance)
             {
                 responseDto.ErrorMsg= "Insufficient funds";
             }

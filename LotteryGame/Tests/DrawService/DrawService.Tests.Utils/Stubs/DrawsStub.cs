@@ -10,7 +10,7 @@
         {
             Id = "draw1_in_progress",
             Status = DrawStatus.InProgress,
-            PlayerTickets = new Dictionary<int, ICollection<string>>()
+            PlayerTickets = new List<PlayerTicketInfo>()
         };
     }
 }

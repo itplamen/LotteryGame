@@ -25,10 +25,18 @@
             {
                 Id = "draw1",
                 TicketPriceInCents = 100,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                PlayerTickets = new List<PlayerTicketInfo>()
                 {
-                    { 1, new List<string> { "t1", "t2", "t3" } },
-                    { 2, new List<string> { "t4", "t5", "t6" } }
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 1,
+                        Tickets = new List<string> { "t1", "t2", "t3" }
+                    },
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 2,
+                        Tickets = new List<string> { "t4", "t5", "t6" }
+                    }
                 }
             };
 
@@ -59,7 +67,7 @@
         [Test]
         public void DeterminePrizes_ShouldCallEachStrategy()
         {
-            var allTickets = draw.PlayerTickets.SelectMany(x => x.Value).ToList();
+            var allTickets = draw.PlayerTickets.SelectMany(x => x.Tickets).ToList();
             long totalRevenue = allTickets.Count * draw.TicketPriceInCents;
 
             grandPrizeMock
@@ -87,7 +95,7 @@
         [Test]
         public void DeterminePrizes_ShouldRemoveWinningTicketsBetweenTiers()
         {
-            var allTickets = draw.PlayerTickets.SelectMany(x => x.Value).ToList();
+            var allTickets = draw.PlayerTickets.SelectMany(x => x.Tickets).ToList();
             long totalRevenue = allTickets.Count * draw.TicketPriceInCents;
 
             grandPrizeMock
@@ -108,7 +116,7 @@
         [Test]
         public void DeterminePrizes_ShouldCalculateHouseProfitCorrectly()
         {
-            var allTickets = draw.PlayerTickets.SelectMany(x => x.Value).ToList();
+            var allTickets = draw.PlayerTickets.SelectMany(x => x.Tickets).ToList();
             long totalRevenue = allTickets.Count * draw.TicketPriceInCents;
 
             grandPrizeMock

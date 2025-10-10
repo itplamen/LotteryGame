@@ -22,9 +22,9 @@
 
         public ICollection<string> PrizeIds { get; set; } = new HashSet<string>();
 
-        public IDictionary<int, ICollection<string>> PlayerTickets { get; set; } = new Dictionary<int, ICollection<string>>();
+        public ICollection<PlayerTicketInfo> PlayerTickets { get; set; } = new HashSet<PlayerTicketInfo>();
 
         [JsonIgnore]
-        public int CurrentPlayersInDraw => PlayerTickets.Keys.Count;
+        public int CurrentPlayersInDraw => PlayerTickets.Count;
     }
 }

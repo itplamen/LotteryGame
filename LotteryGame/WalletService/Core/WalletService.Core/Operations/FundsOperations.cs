@@ -9,6 +9,7 @@
     using WalletService.Data.Models;
     using LotteryGame.Common.Utils.Validation;
     using WalletService.Core.Validation.Contexts;
+    using WalletService.Core.Models;
 
     public class FundsOperations : IFundsOperations
     {
@@ -37,10 +38,36 @@
 
         public async Task<ResponseDto> HasEnoughFunds(int playerId, long cost)
         {
-            var context = new WalletOperationContext { PlayerId = playerId, Amount = cost };
+            var context = new WalletOperationContext() 
+            { 
+                PlayerId = playerId, 
+                Amount = cost 
+            };
+
+            return await walletPipeline.ExecuteAsync(context);
+        }
+
+        public async Task<ResponseDto<WalletDto>> GetFunds(int playerId)
+        {
+            var context = new WalletOperationContext()
+            {
+                PlayerId = playerId
+            };
+
             ResponseDto validation = await walletPipeline.ExecuteAsync(context);
-            
-            return validation;
+            if (!validation.IsSuccess)
+            {
+                return new ResponseDto<WalletDto>(validation.ErrorMsg);
+            }
+
+            return new ResponseDto<WalletDto>() 
+            { 
+                Data = new WalletDto() 
+                {
+                    RealMoney = context.Wallet.RealMoney,
+                    BonusMoney = context.Wallet.BonusMoney
+                } 
+            };
         }
 
         public async Task<ResponseDto<BaseDto>> Reserve(int playerId, long amount)
@@ -57,7 +84,7 @@
                 return new ResponseDto<BaseDto>(validation.ErrorMsg);
             }
 
-            Wallet wallet = context.Wallet!;
+            Wallet wallet = context.Wallet;
             long oldBalance = wallet.TotalBalance;
             long remaining = amount;
 
@@ -109,8 +136,8 @@
                 return validation;
             }    
 
-            Wallet wallet = context.Wallet!;
-            Reservation reservation = context.Reservation!;
+            Wallet wallet = context.Wallet;
+            Reservation reservation = context.Reservation;
 
             long oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;
@@ -142,8 +169,8 @@
                 return validation;
             }
 
-            Wallet wallet = context.Wallet!;
-            Reservation reservation = context.Reservation!;
+            Wallet wallet = context.Wallet;
+            Reservation reservation = context.Reservation;
 
             long oldBalance = wallet.TotalBalance;
             wallet.LockedFunds -= reservation.Amount;

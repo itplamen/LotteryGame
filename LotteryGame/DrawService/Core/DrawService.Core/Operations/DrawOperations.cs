@@ -46,8 +46,9 @@
 
         public async Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId)
         {
-            IEnumerable<Draw> openDraws = await repository.FindAsync(x => x.Status == DrawStatus.Pending);
-            openDraws = openDraws.Where(x => !x.PlayerTickets.ContainsKey(playerId));
+            IEnumerable<Draw> openDraws = await repository.FindAsync(x => 
+                x.Status == DrawStatus.Pending &&
+                !x.PlayerTickets.Any(x => x.PlayerId == playerId));
 
             if (!openDraws.Any())
             {
@@ -81,6 +82,13 @@
 
             return draws?.Select(x => x.Id)?.ToList() ?? new List<string>();
         } 
+
+        //public async Task<IEnumerable<DrawDto>> GetPlayerDraws(int playerId)
+        //{
+        //    IEnumerable<Draw> draws = await repository.FindAsync(x => x.PlayerTickets.ContainsKey(playerId));
+
+
+        //}
 
         public async Task<ResponseDto<DrawDto>> Create()
         { 
@@ -119,7 +127,7 @@
             }
 
             Draw draw = context.Draw;
-            draw.PlayerTickets[playerId] = ticketIds.ToList();
+            draw.PlayerTickets.Add(new PlayerTicketInfo() { PlayerId = playerId, Tickets = ticketIds.ToList() });
 
             await repository.UpdateAsync(draw);
 

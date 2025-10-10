@@ -6,7 +6,7 @@
     {
         public int PlayerId { get; set; }
 
-        public long Amount { get; set; }
+        public long? Amount { get; set; }
         
         public Wallet Wallet { get; set; }
     }

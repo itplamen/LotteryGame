@@ -87,8 +87,14 @@
                 MinPlayersInDraw = 2,
                 MaxTicketsPerPlayer = 1,
                 MaxPlayersInDraw = 10,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
-                { { playerId, new List<string>() { "t1" } } }
+                PlayerTickets = new List<PlayerTicketInfo>()
+                {
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = playerId,
+                        Tickets = new List<string>() { "t1" }
+                    }
+                }
             };
 
             var newDraw = new Draw()
@@ -98,8 +104,14 @@
                 MinPlayersInDraw = 2,
                 MaxTicketsPerPlayer = 1,
                 MaxPlayersInDraw = 10,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
-                { { 3, new List<string>() { "t3" } } }
+                PlayerTickets = new List<PlayerTicketInfo>()
+                {
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 3,
+                        Tickets = new List<string>() { "t3" }
+                    }
+                }
             };
 
             drawRepositoryMock.Data.Add(draw);
@@ -138,9 +150,13 @@
                 MinPlayersInDraw = 2,
                 MaxTicketsPerPlayer = 3,
                 MaxPlayersInDraw = 10,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                PlayerTickets = new List<PlayerTicketInfo>()
                 {
-                    {playerId, new List<string>() { "t1" } }
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = playerId,
+                        Tickets = new List<string>() { "t1" }
+                    }
                 }
             };
             drawRepositoryMock.Data.Add(draw);
@@ -219,7 +235,7 @@
             {
                 Id = "draw1",
                 Status = DrawStatus.Completed,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                PlayerTickets = new List<PlayerTicketInfo>()
             };
             drawRepositoryMock.Data.Add(draw);
 
@@ -236,7 +252,14 @@
             {
                 Id = "draw1",
                 Status = DrawStatus.Pending,
-                PlayerTickets = new Dictionary<int, ICollection<string>> { [1] = new List<string> { "t1" } }
+                PlayerTickets = new List<PlayerTicketInfo>()
+                {
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 1,
+                        Tickets = new List<string>() { "t1" }
+                    }
+                }
             };
             drawRepositoryMock.Data.Add(draw);
 
@@ -254,7 +277,14 @@
                 Id = "draw1",
                 Status = DrawStatus.Pending,
                 MaxPlayersInDraw = 1,
-                PlayerTickets = new Dictionary<int, ICollection<string>> { [1] = new List<string> { "t1" } }
+                PlayerTickets = new List<PlayerTicketInfo>()
+                {
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 1,
+                        Tickets = new List<string>() { "t1" }
+                    }
+                }
             };
             drawRepositoryMock.Data.Add(draw);
 
@@ -272,7 +302,7 @@
                 Id = "draw1",
                 Status = DrawStatus.Pending,
                 MaxPlayersInDraw = 1,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                PlayerTickets = new List<PlayerTicketInfo>()
             };
             drawRepositoryMock.Data.Add(draw);
 
@@ -290,7 +320,7 @@
                 Id = "draw1",
                 Status = DrawStatus.Pending,
                 MaxPlayersInDraw = 1,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                PlayerTickets = new List<PlayerTicketInfo>()
             };
             
             drawRepositoryMock.Data.Add(draw);
@@ -301,7 +331,7 @@
             var result = await drawOperations.Join("draw1", 1, new List<string>() { "t1", "t2" });
 
             result.IsSuccess.Should().BeTrue();
-            drawRepositoryMock.Data.First().PlayerTickets.Should().ContainKey(1);
+            drawRepositoryMock.Data.First().PlayerTickets.Should().Contain(x => x.PlayerId == 1);
         }
 
         [Test]
@@ -320,7 +350,7 @@
             {
                 Id = "draw1",
                 Status = DrawStatus.Completed,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                PlayerTickets = new List<PlayerTicketInfo>()
             };
             drawRepositoryMock.Data.Add(draw);
 
@@ -341,7 +371,14 @@
                 MaxPlayersInDraw = 13,
                 MinTicketsPerPlayer = int.Parse(inMemoryConfig["MinTicketsPerPlayer"]),
                 MaxTicketsPerPlayer = int.Parse(inMemoryConfig["MaxTicketsPerPlayer"]),
-                PlayerTickets = new Dictionary<int, ICollection<string>>() { [1] = new List<string> { "t1" } }
+                PlayerTickets = new List<PlayerTicketInfo>()
+                {
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 1,
+                        Tickets = new List<string>() { "t1" }
+                    }
+                }
             };
             drawRepositoryMock.Data.Add(draw);
 
@@ -358,10 +395,18 @@
             {
                 Id = "draw1",
                 Status = DrawStatus.Pending,
-                PlayerTickets = new Dictionary<int, ICollection<string>>()
+                PlayerTickets = new List<PlayerTicketInfo>()
                 {
-                    [1] = new List<string> { "t1" },
-                    [2] = new List<string> { "t2" }
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 1,
+                        Tickets = new List<string>() { "t1" }
+                    },
+                    new PlayerTicketInfo()
+                    {
+                        PlayerId = 2,
+                        Tickets = new List<string>() { "t2" }
+                    }
                 }
             };
             drawRepositoryMock.Data.Add(draw);
