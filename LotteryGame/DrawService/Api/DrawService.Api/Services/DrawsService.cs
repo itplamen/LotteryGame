@@ -24,6 +24,14 @@
             this.drawOperations = drawOperations;
         }
 
+        public override async Task<DrawOptionsProtoResponse> GetDrawOptions(Empty request, ServerCallContext context)
+        {
+            ResponseDto<DrawDto> openDrawDto = await drawOperations.GetDrawOptions();
+            DrawOptionsProtoResponse response = mapper.Map<DrawOptionsProtoResponse>(openDrawDto);
+
+            return response;
+        }
+
         public override async Task<FetchDrawProtoResponse> FetchDraw(FetchDrawProtoRequest request, ServerCallContext context)
         {
             ResponseDto<DrawDto> openDrawDto = await drawOperations.GetOpenDraw(request.PlayerId);

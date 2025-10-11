@@ -44,24 +44,25 @@
             this.startDrawPipeline = startDrawPipeline;
         }
 
+        public Task<ResponseDto<DrawDto>> GetDrawOptions()
+        {
+            var dto = CreateDrawDto();
+            return Task.FromResult(new ResponseDto<DrawDto> { Data = dto });
+        }
+
         public async Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId)
         {
             IEnumerable<Draw> openDraws = await repository.FindAsync(x => 
                 x.Status == DrawStatus.Pending &&
-                !x.PlayerTickets.Any(x => x.PlayerId == playerId));
+                !x.PlayerTickets.Any(y => y.PlayerId == playerId));
 
             if (!openDraws.Any())
             {
                 return new ResponseDto<DrawDto>("No open draws available");
             }
 
-            DrawDto openDrawDto = mapper.Map<DrawDto>(openDraws.First());
-            openDrawDto.MinTicketsPerPlayer = minTicketsPerPlayer;
-            openDrawDto.MaxTicketsPerPlayer = maxTicketsPerPlayer;
-            openDrawDto.MinPlayersInDraw = minPlayersInDraw;
-            openDrawDto.MaxPlayersInDraw = maxPlayersInDraw;
-
-            return new ResponseDto<DrawDto>() { Data = openDrawDto };
+            DrawDto dto = CreateDrawDto(openDraws.First());
+            return new ResponseDto<DrawDto>() { Data = dto };
         }
 
         public async Task<IEnumerable<string>> GetDrawsReadyToStart()
@@ -81,14 +82,7 @@
             IEnumerable<Draw> draws = await repository.FindAsync(x => x.Status == DrawStatus.InProgress);
 
             return draws?.Select(x => x.Id)?.ToList() ?? new List<string>();
-        } 
-
-        //public async Task<IEnumerable<DrawDto>> GetPlayerDraws(int playerId)
-        //{
-        //    IEnumerable<Draw> draws = await repository.FindAsync(x => x.PlayerTickets.ContainsKey(playerId));
-
-
-        //}
+        }
 
         public async Task<ResponseDto<DrawDto>> Create()
         { 
@@ -158,6 +152,19 @@
             await repository.UpdateAsync(draw);
 
             return new ResponseDto();
+        }
+
+        private DrawDto CreateDrawDto(Draw draw = null)
+        {
+            DrawDto dto = draw != null ? mapper.Map<DrawDto>(draw) : new DrawDto();
+            dto.TicketPriceInCents = ticketPriceInCents;
+            dto.DrawDate = DateTime.UtcNow.AddMilliseconds(drawScheduleTime);
+            dto.MinTicketsPerPlayer = minTicketsPerPlayer;
+            dto.MaxTicketsPerPlayer = maxTicketsPerPlayer;
+            dto.MinPlayersInDraw = minPlayersInDraw;
+            dto.MaxPlayersInDraw = maxPlayersInDraw;
+
+            return dto;
         }
     }
 }

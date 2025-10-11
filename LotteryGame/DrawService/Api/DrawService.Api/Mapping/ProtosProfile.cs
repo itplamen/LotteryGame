@@ -14,6 +14,13 @@
     {
         public ProtosProfile()
         {
+            CreateMap<ResponseDto<DrawDto>, DrawOptionsProtoResponse>()
+                .ForMember(dest => dest.TicketPriceInCents, opt => opt.MapFrom(src => src.Data.TicketPriceInCents))
+                .ForMember(dest => dest.MinTicketsPerPlayer, opt => opt.MapFrom(src => src.Data.MinTicketsPerPlayer))
+                .ForMember(dest => dest.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.Data.MaxTicketsPerPlayer))
+                .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.Data.MinPlayersInDraw))
+                .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.Data.MaxPlayersInDraw));
+
             CreateMap<ResponseDto<DrawDto>, FetchDrawProtoResponse>()
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
@@ -60,10 +67,7 @@
                         dest.DrawDate = Timestamp.FromDateTime(DateTime.UtcNow);
                     }
                 });
-            CreateMap<ResponseDto, DrawProtoResponse>()
-                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
-                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess));
-
+ 
             CreateMap<Prize, PrizeDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))

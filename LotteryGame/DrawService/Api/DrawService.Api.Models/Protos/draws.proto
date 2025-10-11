@@ -8,7 +8,19 @@ option csharp_namespace = "DrawService.Api.Models.Protos.Draws";
 package draws;
 
 service Draws {
+    rpc GetDrawOptions(google.protobuf.Empty) returns (DrawOptionsProtoResponse);
+    rpc FetchDraw (FetchDrawProtoRequest) returns (FetchDrawProtoResponse);
+    rpc CreateDraw(google.protobuf.Empty) returns (FetchDrawProtoResponse);
+    rpc JoinDraw (JoinDrawProtoRequest) returns (FetchDrawProtoResponse);
 } 
+
+message DrawOptionsProtoResponse {
+    int64 ticketPriceInCents = 1;
+    int32 minTicketsPerPlayer = 2;
+    int32 maxTicketsPerPlayer = 3;
+    int32 minPlayersInDraw = 4;
+    int32 maxPlayersInDraw = 5;
+}
 
 enum DrawStatusProto {
     PENDING = 0;

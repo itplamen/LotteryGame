@@ -5,6 +5,8 @@
 
     public interface IDrawOperations
     {
+        Task<ResponseDto<DrawDto>> GetDrawOptions();
+
         Task<ResponseDto<DrawDto>> GetOpenDraw(int playerId);
 
         Task<IEnumerable<string>> GetDrawsReadyToStart();
