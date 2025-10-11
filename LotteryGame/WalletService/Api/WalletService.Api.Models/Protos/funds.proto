@@ -8,6 +8,7 @@ package funds;
 
 service Funds {
 	rpc HasEnoughFunds (EnoughFundsProtoRequest) returns (BaseProtoResponse);
+	rpc GetFunds (WalletProtoRequest) returns (WalletProtoResponse);
 	rpc Reserve (ReserveProtoRequest) returns (ReserveProtoResponse);
 	rpc Capture (FundsProtoRequest) returns (BaseProtoResponse);
 	rpc Refund (FundsProtoRequest) returns (BaseProtoResponse);
@@ -17,6 +18,17 @@ service Funds {
 message EnoughFundsProtoRequest {
 	int32 playerId = 1;
 	int64 cost = 2;
+}
+
+message WalletProtoRequest {
+	int32 playerId = 1;
+}
+
+message WalletProtoResponse {
+	bool success = 1;
+	string errorMsg = 2;
+	int64 realMoney = 3;
+	int64 bonusMoney = 4;
 }
 
 message BaseProtoResponse {

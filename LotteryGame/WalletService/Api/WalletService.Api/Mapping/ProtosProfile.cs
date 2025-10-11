@@ -22,6 +22,12 @@
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
                 .ForMember(dest => dest.ReservationId, opt => opt.MapFrom(src => src.Data.Id));
 
+            CreateMap<ResponseDto<WalletDto>, WalletProtoResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
+                .ForMember(dest => dest.RealMoney, opt => opt.MapFrom(src => src.Data.RealMoney))
+                 .ForMember(dest => dest.BonusMoney, opt => opt.MapFrom(src => src.Data.BonusMoney));
+
             CreateMap<BalanceHistoryDto, HistoryProtoResponse>()
                 .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
                 .ForMember(dest => dest.CreatedOn, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.CreatedOn.ToUniversalTime())))

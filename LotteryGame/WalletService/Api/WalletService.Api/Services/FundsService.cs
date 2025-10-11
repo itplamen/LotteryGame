@@ -32,6 +32,14 @@
             return response;
         }
 
+        public override async Task<WalletProtoResponse> GetFunds(WalletProtoRequest request, ServerCallContext context)
+        {
+            ResponseDto<WalletDto> responseDto = await fundsOperations.GetFunds(request.PlayerId);
+            WalletProtoResponse response = mapper.Map<WalletProtoResponse>(responseDto);
+
+            return response;
+        }
+
         public override async Task<ReserveProtoResponse> Reserve(ReserveProtoRequest request, ServerCallContext context)
         {
             ResponseDto<BaseDto> responseDto = await fundsOperations.Reserve(request.PlayerId, request.Amount);
