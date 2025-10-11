@@ -28,7 +28,7 @@
                 return new ResponseDto("Reservation not found");
             }
 
-            context.Amount = context.Reservation.Amount;
+            context.Amount = context.Reservation.AmountInCents;
             return new ResponseDto();
         }
     }

@@ -39,10 +39,10 @@ namespace WalletService.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("NewBalance")
+                    b.Property<long>("NewBalanceInCents")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("OldBalance")
+                    b.Property<long>("OldBalanceInCents")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Reason")
@@ -196,7 +196,7 @@ namespace WalletService.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("Amount")
+                    b.Property<long>("AmountInCents")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedOn")
@@ -250,7 +250,7 @@ namespace WalletService.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("BonusMoney")
+                    b.Property<long>("BonusMoneyInCents")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedOn")
@@ -259,7 +259,7 @@ namespace WalletService.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("LockedFunds")
+                    b.Property<long>("LockedFundsInCents")
                         .HasColumnType("bigint");
 
                     b.Property<int>("LoyaltyPoints")
@@ -271,7 +271,7 @@ namespace WalletService.Data.Migrations
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<long>("RealMoney")
+                    b.Property<long>("RealMoneyInCents")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -288,152 +288,152 @@ namespace WalletService.Data.Migrations
                         new
                         {
                             Id = 1,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 1,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 2,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 2,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 3,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 3,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 4,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 4,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 5,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 5,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 6,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 6,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 7,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 7,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 8,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 8,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 9,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 9,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 10,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 10,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 11,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 11,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 12,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 12,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 13,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 13,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 14,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 14,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         },
                         new
                         {
                             Id = 15,
-                            BonusMoney = 0L,
+                            BonusMoneyInCents = 0L,
                             CreatedOn = new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LockedFunds = 0L,
+                            LockedFundsInCents = 0L,
                             LoyaltyPoints = 0,
                             PlayerId = 15,
-                            RealMoney = 1000L
+                            RealMoneyInCents = 1000L
                         });
                 });
 

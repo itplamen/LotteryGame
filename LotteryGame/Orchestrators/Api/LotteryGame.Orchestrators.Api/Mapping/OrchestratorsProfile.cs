@@ -35,8 +35,8 @@
             CreateMap<OrchestratorResponse<PlayerProfileResponse>, ProfileProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
-                .ForMember(dest => dest.RealBalance, opt => opt.MapFrom(src => src.Data.RealBalance))
-                .ForMember(dest => dest.BonusBalance, opt => opt.MapFrom(src => src.Data.BonusBalance))
+                .ForMember(dest => dest.RealBalanceInCents, opt => opt.MapFrom(src => src.Data.RealBalanceInCents))
+                .ForMember(dest => dest.BonusBalanceInCents, opt => opt.MapFrom(src => src.Data.BonusBalanceInCents))
                 .ForMember(dest => dest.DrawOptions, opt => opt.MapFrom(src => src.Data.DrawOptions));
 
             CreateMap<OrchestratorResponse<AvailableDrawResponse>, PurchaseProtoResponse>()

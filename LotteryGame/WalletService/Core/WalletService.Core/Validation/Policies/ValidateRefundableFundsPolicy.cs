@@ -9,7 +9,7 @@
         public Task<ResponseDto> ExecuteAsync(ReservationOperationContext context)
         {
             return Task.FromResult(new ResponseDto(
-                context.Wallet.LockedFunds < context.Amount ? 
+                context.Wallet.LockedFundsInCents < context.Amount ? 
                 "Insufficient locked funds to process refund" : 
                 null));
         }

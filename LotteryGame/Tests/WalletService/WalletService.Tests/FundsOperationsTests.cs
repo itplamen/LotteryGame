@@ -91,7 +91,7 @@ namespace WalletService.Tests
         public async Task HasEnoughFunds_ShouldReturnError_WhenInsufficientFunds()
         {
             Wallet wallet = WalletStubs.GetWallets().First();
-            var result = await fundsOperations.HasEnoughFunds(wallet.Id, wallet.TotalBalance + 1);
+            var result = await fundsOperations.HasEnoughFunds(wallet.Id, wallet.TotalBalanceInCents + 1);
 
             result.IsSuccess.Should().BeFalse();
             result.ErrorMsg.Should().Be("Insufficient funds");
@@ -101,7 +101,7 @@ namespace WalletService.Tests
         public async Task HasEnoughFunds_ShouldReturnSuccess_WhenSufficientFunds()
         {
             Wallet wallet = WalletStubs.GetWallets().First();
-            var result = await fundsOperations.HasEnoughFunds(wallet.Id, wallet.TotalBalance - 1);
+            var result = await fundsOperations.HasEnoughFunds(wallet.Id, wallet.TotalBalanceInCents - 1);
 
             result.IsSuccess.Should().BeTrue();
             result.ErrorMsg.Should().Be(string.Empty);
@@ -133,7 +133,7 @@ namespace WalletService.Tests
         public async Task Reserve_ShouldReturnError_WhenInsufficientFunds()
         {
             Wallet wallet = WalletStubs.GetWallets().First();
-            var result = await fundsOperations.Reserve(wallet.Id, wallet.TotalBalance + 1);
+            var result = await fundsOperations.Reserve(wallet.Id, wallet.TotalBalanceInCents + 1);
 
             result.IsSuccess.Should().BeFalse();
             result.ErrorMsg.Should().Be("Insufficient funds");
@@ -144,9 +144,9 @@ namespace WalletService.Tests
         public async Task Reserve_ShouldDecreaseOnlyRealBalance_AndCreateReservation()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialRealMoney = wallet.RealMoney;
-            long initialBonusMoney = wallet.BonusMoney;
-            long reserveAmount = wallet.RealMoney - 1;
+            long initialRealMoney = wallet.RealMoneyInCents;
+            long initialBonusMoney = wallet.BonusMoneyInCents;
+            long reserveAmount = wallet.RealMoneyInCents - 1;
 
             var result = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
 
@@ -155,13 +155,13 @@ namespace WalletService.Tests
             result.Data.Should().NotBeNull();
             result.Data.Id.Should().Be("1");
 
-            wallet.RealMoney.Should().Be(initialRealMoney - reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonusMoney);
-            wallet.LockedFunds.Should().Be(reserveAmount);
+            wallet.RealMoneyInCents.Should().Be(initialRealMoney - reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney);
+            wallet.LockedFundsInCents.Should().Be(reserveAmount);
 
             var reservation = reservationRepoMock.Data.FirstOrDefault(x => x.Id == long.Parse(result.Data.Id));
             reservation.Should().NotBeNull();
-            reservation.Amount.Should().Be(reserveAmount);
+            reservation.AmountInCents.Should().Be(reserveAmount);
             reservation.WalletId.Should().Be(wallet.Id);
             reservation.IsCaptured.Should().BeFalse();
         }
@@ -170,9 +170,9 @@ namespace WalletService.Tests
         public async Task Reserve_ShouldDecreaseBothRealAndBonusBalances_AndCreateReservation()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialRealMoney = wallet.RealMoney;
-            long initialBonusMoney = wallet.BonusMoney;
-            long reserveAmount = wallet.RealMoney + 1;
+            long initialRealMoney = wallet.RealMoneyInCents;
+            long initialBonusMoney = wallet.BonusMoneyInCents;
+            long reserveAmount = wallet.RealMoneyInCents + 1;
 
             var result = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
 
@@ -181,13 +181,13 @@ namespace WalletService.Tests
             result.Data.Should().NotBeNull();
             result.Data.Id.Should().Be("1");
 
-            wallet.RealMoney.Should().Be(0);
-            wallet.BonusMoney.Should().Be(initialBonusMoney - 1);
-            wallet.LockedFunds.Should().Be(reserveAmount);
+            wallet.RealMoneyInCents.Should().Be(0);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney - 1);
+            wallet.LockedFundsInCents.Should().Be(reserveAmount);
 
             var reservation = reservationRepoMock.Data.FirstOrDefault(x => x.Id == long.Parse(result.Data.Id));
             reservation.Should().NotBeNull();
-            reservation.Amount.Should().Be(reserveAmount);
+            reservation.AmountInCents.Should().Be(reserveAmount);
             reservation.WalletId.Should().Be(wallet.Id);
             reservation.IsCaptured.Should().BeFalse();
         }
@@ -215,8 +215,8 @@ namespace WalletService.Tests
         public async Task Capture_ShouldSuccessfullyCaptureReservation_AndDeductLockedWalletFunds()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialRealMoney = wallet.RealMoney;
-            long initialBonusMoney = wallet.BonusMoney;
+            long initialRealMoney = wallet.RealMoneyInCents;
+            long initialBonusMoney = wallet.BonusMoneyInCents;
             long reserveAmount = 1;
 
             var result = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
@@ -225,21 +225,21 @@ namespace WalletService.Tests
             result.Data.Should().NotBeNull();
             result.Data.Id.Should().Be("1");
 
-            wallet.RealMoney.Should().Be(initialRealMoney - reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonusMoney);
-            wallet.LockedFunds.Should().Be(reserveAmount);
+            wallet.RealMoneyInCents.Should().Be(initialRealMoney - reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney);
+            wallet.LockedFundsInCents.Should().Be(reserveAmount);
 
             var resultCapture = await fundsOperations.Capture(int.Parse(result.Data.Id));
             resultCapture.IsSuccess.Should().BeTrue();
             resultCapture.ErrorMsg.Should().BeEmpty();
 
-            wallet.RealMoney.Should().Be(initialRealMoney - reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonusMoney);
-            wallet.LockedFunds.Should().Be(0);
+            wallet.RealMoneyInCents.Should().Be(initialRealMoney - reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney);
+            wallet.LockedFundsInCents.Should().Be(0);
 
             var reservation = reservationRepoMock.Data.FirstOrDefault(x => x.Id == long.Parse(result.Data.Id));
             reservation.Should().NotBeNull();
-            reservation.Amount.Should().Be(reserveAmount);
+            reservation.AmountInCents.Should().Be(reserveAmount);
             reservation.WalletId.Should().Be(wallet.Id);
             reservation.IsCaptured.Should().BeTrue();
         }
@@ -248,8 +248,8 @@ namespace WalletService.Tests
         public async Task Capture_ShouldReturnError_WhenReservationIsAlreadyCaptured()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialRealMoney = wallet.RealMoney;
-            long initialBonusMoney = wallet.BonusMoney;
+            long initialRealMoney = wallet.RealMoneyInCents;
+            long initialBonusMoney = wallet.BonusMoneyInCents;
             long reserveAmount = 1;
 
             var result = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
@@ -258,21 +258,21 @@ namespace WalletService.Tests
             result.Data.Should().NotBeNull();
             result.Data.Id.Should().Be("1");
 
-            wallet.RealMoney.Should().Be(initialRealMoney - reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonusMoney);
-            wallet.LockedFunds.Should().Be(reserveAmount);
+            wallet.RealMoneyInCents.Should().Be(initialRealMoney - reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney);
+            wallet.LockedFundsInCents.Should().Be(reserveAmount);
 
             var resultCapture = await fundsOperations.Capture(int.Parse(result.Data.Id));
             resultCapture.IsSuccess.Should().BeTrue();
             resultCapture.ErrorMsg.Should().BeEmpty();
 
-            wallet.RealMoney.Should().Be(initialRealMoney - reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonusMoney);
-            wallet.LockedFunds.Should().Be(0);
+            wallet.RealMoneyInCents.Should().Be(initialRealMoney - reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney);
+            wallet.LockedFundsInCents.Should().Be(0);
 
             var reservation = reservationRepoMock.Data.FirstOrDefault(x => x.Id == long.Parse(result.Data.Id));
             reservation.Should().NotBeNull();
-            reservation.Amount.Should().Be(reserveAmount);
+            reservation.AmountInCents.Should().Be(reserveAmount);
             reservation.WalletId.Should().Be(wallet.Id);
             reservation.IsCaptured.Should().BeTrue();
 
@@ -335,8 +335,8 @@ namespace WalletService.Tests
         public async Task Refund_ShouldReturnError_WhenReservationAlreadyCaptured()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialRealMoney = wallet.RealMoney;
-            long initialBonusMoney = wallet.BonusMoney;
+            long initialRealMoney = wallet.RealMoneyInCents;
+            long initialBonusMoney = wallet.BonusMoneyInCents;
             long reserveAmount = 1;
 
             var result = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
@@ -345,21 +345,21 @@ namespace WalletService.Tests
             result.Data.Should().NotBeNull();
             result.Data.Id.Should().Be("1");
 
-            wallet.RealMoney.Should().Be(initialRealMoney - reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonusMoney);
-            wallet.LockedFunds.Should().Be(reserveAmount);
+            wallet.RealMoneyInCents.Should().Be(initialRealMoney - reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney);
+            wallet.LockedFundsInCents.Should().Be(reserveAmount);
 
             var resultCapture = await fundsOperations.Capture(int.Parse(result.Data.Id));
             resultCapture.IsSuccess.Should().BeTrue();
             resultCapture.ErrorMsg.Should().BeEmpty();
 
-            wallet.RealMoney.Should().Be(initialRealMoney - reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonusMoney);
-            wallet.LockedFunds.Should().Be(0);
+            wallet.RealMoneyInCents.Should().Be(initialRealMoney - reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonusMoney);
+            wallet.LockedFundsInCents.Should().Be(0);
 
             var reservation = reservationRepoMock.Data.FirstOrDefault(x => x.Id == long.Parse(result.Data.Id));
             reservation.Should().NotBeNull();
-            reservation.Amount.Should().Be(reserveAmount);
+            reservation.AmountInCents.Should().Be(reserveAmount);
             reservation.WalletId.Should().Be(wallet.Id);
             reservation.IsCaptured.Should().BeTrue();
 
@@ -372,7 +372,7 @@ namespace WalletService.Tests
         public async Task Refund_ShouldReturnError_WhenLockedFundsInsufficient()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialRealMoney = wallet.RealMoney;
+            long initialRealMoney = wallet.RealMoneyInCents;
             long reserveAmount = 1;
 
             var reserveResult = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
@@ -381,13 +381,13 @@ namespace WalletService.Tests
 
             var reservation = reservationRepoMock.Data.FirstOrDefault(x => x.Id == long.Parse(reserveResult.Data.Id));
             reservation.Should().NotBeNull();
-            reservation.Amount.Should().Be(reserveAmount);
+            reservation.AmountInCents.Should().Be(reserveAmount);
             reservation.WalletId.Should().Be(wallet.Id);
             reservation.IsCaptured.Should().BeFalse();
 
-            long realMoneyAfterReservation = wallet.RealMoney;
+            long realMoneyAfterReservation = wallet.RealMoneyInCents;
 
-            wallet.LockedFunds = reserveAmount - 10;
+            wallet.LockedFundsInCents = reserveAmount - 10;
             var refundResult = await fundsOperations.Refund(reservation.Id);
             
             refundResult.IsSuccess.Should().BeFalse();
@@ -395,28 +395,28 @@ namespace WalletService.Tests
             reservationRepoMock.Data.Should().Contain(reservation);
 
             initialRealMoney.Should().BeGreaterThan(realMoneyAfterReservation);
-            realMoneyAfterReservation.Should().Be(wallet.RealMoney);
-            initialRealMoney.Should().Be(wallet.RealMoney + reserveAmount);
+            realMoneyAfterReservation.Should().Be(wallet.RealMoneyInCents);
+            initialRealMoney.Should().Be(wallet.RealMoneyInCents + reserveAmount);
         }
 
         [Test]
         public async Task Refund_ShouldSuccessfullyRefundPlayer_AndReturnFundsToRealMoney()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialRealMoney = wallet.RealMoney;
-            long initialLockedMoney = wallet.LockedFunds;
+            long initialRealMoney = wallet.RealMoneyInCents;
+            long initialLockedMoney = wallet.LockedFundsInCents;
             long reserveAmount = 1;
 
             var reserveResult = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
             reserveResult.IsSuccess.Should().BeTrue();
             reserveResult.ErrorMsg.Should().BeEmpty();
 
-            long realMoneyAfterReservation = wallet.RealMoney;
-            long lockedMoneyAfterReservation = wallet.LockedFunds;
+            long realMoneyAfterReservation = wallet.RealMoneyInCents;
+            long lockedMoneyAfterReservation = wallet.LockedFundsInCents;
 
             var reservation = reservationRepoMock.Data.FirstOrDefault(x => x.Id == long.Parse(reserveResult.Data.Id));
             reservation.Should().NotBeNull();
-            reservation.Amount.Should().Be(reserveAmount);
+            reservation.AmountInCents.Should().Be(reserveAmount);
             reservation.WalletId.Should().Be(wallet.Id);
             reservation.IsCaptured.Should().BeFalse();
 
@@ -425,9 +425,9 @@ namespace WalletService.Tests
             refundResult.ErrorMsg.Should().BeEmpty();
 
             initialRealMoney.Should().BeGreaterThan(realMoneyAfterReservation);
-            initialRealMoney.Should().Be(wallet.RealMoney);
+            initialRealMoney.Should().Be(wallet.RealMoneyInCents);
             initialLockedMoney.Should().Be(0);
-            initialLockedMoney.Should().Be(wallet.LockedFunds);
+            initialLockedMoney.Should().Be(wallet.LockedFundsInCents);
             lockedMoneyAfterReservation.Should().Be(reserveAmount);
         }
 
@@ -438,7 +438,7 @@ namespace WalletService.Tests
             var reserveResult = await fundsOperations.Reserve(wallet.PlayerId, 5);
             var reservation = reservationRepoMock.Data.First(x => x.Id == long.Parse(reserveResult.Data.Id));
 
-            wallet.LockedFunds = 0;
+            wallet.LockedFundsInCents = 0;
 
             var refundResult = await fundsOperations.Refund(reservation.Id);
 
@@ -479,9 +479,9 @@ namespace WalletService.Tests
         public async Task Refund_ShouldReturnFundsToRealAndBonus_WhenMixedReservation()
         {
             var wallet = walletRepoMock.Data.First();
-            long initialReal = wallet.RealMoney;
-            long initialBonus = wallet.BonusMoney;
-            long reserveAmount = wallet.RealMoney + 5;
+            long initialReal = wallet.RealMoneyInCents;
+            long initialBonus = wallet.BonusMoneyInCents;
+            long reserveAmount = wallet.RealMoneyInCents + 5;
 
             var reserveResult = await fundsOperations.Reserve(wallet.PlayerId, reserveAmount);
             var reservation = reservationRepoMock.Data.First(x => x.Id == long.Parse(reserveResult.Data.Id));
@@ -489,9 +489,9 @@ namespace WalletService.Tests
             var refundResult = await fundsOperations.Refund(reservation.Id);
             refundResult.IsSuccess.Should().BeTrue();
 
-            wallet.RealMoney.Should().Be(reserveAmount);
-            wallet.BonusMoney.Should().Be(initialBonus - 5);
-            wallet.LockedFunds.Should().Be(0);
+            wallet.RealMoneyInCents.Should().Be(reserveAmount);
+            wallet.BonusMoneyInCents.Should().Be(initialBonus - 5);
+            wallet.LockedFundsInCents.Should().Be(0);
         }
 
         [Test]
@@ -504,7 +504,7 @@ namespace WalletService.Tests
             await fundsOperations.Reserve(wallet.PlayerId, firstAmount);
             await fundsOperations.Reserve(wallet.PlayerId, secondAmount);
 
-            wallet.LockedFunds.Should().Be(firstAmount + secondAmount);
+            wallet.LockedFundsInCents.Should().Be(firstAmount + secondAmount);
             reservationRepoMock.Data.Count.Should().Be(2);
         }
     }

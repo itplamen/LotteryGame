@@ -5,7 +5,7 @@
     public class Reservation : BaseEntity
     {
         [Required]
-        public long Amount { get; set; }
+        public long AmountInCents { get; set; }
 
         public DateTime ExpiresAt { get; set; }
 

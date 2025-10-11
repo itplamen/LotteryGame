@@ -31,8 +31,8 @@
             var balanceHistory = new BalanceHistory()
             {
                 WalletId = walletId,
-                OldBalance = oldBalance,
-                NewBalance = newBalance,
+                OldBalanceInCents = oldBalance,
+                NewBalanceInCents = newBalance,
                 Type = balanceType,
                 Reason = reason,
                 ReservationId = reservationId

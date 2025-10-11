@@ -27,8 +27,8 @@ message WalletProtoRequest {
 message WalletProtoResponse {
 	bool success = 1;
 	string errorMsg = 2;
-	int64 realMoney = 3;
-	int64 bonusMoney = 4;
+	int64 realMoneyInCents = 3;
+	int64 bonusMoneyInCents = 4;
 }
 
 message BaseProtoResponse {

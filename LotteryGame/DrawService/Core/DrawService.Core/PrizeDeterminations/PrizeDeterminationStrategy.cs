@@ -27,7 +27,7 @@
                 remainingTicketIds.RemoveAll(id => winners.Select(x => x.TicketId).Contains(id));
             }
             
-            draw.HouseProfit = totalRevenue - prizes.Sum(p => p.Amount);
+            draw.HouseProfit = totalRevenue - prizes.Sum(p => p.AmountInCents);
 
             return prizes;
         }

@@ -34,7 +34,7 @@
 
             if (response.Success)
             {
-                response.Data.TotalCost = cost;
+                response.Data.TotalCostInCents = cost;
             }
 
             return response;

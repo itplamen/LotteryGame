@@ -42,15 +42,15 @@
             {
                 entity.HasKey(x => x.Id);
 
-                entity.Property(x => x.RealMoney)
+                entity.Property(x => x.RealMoneyInCents)
                     .HasColumnType("bigint")
                     .IsRequired();
 
-                entity.Property(x => x.BonusMoney)
+                entity.Property(x => x.BonusMoneyInCents)
                     .HasColumnType("bigint")
                     .IsRequired();
 
-                entity.Property(x => x.LockedFunds)
+                entity.Property(x => x.LockedFundsInCents)
                     .HasColumnType("bigint")
                     .IsRequired();
 
@@ -85,11 +85,11 @@
                 entity.HasIndex(x => x.WalletId);
                 entity.HasIndex(x => x.ReservationId);
 
-                entity.Property(x => x.NewBalance)
+                entity.Property(x => x.NewBalanceInCents)
                     .HasColumnType("bigint")
                     .IsRequired();
 
-                entity.Property(x => x.OldBalance)
+                entity.Property(x => x.OldBalanceInCents)
                     .HasColumnType("bigint")
                     .IsRequired();
 
@@ -120,7 +120,7 @@
                       .HasForeignKey(x => x.WalletId)
                       .IsRequired();
 
-                entity.Property(x => x.Amount)
+                entity.Property(x => x.AmountInCents)
                     .HasColumnType("bigint")
                     .IsRequired();
 
@@ -167,9 +167,9 @@
                 {
                     Id = id,      
                     PlayerId = id,    
-                    RealMoney = startingBalanceInCents,
-                    BonusMoney = 0,
-                    LockedFunds = 0,
+                    RealMoneyInCents = startingBalanceInCents,
+                    BonusMoneyInCents = 0,
+                    LockedFundsInCents = 0,
                     LoyaltyPoints = 0,
                     CreatedOn = new DateTime(2025, 10, 04)
                 })

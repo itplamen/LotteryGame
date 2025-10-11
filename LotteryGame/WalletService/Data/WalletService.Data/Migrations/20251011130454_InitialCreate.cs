@@ -35,9 +35,9 @@ namespace WalletService.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RealMoney = table.Column<long>(type: "bigint", nullable: false),
-                    BonusMoney = table.Column<long>(type: "bigint", nullable: false),
-                    LockedFunds = table.Column<long>(type: "bigint", nullable: false),
+                    RealMoneyInCents = table.Column<long>(type: "bigint", nullable: false),
+                    BonusMoneyInCents = table.Column<long>(type: "bigint", nullable: false),
+                    LockedFundsInCents = table.Column<long>(type: "bigint", nullable: false),
                     LoyaltyPoints = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -62,7 +62,7 @@ namespace WalletService.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<long>(type: "bigint", nullable: false),
+                    AmountInCents = table.Column<long>(type: "bigint", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsCaptured = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     WalletId = table.Column<int>(type: "int", nullable: false),
@@ -88,8 +88,8 @@ namespace WalletService.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OldBalance = table.Column<long>(type: "bigint", nullable: false),
-                    NewBalance = table.Column<long>(type: "bigint", nullable: false),
+                    OldBalanceInCents = table.Column<long>(type: "bigint", nullable: false),
+                    NewBalanceInCents = table.Column<long>(type: "bigint", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     WalletId = table.Column<int>(type: "int", nullable: false),
@@ -158,7 +158,7 @@ namespace WalletService.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Wallets",
-                columns: new[] { "Id", "BonusMoney", "CreatedOn", "DeletedOn", "LockedFunds", "LoyaltyPoints", "ModifiedOn", "PlayerId", "RealMoney" },
+                columns: new[] { "Id", "BonusMoneyInCents", "CreatedOn", "DeletedOn", "LockedFundsInCents", "LoyaltyPoints", "ModifiedOn", "PlayerId", "RealMoneyInCents" },
                 values: new object[,]
                 {
                     { 1, 0L, new DateTime(2025, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0L, 0, null, 1, 1000L },

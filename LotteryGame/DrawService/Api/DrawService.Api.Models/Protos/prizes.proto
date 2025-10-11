@@ -17,7 +17,7 @@ enum PrizeTierProto {
 message PrizeProto {
     string id = 1;
     string ticketId = 2;
-    int64 amount = 3;
+    int64 amountInCents = 3;
     PrizeTierProto tier = 4;
     string drawId = 5;
 }

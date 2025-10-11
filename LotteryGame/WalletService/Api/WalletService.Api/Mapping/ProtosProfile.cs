@@ -25,8 +25,8 @@
             CreateMap<ResponseDto<WalletDto>, WalletProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
-                .ForMember(dest => dest.RealMoney, opt => opt.MapFrom(src => src.Data.RealMoney))
-                 .ForMember(dest => dest.BonusMoney, opt => opt.MapFrom(src => src.Data.BonusMoney));
+                .ForMember(dest => dest.RealMoneyInCents, opt => opt.MapFrom(src => src.Data.RealMoneyInCents))
+                 .ForMember(dest => dest.BonusMoneyInCents, opt => opt.MapFrom(src => src.Data.BonusMoneyInCents));
 
             CreateMap<BalanceHistoryDto, HistoryProtoResponse>()
                 .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))

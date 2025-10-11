@@ -73,14 +73,14 @@
                 .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
                 .ForMember(dest => dest.Tier, opt => opt.MapFrom(src => src.Tier))
                 .ForMember(dest => dest.DrawId, opt => opt.MapFrom(src => src.DrawId))
-                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
+                .ForMember(dest => dest.AmountInCents, opt => opt.MapFrom(src => src.AmountInCents));
 
             CreateMap<PrizeDto, PrizeProto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
                 .ForMember(dest => dest.Tier, opt => opt.MapFrom(src => src.Tier))
                 .ForMember(dest => dest.DrawId, opt => opt.MapFrom(src => src.DrawId))
-                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount));
+                .ForMember(dest => dest.AmountInCents, opt => opt.MapFrom(src => src.AmountInCents));
 
             CreateMap<ResponseDto<IEnumerable<PrizeDto>>, DeterminePrizeProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))

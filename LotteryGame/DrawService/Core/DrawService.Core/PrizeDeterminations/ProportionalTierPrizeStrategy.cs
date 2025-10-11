@@ -38,7 +38,7 @@
                 {
                     DrawId = draw.Id,
                     TicketId = ticketId,
-                    Amount = prizePerTicket,
+                    AmountInCents = prizePerTicket,
                     Tier = Tier
                 });
         }

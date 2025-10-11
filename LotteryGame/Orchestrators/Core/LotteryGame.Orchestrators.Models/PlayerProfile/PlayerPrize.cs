@@ -2,7 +2,7 @@
 {
     public class PlayerPrize
     {
-        public long Amount { get; set; }
+        public long AmountInCents { get; set; }
 
         public string Tier { get; set; }
     }

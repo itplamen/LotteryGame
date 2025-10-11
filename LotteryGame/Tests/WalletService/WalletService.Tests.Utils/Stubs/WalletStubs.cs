@@ -14,8 +14,8 @@
                     Id = id,
                     PlayerId = id,
                     Player = players.First(x => x.Id == id),
-                    RealMoney = 15,
-                    BonusMoney = 30,
+                    RealMoneyInCents = 15,
+                    BonusMoneyInCents = 30,
                     CreatedOn = new DateTime(2025, 10, 04)
                 })
                 .ToList();

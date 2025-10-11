@@ -65,7 +65,7 @@ message DrawOptionsProto {
 message ProfileProtoResponse {
     bool success = 1;
     string errorMsg = 2;
-    int64 realBalance = 3;
-    int64 bonusBalance = 4;
+    int64 realBalanceInCents = 3;
+    int64 bonusBalanceInCents = 4;
     DrawOptionsProto drawOptions = 5; 
 }

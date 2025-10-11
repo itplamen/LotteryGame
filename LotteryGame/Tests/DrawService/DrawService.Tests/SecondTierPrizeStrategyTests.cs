@@ -53,7 +53,7 @@
             prizes.Should().HaveCount(expectedWinnerCount);
 
             var expectedAmount = (long)(totalRevenue * 0.3m / expectedWinnerCount);
-            prizes.Should().OnlyContain(p => p.Amount == expectedAmount);
+            prizes.Should().OnlyContain(p => p.AmountInCents == expectedAmount);
         }
 
         [Test]

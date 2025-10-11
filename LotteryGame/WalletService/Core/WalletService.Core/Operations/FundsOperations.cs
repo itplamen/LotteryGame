@@ -64,8 +64,8 @@
             { 
                 Data = new WalletDto() 
                 {
-                    RealMoney = context.Wallet.RealMoney,
-                    BonusMoney = context.Wallet.BonusMoney
+                    RealMoneyInCents = context.Wallet.RealMoneyInCents,
+                    BonusMoneyInCents = context.Wallet.BonusMoneyInCents
                 } 
             };
         }
@@ -85,26 +85,26 @@
             }
 
             Wallet wallet = context.Wallet;
-            long oldBalance = wallet.TotalBalance;
+            long oldBalance = wallet.TotalBalanceInCents;
             long remaining = amount;
 
-            if (wallet.RealMoney >= remaining)
+            if (wallet.RealMoneyInCents >= remaining)
             {
-                wallet.RealMoney -= remaining;
+                wallet.RealMoneyInCents -= remaining;
             }
             else
             {
-                remaining -= wallet.RealMoney;
-                wallet.RealMoney = 0;
-                wallet.BonusMoney -= remaining;
+                remaining -= wallet.RealMoneyInCents;
+                wallet.RealMoneyInCents = 0;
+                wallet.BonusMoneyInCents -= remaining;
             }
 
-            wallet.LockedFunds += amount;
+            wallet.LockedFundsInCents += amount;
 
             var reservation = new Reservation()
             {
                 WalletId = wallet.Id,
-                Amount = amount,
+                AmountInCents = amount,
                 IsCaptured = false,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(reservationExpiryMins)
             };
@@ -115,7 +115,7 @@
             await balanceHistoryOperations.Record(
                 wallet.Id,
                 oldBalance,
-                wallet.TotalBalance, 
+                wallet.TotalBalanceInCents, 
                 BalanceType.Reserve, 
                 "Funds reserved",
                 reservation.Id);
@@ -139,8 +139,8 @@
             Wallet wallet = context.Wallet;
             Reservation reservation = context.Reservation;
 
-            long oldBalance = wallet.TotalBalance;
-            wallet.LockedFunds -= reservation.Amount;
+            long oldBalance = wallet.TotalBalanceInCents;
+            wallet.LockedFundsInCents -= reservation.AmountInCents;
             reservation.IsCaptured = true;
 
             await walletRepo.SaveChangesAsync();
@@ -148,7 +148,7 @@
             await balanceHistoryOperations.Record(
                 wallet.Id,
                 oldBalance,
-                wallet.TotalBalance,
+                wallet.TotalBalanceInCents,
                 BalanceType.Capture,
                 "Funds captured",
                 reservation.Id);
@@ -172,9 +172,9 @@
             Wallet wallet = context.Wallet;
             Reservation reservation = context.Reservation;
 
-            long oldBalance = wallet.TotalBalance;
-            wallet.LockedFunds -= reservation.Amount;
-            wallet.RealMoney += reservation.Amount;
+            long oldBalance = wallet.TotalBalanceInCents;
+            wallet.LockedFundsInCents -= reservation.AmountInCents;
+            wallet.RealMoneyInCents += reservation.AmountInCents;
 
             reservationRepo.Delete(reservation);
             await reservationRepo.SaveChangesAsync();
@@ -182,7 +182,7 @@
             await balanceHistoryOperations.Record(
                 wallet.Id,
                 oldBalance,
-                wallet.TotalBalance,
+                wallet.TotalBalanceInCents,
                 BalanceType.Refund,
                 "Funds refunded",
                 reservation.Id);

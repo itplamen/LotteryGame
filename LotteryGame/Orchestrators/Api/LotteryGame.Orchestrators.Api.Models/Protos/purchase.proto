@@ -16,6 +16,6 @@ message PurchaseProtoRequest {
 message PurchaseProtoResponse {
   bool success = 1;
   string errorMsg = 2;
-  int64 totalCost = 3;
+  int64 totalCostInCents = 3;
   repeated string ticketNumbers = 4; 
 }

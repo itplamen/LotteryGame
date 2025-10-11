@@ -4,7 +4,7 @@
     {
         public string TicketId { get; set; }
 
-        public long Amount { get; set; }
+        public long AmountInCents { get; set; }
 
         public PrizeTier Tier { get; set; }
 

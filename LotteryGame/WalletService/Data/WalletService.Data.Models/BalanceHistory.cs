@@ -5,10 +5,10 @@
     public class BalanceHistory : BaseEntity
     {
         [Required]  
-        public long OldBalance { get; set; }
+        public long OldBalanceInCents { get; set; }
 
         [Required]
-        public long NewBalance { get; set; }
+        public long NewBalanceInCents { get; set; }
 
         [Required]
         public BalanceType Type { get; set; }

@@ -12,13 +12,13 @@
         }
 
         [Required]
-        public long RealMoney { get; set; }
+        public long RealMoneyInCents { get; set; }
 
         [Required]
-        public long BonusMoney { get; set; }
+        public long BonusMoneyInCents { get; set; }
 
         [Required]
-        public long LockedFunds { get; set; }
+        public long LockedFundsInCents { get; set; }
 
         [Required]
         public int LoyaltyPoints { get; set; }
@@ -33,6 +33,6 @@
         public ICollection<Reservation> Reservations { get; set; }
 
         [NotMapped]
-        public long TotalBalance => RealMoney + BonusMoney + LockedFunds;
+        public long TotalBalanceInCents => RealMoneyInCents + BonusMoneyInCents + LockedFundsInCents;
     }
 }

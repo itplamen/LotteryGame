@@ -72,15 +72,15 @@
 
             grandPrizeMock
                 .Setup(x => x.Calculate(draw, It.IsAny<List<string>>(), totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t1", Amount = 300 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t1", AmountInCents = 300 } });
 
             secondTierMock
                 .Setup(x => x.Calculate(draw, It.IsAny<List<string>>(), totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t2", Amount = 200 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t2", AmountInCents = 200 } });
 
             thirdTierMock
                 .Setup(x => x.Calculate(draw, It.IsAny<List<string>>(), totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t3", Amount = 100 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t3", AmountInCents = 100 } });
 
             var result = strategy.DeterminePrizes(draw).ToList();
 
@@ -100,13 +100,13 @@
 
             grandPrizeMock
                 .Setup(x => x.Calculate(draw, It.IsAny<List<string>>(), totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t1", Amount = 300 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t1", AmountInCents = 300 } });
 
             secondTierMock
                 .Setup(x => x.Calculate(draw,
                     It.Is<List<string>>(ids => !ids.Contains("t1")),
                     totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t2", Amount = 200 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t2", AmountInCents = 200 } });
 
             var result = strategy.DeterminePrizes(draw).ToList();
 
@@ -121,15 +121,15 @@
 
             grandPrizeMock
                 .Setup(x => x.Calculate(draw, It.IsAny<List<string>>(), totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t1", Amount = 300 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t1", AmountInCents = 300 } });
 
             secondTierMock
                 .Setup(x => x.Calculate(draw, It.IsAny<List<string>>(), totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t2", Amount = 200 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t2", AmountInCents = 200 } });
 
             thirdTierMock
                 .Setup(x => x.Calculate(draw, It.IsAny<List<string>>(), totalRevenue))
-                .Returns(new List<Prize> { new Prize { TicketId = "t3", Amount = 100 } });
+                .Returns(new List<Prize> { new Prize { TicketId = "t3", AmountInCents = 100 } });
 
             strategy.DeterminePrizes(draw);
 

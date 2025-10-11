@@ -2,8 +2,8 @@
 {
     public class WalletDto
     {
-        public long RealMoney { get; set; }
+        public long RealMoneyInCents { get; set; }
 
-        public long BonusMoney { get; set; }
+        public long BonusMoneyInCents { get; set; }
     }
 }

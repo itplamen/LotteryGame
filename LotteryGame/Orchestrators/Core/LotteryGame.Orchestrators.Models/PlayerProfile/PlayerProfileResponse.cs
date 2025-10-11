@@ -2,9 +2,9 @@
 {
     public class PlayerProfileResponse
     {
-        public long RealBalance { get; set; }
+        public long RealBalanceInCents { get; set; }
 
-        public long BonusBalance { get; set; }
+        public long BonusBalanceInCents { get; set; }
 
         public DrawOptions DrawOptions { get; set; }
     }

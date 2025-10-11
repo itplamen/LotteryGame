@@ -34,8 +34,8 @@
                 { 
                     Data = new PlayerProfileResponse()
                     {
-                        BonusBalance = walletResponse.BonusMoney,
-                        RealBalance = walletResponse.RealMoney,
+                        BonusBalanceInCents = walletResponse.BonusMoneyInCents,
+                        RealBalanceInCents = walletResponse.RealMoneyInCents,
                         DrawOptions = mapper.Map<DrawOptions>(drawOptions)
                     },
                     ErrorMsg = string.Empty,

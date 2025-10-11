@@ -77,7 +77,7 @@
 
             PurchaseProtoResponse purchaseResponse = new PurchaseProtoResponse();
             purchaseResponse.Success = true;
-            purchaseResponse.TotalCost = reserveFundsResponse.Data.TotalCost;
+            purchaseResponse.TotalCostInCents = reserveFundsResponse.Data.TotalCostInCents;
             purchaseResponse.TicketNumbers.Add(purchaseTicketsResponse.Data.Tickets.Select(x => x.Number).ToList());
 
             return purchaseResponse;
