@@ -4,12 +4,12 @@
 
     public interface IDrawGateway
     {
+        Task<DrawOptionsProtoResponse> GetDrawOptions();
+
         Task<FetchDrawProtoResponse> GetOpenDraw(int playerId);
 
         Task<FetchDrawProtoResponse> CreateDraw();
 
         Task<FetchDrawProtoResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds);
-
-        Task<DrawProtoResponse> StartDraw(string drawId);
     }
 }

@@ -26,6 +26,16 @@
             return await Execute(async () => await fundsClient.HasEnoughFundsAsync(enoughFundsRequest));
         }
 
+        public async Task<WalletProtoResponse> GetFunds(int playerId)
+        {
+            WalletProtoRequest walletRequest = new WalletProtoRequest()
+            {
+                PlayerId = playerId
+            };
+
+            return await Execute(async () => await fundsClient.GetFundsAsync(walletRequest));
+        }
+
         public async Task<ReserveProtoResponse> ReserveFunds(int playerId, long amount)
         {
             ReserveProtoRequest reserveRequest = new ReserveProtoRequest()

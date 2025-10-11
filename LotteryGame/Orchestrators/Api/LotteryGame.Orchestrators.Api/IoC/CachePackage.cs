@@ -9,6 +9,7 @@
     using LotteryGame.Orchestrators.Models.AvailableDraw;
     using LotteryGame.Orchestrators.Models.Cache;
     using LotteryGame.Orchestrators.Models.DrawParticipation;
+    using LotteryGame.Orchestrators.Models.PlayerProfile;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
     using LotteryGame.Orchestrators.Models.ReserveFunds;
     
@@ -31,6 +32,7 @@
 
             RegisterCacheService<OrchestratorCacheEntry<AvailableDrawRequest, AvailableDrawResponse>>(services);
             RegisterCacheService<OrchestratorCacheEntry<DrawParticipationRequest, DrawParticipationResponse>>(services);
+            RegisterCacheService<OrchestratorCacheEntry<PlayerProfileRequest, PlayerProfileResponse>>(services);
             RegisterCacheService<OrchestratorCacheEntry<PurchaseTicketsRequest, PurchaseTicketsResponse>>(services);
             RegisterCacheService<OrchestratorCacheEntry<ReserveFundsRequest, ReserveFundsResponse>>(services);
 

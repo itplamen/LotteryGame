@@ -25,6 +25,7 @@
 
   <ItemGroup>
 	<Protobuf Include="..\LotteryGame.Orchestrators.Api.Models\Protos\purchase.proto" GrpcServices="Server" />
+	<Protobuf Include="..\LotteryGame.Orchestrators.Api.Models\Protos\profile.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

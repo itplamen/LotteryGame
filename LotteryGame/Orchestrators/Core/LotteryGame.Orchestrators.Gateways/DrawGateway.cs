@@ -17,6 +17,9 @@
             this.drawClient = drawClient;
         }
 
+        public async Task<DrawOptionsProtoResponse> GetDrawOptions() => 
+            await Execute(async () => await drawClient.GetDrawOptionsAsync(new Empty()));
+
         public async Task<FetchDrawProtoResponse> GetOpenDraw(int playerId)
         {
             FetchDrawProtoRequest fetchDrawRequest = new FetchDrawProtoRequest()
@@ -37,16 +40,6 @@
             request.TicketIds.AddRange(ticketIds);
 
             return await Execute(async () => await drawClient.JoinDrawAsync(request));
-        }
-
-        public async Task<DrawProtoResponse> StartDraw(string drawId)
-        {
-            StartDrawProtoRequest request = new StartDrawProtoRequest()
-            {
-                DrawId = drawId
-            };
-
-            return await Execute(async () => await drawClient.StartDrawAsync(request));
         }
     }
 }

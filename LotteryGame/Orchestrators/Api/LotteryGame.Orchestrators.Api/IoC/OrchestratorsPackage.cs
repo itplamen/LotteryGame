@@ -6,6 +6,7 @@
     using LotteryGame.Orchestrators.Models.AvailableDraw;
     using LotteryGame.Orchestrators.Models.Cache;
     using LotteryGame.Orchestrators.Models.DrawParticipation;
+    using LotteryGame.Orchestrators.Models.PlayerProfile;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
     using LotteryGame.Orchestrators.Models.ReserveFunds;
 
@@ -15,13 +16,15 @@
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddTransient<AvailableDrawOrchestrator>();
-            services.AddTransient<DrawParticipationOrchestrator>();
-            services.AddTransient<PurchaseTicketsOrchestrator>();
-            services.AddTransient<ReserveFunsOrchestrator>();
+            services.AddScoped<AvailableDrawOrchestrator>();
+            services.AddScoped<DrawParticipationOrchestrator>();
+            services.AddScoped<PlayerProfileOrchestrator>();
+            services.AddScoped<PurchaseTicketsOrchestrator>();
+            services.AddScoped<ReserveFunsOrchestrator>();
 
             RegisterDecorator<AvailableDrawRequest, AvailableDrawResponse, AvailableDrawOrchestrator>(services);
             RegisterDecorator<DrawParticipationRequest, DrawParticipationResponse, DrawParticipationOrchestrator>(services);
+            RegisterDecorator<PlayerProfileRequest, PlayerProfileResponse, PlayerProfileOrchestrator>(services);
             RegisterDecorator<PurchaseTicketsRequest, PurchaseTicketsResponse, PurchaseTicketsOrchestrator>(services);
             RegisterDecorator<ReserveFundsRequest, ReserveFundsResponse, ReserveFunsOrchestrator>(services);
         }
@@ -31,7 +34,7 @@
             where TResponse : class
             where TOrchestrator : IOrchestrator<TRequest, TResponse>
         {
-            services.AddTransient<IOrchestrator<TRequest, TResponse>>(x =>
+            services.AddScoped<IOrchestrator<TRequest, TResponse>>(x =>
             {
                 var inner = x.GetRequiredService<TOrchestrator>();
                 var cache = x.GetRequiredService<ICacheService<OrchestratorCacheEntry<TRequest, TResponse>>>();

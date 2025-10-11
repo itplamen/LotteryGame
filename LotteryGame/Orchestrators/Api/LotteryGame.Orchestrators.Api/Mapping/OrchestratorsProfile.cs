@@ -3,10 +3,12 @@
     using AutoMapper;
    
     using DrawService.Api.Models.Protos.Draws;
+    using LotteryGame.Orchestrators.Api.Models.Protos.PlayerProfile;
     using LotteryGame.Orchestrators.Api.Models.Protos.TicketPurchase;
     using LotteryGame.Orchestrators.Models.AvailableDraw;
     using LotteryGame.Orchestrators.Models.Base;
     using LotteryGame.Orchestrators.Models.DrawParticipation;
+    using LotteryGame.Orchestrators.Models.PlayerProfile;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
     using LotteryGame.Orchestrators.Models.ReserveFunds;
     using WagerService.Api.Models.Protos.Tickets;
@@ -16,6 +18,27 @@
     {
         public OrchestratorsProfile()
         {
+            CreateMap<DrawOptionsProtoResponse, DrawOptions>()
+                .ForMember(dest => dest.MinTicketsPerPlayer, opt => opt.MapFrom(src => src.MinTicketsPerPlayer))
+                .ForMember(dest => dest.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.MaxTicketsPerPlayer))
+                .ForMember(dest => dest.TicketPriceInCents, opt => opt.MapFrom(src => src.TicketPriceInCents))
+                .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.MinPlayersInDraw))
+                .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.MaxPlayersInDraw));
+
+            CreateMap<DrawOptions, DrawOptionsProto>()
+                .ForMember(dest => dest.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.MaxTicketsPerPlayer))
+                .ForMember(dest => dest.MinTicketsPerPlayer, opt => opt.MapFrom(src => src.MinTicketsPerPlayer))
+                .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.MaxPlayersInDraw))
+                .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.MinPlayersInDraw))
+                .ForMember(dest => dest.TicketPriceInCents, opt => opt.MapFrom(src => src.TicketPriceInCents));
+
+            CreateMap<OrchestratorResponse<PlayerProfileResponse>, ProfileProtoResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
+                .ForMember(dest => dest.RealBalance, opt => opt.MapFrom(src => src.Data.RealBalance))
+                .ForMember(dest => dest.BonusBalance, opt => opt.MapFrom(src => src.Data.BonusBalance))
+                .ForMember(dest => dest.DrawOptions, opt => opt.MapFrom(src => src.Data.DrawOptions));
+
             CreateMap<OrchestratorResponse<AvailableDrawResponse>, PurchaseProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
