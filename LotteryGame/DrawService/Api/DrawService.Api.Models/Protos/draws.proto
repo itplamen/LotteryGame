@@ -8,10 +8,6 @@ option csharp_namespace = "DrawService.Api.Models.Protos.Draws";
 package draws;
 
 service Draws {
-  rpc FetchDraw (FetchDrawProtoRequest) returns (FetchDrawProtoResponse);
-  rpc CreateDraw(google.protobuf.Empty) returns (FetchDrawProtoResponse);
-  rpc JoinDraw (JoinDrawProtoRequest) returns (FetchDrawProtoResponse);
-  rpc StartDraw (StartDrawProtoRequest) returns (DrawProtoResponse);
 } 
 
 enum DrawStatusProto {
@@ -45,11 +41,3 @@ message JoinDrawProtoRequest {
     repeated string ticketIds = 3;
 }
 
-message DrawProtoResponse {
-    bool success = 1;
-    string errorMsg = 2;
-}
-
-message StartDrawProtoRequest {
-    string drawId = 1;
-}

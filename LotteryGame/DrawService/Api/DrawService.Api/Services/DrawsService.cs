@@ -47,13 +47,5 @@
 
             return response;
         }
-
-        public override async Task<DrawProtoResponse> StartDraw(StartDrawProtoRequest request, ServerCallContext context)
-        {
-            ResponseDto responseDto = await drawOperations.Start(request.DrawId);
-            DrawProtoResponse response = mapper.Map<DrawProtoResponse>(responseDto);
-
-            return response;
-        }
     }
 }
