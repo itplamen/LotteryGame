@@ -1,8 +1,10 @@
 ﻿namespace DrawService.Api.IoC
 {
     using CouchDB.Driver.DependencyInjection;
+    
     using DrawService.Data;
     using DrawService.Data.Contracts;
+    using DrawService.Data.Models;
     using LotteryGame.Common.Models.IoC;
 
     public sealed class DataPackage : IPackage
@@ -28,6 +30,9 @@
             });
 
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+
+            services.AddSingleton<IConflictResolver<Draw>, DrawConflictResolver>();
+            services.AddSingleton<IConflictResolver<Prize>, PrizeConflictResolver>();
         }
     }
 }
