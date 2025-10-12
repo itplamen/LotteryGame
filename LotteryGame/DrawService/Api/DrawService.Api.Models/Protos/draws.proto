@@ -9,9 +9,9 @@ package draws;
 
 service Draws {
     rpc GetDrawOptions(google.protobuf.Empty) returns (DrawOptionsProtoResponse);
-    rpc FetchDraw (FetchDrawProtoRequest) returns (FetchDrawProtoResponse);
-    rpc CreateDraw(google.protobuf.Empty) returns (FetchDrawProtoResponse);
-    rpc JoinDraw (JoinDrawProtoRequest) returns (FetchDrawProtoResponse);
+    rpc GetPlayerDraw (GetPlayerDrawProtoRequest) returns (GetPlayerDrawProtoResponse);
+    rpc CreateDraw(google.protobuf.Empty) returns (GetPlayerDrawProtoResponse);
+    rpc JoinDraw (JoinDrawProtoRequest) returns (GetPlayerDrawProtoResponse);
 } 
 
 message DrawOptionsProtoResponse {
@@ -29,11 +29,11 @@ enum DrawStatusProto {
     CANCELLED = 3;
 }
 
-message FetchDrawProtoRequest {
+message GetPlayerDrawProtoRequest {
     int32 playerId = 1;
 }
 
-message FetchDrawProtoResponse {
+message GetPlayerDrawProtoResponse {
     bool success = 1;
     string errorMsg = 2;
     string drawId = 3;

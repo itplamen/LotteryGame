@@ -6,10 +6,10 @@
     {
         Task<DrawOptionsProtoResponse> GetDrawOptions();
 
-        Task<FetchDrawProtoResponse> GetOpenDraw(int playerId);
+        Task<GetPlayerDrawProtoResponse> GetOpenDraw(int playerId);
 
-        Task<FetchDrawProtoResponse> CreateDraw();
+        Task<GetPlayerDrawProtoResponse> CreateDraw();
 
-        Task<FetchDrawProtoResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds);
+        Task<GetPlayerDrawProtoResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds);
     }
 }

@@ -32,26 +32,26 @@
             return response;
         }
 
-        public override async Task<FetchDrawProtoResponse> FetchDraw(FetchDrawProtoRequest request, ServerCallContext context)
+        public override async Task<GetPlayerDrawProtoResponse> GetPlayerDraw(GetPlayerDrawProtoRequest request, ServerCallContext context)
         {
             ResponseDto<DrawDto> openDrawDto = await drawOperations.GetOpenDraw(request.PlayerId);
-            FetchDrawProtoResponse response = mapper.Map<FetchDrawProtoResponse>(openDrawDto);
+            GetPlayerDrawProtoResponse response = mapper.Map<GetPlayerDrawProtoResponse>(openDrawDto);
             
             return response;
         }
 
-        public async override Task<FetchDrawProtoResponse> CreateDraw(Empty request, ServerCallContext context)
+        public async override Task<GetPlayerDrawProtoResponse> CreateDraw(Empty request, ServerCallContext context)
         {
             ResponseDto<DrawDto> createdDrawDto = await drawOperations.Create();
-            FetchDrawProtoResponse response = mapper.Map<FetchDrawProtoResponse>(createdDrawDto);
+            GetPlayerDrawProtoResponse response = mapper.Map<GetPlayerDrawProtoResponse>(createdDrawDto);
 
             return response;
         }
 
-        public override async Task<FetchDrawProtoResponse> JoinDraw(JoinDrawProtoRequest request, ServerCallContext context)
+        public override async Task<GetPlayerDrawProtoResponse> JoinDraw(JoinDrawProtoRequest request, ServerCallContext context)
         {
             ResponseDto<DrawDto> responseDto = await drawOperations.Join(request.DrawId, request.PlayerId, request.TicketIds);
-            FetchDrawProtoResponse response = mapper.Map<FetchDrawProtoResponse>(responseDto);
+            GetPlayerDrawProtoResponse response = mapper.Map<GetPlayerDrawProtoResponse>(responseDto);
 
             return response;
         }

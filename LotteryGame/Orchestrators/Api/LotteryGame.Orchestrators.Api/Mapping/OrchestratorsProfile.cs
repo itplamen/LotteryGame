@@ -55,7 +55,7 @@
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
 
-            CreateMap<FetchDrawProtoResponse, OrchestratorResponse<AvailableDrawResponse>>()
+            CreateMap<GetPlayerDrawProtoResponse, OrchestratorResponse<AvailableDrawResponse>>()
                 .ForPath(dest => dest.Data.DrawId, opt => opt.MapFrom(src => src.DrawId))
                 .ForPath(dest => dest.Data.DrawDate, opt => opt.MapFrom(src => src.DrawDate.ToDateTime()))
                 .ForPath(dest => dest.Data.CurrentPlayersInDraw, opt => opt.MapFrom(src => src.CurrentPlayersInDraw))
@@ -65,7 +65,7 @@
                 .ForPath(dest => dest.Data.MaxTicketsPerPlayer, opt => opt.MapFrom(src => src.MaxTicketsPerPlayer))
                 .ForPath(dest => dest.Data.TicketPriceInCents, opt => opt.MapFrom(src => src.TicketPriceInCents));
 
-            CreateMap<FetchDrawProtoResponse, OrchestratorResponse<DrawParticipationResponse>>()
+            CreateMap<GetPlayerDrawProtoResponse, OrchestratorResponse<DrawParticipationResponse>>()
                 .ForPath(dest => dest.Data.DrawId, opt => opt.MapFrom(src => src.DrawId))
                 .ForPath(dest => dest.Data.DrawDate, opt => opt.MapFrom(src => src.DrawDate.ToDateTime()));
 

@@ -21,7 +21,7 @@
                 .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.Data.MinPlayersInDraw))
                 .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.Data.MaxPlayersInDraw));
 
-            CreateMap<ResponseDto<DrawDto>, FetchDrawProtoResponse>()
+            CreateMap<ResponseDto<DrawDto>, GetPlayerDrawProtoResponse>()
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
                 .ForMember(dest => dest.DrawDate, opt => opt.Ignore())

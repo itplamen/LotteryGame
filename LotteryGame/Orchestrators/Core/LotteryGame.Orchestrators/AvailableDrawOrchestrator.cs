@@ -21,7 +21,7 @@
 
         public async Task<OrchestratorResponse<AvailableDrawResponse>> Orchestrate(OrchestratorRequest<AvailableDrawRequest> request)
         {
-            FetchDrawProtoResponse fetchDrawResponse = await gateway.GetOpenDraw(request.Payload.PlayerId);
+            GetPlayerDrawProtoResponse fetchDrawResponse = await gateway.GetOpenDraw(request.Payload.PlayerId);
 
             if (!fetchDrawResponse.Success)
             {

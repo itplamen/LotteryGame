@@ -21,7 +21,7 @@
 
         public async Task<OrchestratorResponse<DrawParticipationResponse>> Orchestrate(OrchestratorRequest<DrawParticipationRequest> request)
         {
-            FetchDrawProtoResponse joinedResponse = await drawGateway.JoinDraw(request.Payload.PlayerId, request.Payload.DrawId, request.Payload.TicketIds);
+            GetPlayerDrawProtoResponse joinedResponse = await drawGateway.JoinDraw(request.Payload.PlayerId, request.Payload.DrawId, request.Payload.TicketIds);
             return mapper.Map<OrchestratorResponse<DrawParticipationResponse>>(joinedResponse);
         }
     }

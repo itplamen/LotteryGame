@@ -20,19 +20,19 @@
         public async Task<DrawOptionsProtoResponse> GetDrawOptions() => 
             await Execute(async () => await drawClient.GetDrawOptionsAsync(new Empty()));
 
-        public async Task<FetchDrawProtoResponse> GetOpenDraw(int playerId)
+        public async Task<GetPlayerDrawProtoResponse> GetOpenDraw(int playerId)
         {
-            FetchDrawProtoRequest fetchDrawRequest = new FetchDrawProtoRequest()
+            GetPlayerDrawProtoRequest fetchDrawRequest = new GetPlayerDrawProtoRequest()
             {
                 PlayerId = playerId
             };
 
-            return await Execute(async () => await drawClient.FetchDrawAsync(fetchDrawRequest));
+            return await Execute(async () => await drawClient.GetPlayerDrawAsync(fetchDrawRequest));
         }
 
-        public async Task<FetchDrawProtoResponse> CreateDraw() => await Execute(async () => await drawClient.CreateDrawAsync(new Empty()));
+        public async Task<GetPlayerDrawProtoResponse> CreateDraw() => await Execute(async () => await drawClient.CreateDrawAsync(new Empty()));
 
-        public async Task<FetchDrawProtoResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
+        public async Task<GetPlayerDrawProtoResponse> JoinDraw(int playerId, string drawId, IEnumerable<string> ticketIds)
         {
             JoinDrawProtoRequest request = new JoinDrawProtoRequest();
             request.PlayerId = playerId;

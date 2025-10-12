@@ -14,46 +14,6 @@ message ProfileProtoRequest {
     int32 playerId = 1;
 }
 
-enum PrizeTierProto {
-    GRAND = 0;
-    SECOND = 1;
-    THIRD = 2;
-}
-
-message PrizeProto {
-    int64 amount = 1;
-    PrizeTierProto tier = 2;
-}
-
-enum TicketStatusProto {
-	PENDING = 0;
-	CONFIRMED = 1;
-	CANCELLED = 2;
-	SETTLED = 3;
-}
-
-message TicketProfileProto {
-	string ticketNumber = 1;
-	TicketStatusProto status = 2;
-    PrizeProto prize = 3;
-}
-
-enum DrawStatusProto {
-    DRAW_PENDING = 0;
-    IN_PROGRESS = 1;
-    COMPLETED = 2;
-    DRAW_CANCELLED = 3;
-}
-
-message DrawProto {
-    string drawId = 1;
-    google.protobuf.Timestamp drawDate = 2;
-    DrawStatusProto status = 3;
-    int64 ticketPriceInCents = 4;
-    int32 currentPlayersInDraw = 5;
-    repeated TicketProfileProto tickets = 6;
-}
-
 message DrawOptionsProto {
     int64 ticketPriceInCents = 1;
     int32 minTicketsPerPlayer = 2;
