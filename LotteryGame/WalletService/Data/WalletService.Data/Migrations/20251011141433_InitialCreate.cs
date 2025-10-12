@@ -47,7 +47,7 @@ namespace WalletService.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Wallets", x => x.Id);
-                    table.CheckConstraint("CK_Wallet_PositiveBalance", "[RealMoney] >= 0 AND [BonusMoney] >= 0 AND [LockedFunds] >= 0 AND [LoyaltyPoints] >= 0");
+                    table.CheckConstraint("CK_Wallet_PositiveBalance", "[RealMoneyInCents] >= 0 AND [BonusMoneyInCents] >= 0 AND [LockedFundsInCents] >= 0 AND [LoyaltyPoints] >= 0");
                     table.ForeignKey(
                         name: "FK_Wallets_Players_PlayerId",
                         column: x => x.PlayerId,
@@ -73,7 +73,7 @@ namespace WalletService.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservations", x => x.Id);
-                    table.CheckConstraint("CK_Reservation_PositiveAmount", "[Amount] >= 0");
+                    table.CheckConstraint("CK_Reservation_PositiveAmount", "[AmountInCents] >= 0");
                     table.ForeignKey(
                         name: "FK_Reservations_Wallets_WalletId",
                         column: x => x.WalletId,
@@ -101,7 +101,7 @@ namespace WalletService.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BalanceHistories", x => x.Id);
-                    table.CheckConstraint("CK_BalanceHistory_PositiveBalance", "[OldBalance] >= 0 AND [NewBalance] >= 0");
+                    table.CheckConstraint("CK_BalanceHistory_PositiveBalance", "[OldBalanceInCents] >= 0 AND [NewBalanceInCents] >= 0");
                     table.ForeignKey(
                         name: "FK_BalanceHistories_Reservations_ReservationId",
                         column: x => x.ReservationId,

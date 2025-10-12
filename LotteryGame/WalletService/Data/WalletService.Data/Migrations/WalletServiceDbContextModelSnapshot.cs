@@ -66,7 +66,7 @@ namespace WalletService.Data.Migrations
 
                     b.ToTable("BalanceHistories", t =>
                         {
-                            t.HasCheckConstraint("CK_BalanceHistory_PositiveBalance", "[OldBalance] >= 0 AND [NewBalance] >= 0");
+                            t.HasCheckConstraint("CK_BalanceHistory_PositiveBalance", "[OldBalanceInCents] >= 0 AND [NewBalanceInCents] >= 0");
                         });
                 });
 
@@ -225,7 +225,7 @@ namespace WalletService.Data.Migrations
 
                     b.ToTable("Reservations", t =>
                         {
-                            t.HasCheckConstraint("CK_Reservation_PositiveAmount", "[Amount] >= 0");
+                            t.HasCheckConstraint("CK_Reservation_PositiveAmount", "[AmountInCents] >= 0");
                         });
                 });
 
@@ -281,7 +281,7 @@ namespace WalletService.Data.Migrations
 
                     b.ToTable("Wallets", t =>
                         {
-                            t.HasCheckConstraint("CK_Wallet_PositiveBalance", "[RealMoney] >= 0 AND [BonusMoney] >= 0 AND [LockedFunds] >= 0 AND [LoyaltyPoints] >= 0");
+                            t.HasCheckConstraint("CK_Wallet_PositiveBalance", "[RealMoneyInCents] >= 0 AND [BonusMoneyInCents] >= 0 AND [LockedFundsInCents] >= 0 AND [LoyaltyPoints] >= 0");
                         });
 
                     b.HasData(

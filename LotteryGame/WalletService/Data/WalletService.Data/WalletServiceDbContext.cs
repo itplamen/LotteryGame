@@ -74,7 +74,7 @@
 
                 entity.ToTable(x => x.HasCheckConstraint(
                     "CK_Wallet_PositiveBalance",
-                    "[RealMoney] >= 0 AND [BonusMoney] >= 0 AND [LockedFunds] >= 0 AND [LoyaltyPoints] >= 0"
+                    "[RealMoneyInCents] >= 0 AND [BonusMoneyInCents] >= 0 AND [LockedFundsInCents] >= 0 AND [LoyaltyPoints] >= 0"
                 ));
             });
 
@@ -107,7 +107,7 @@
 
                 entity.ToTable(x => x.HasCheckConstraint(
                     "CK_BalanceHistory_PositiveBalance",
-                    "[OldBalance] >= 0 AND [NewBalance] >= 0"
+                    "[OldBalanceInCents] >= 0 AND [NewBalanceInCents] >= 0"
                 ));
             });
 
@@ -146,7 +146,7 @@
 
                 entity.ToTable(x => x.HasCheckConstraint(
                     "CK_Reservation_PositiveAmount",
-                    "[Amount] >= 0"
+                    "[AmountInCents] >= 0"
                 ));
             });
 
