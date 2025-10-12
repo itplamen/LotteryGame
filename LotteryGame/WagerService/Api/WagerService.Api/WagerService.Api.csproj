@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Protobuf Include="..\WagerService.Api.Models\Protos\history.proto" GrpcServices="Server" />
 	<Protobuf Include="..\WagerService.Api.Models\Protos\tickets.proto" GrpcServices="Server" />
   </ItemGroup>
 

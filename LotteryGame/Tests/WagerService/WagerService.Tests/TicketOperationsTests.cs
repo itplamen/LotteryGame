@@ -33,8 +33,8 @@
 
             var createPolicies = new List<IOperationPolicy<CreateTicketOperationContext>>{new  ValidateNumberOfTicketsPolicy()};
             var createPipeline = new OperationPipeline<CreateTicketOperationContext>(createPolicies);
-            var updatePolicies = new List<IOperationPolicy<UpdateTicketOperationContext>>{new  ValidateTicketsExistPolicy(repositoryMock.Mock)};
-            var updatePipeline = new OperationPipeline<UpdateTicketOperationContext>(updatePolicies);
+            var updatePolicies = new List<IOperationPolicy<BaseTicketOperationContext>>{new  ValidateTicketsExistPolicy(repositoryMock.Mock)};
+            var updatePipeline = new OperationPipeline<BaseTicketOperationContext>(updatePolicies);
 
             operations = new TicketOperations(
                 mapperMock.Mock,

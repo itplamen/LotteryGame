@@ -3,6 +3,7 @@
     using AutoMapper;
 
     using LotteryGame.Common.Models.Dto;
+    using WagerService.Api.Models.Protos.History;
     using WagerService.Api.Models.Protos.Tickets;
     using WagerService.Core.Models;
     using WagerService.Data.Models;
@@ -26,6 +27,16 @@
                 .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src));
 
             CreateMap<ResponseDto<IEnumerable<TicketDto>>, TicketProtoResponse>()
+                .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Data))
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));
+
+            CreateMap<TicketDto, TicketHistoryProto>()
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => MapTicketStatus(src.Status)))
+               .ForMember(dest => dest.TicketNumber, opt => opt.MapFrom(src => src.TicketNumber))
+               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<ResponseDto<IEnumerable<TicketDto>>, HistoryProtoResponse>()
                 .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.Data))
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg));

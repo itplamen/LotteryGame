@@ -2,7 +2,7 @@
 {
     using WagerService.Data.Models;
 
-    public class UpdateTicketOperationContext
+    public class BaseTicketOperationContext
     {
         public IEnumerable<string> TicketIds { get; set; }
 

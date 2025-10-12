@@ -22,6 +22,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapGrpcService<TicketService>();
+app.MapGrpcService<HistoryService>();
 app.MapGet("/", () => "gRPC service running on HTTP/2 localhost:5002");
 
 app.Run();

@@ -1,0 +1,32 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "WagerService.Api.Models.Protos.History";
+
+package histories;
+
+service History {
+    rpc Get(HistoryProtoRequest) returns (HistoryProtoResponse);
+} 
+
+message HistoryProtoRequest {
+    repeated string ticketIds = 1;
+}
+
+message HistoryProtoResponse {
+    bool success = 1;
+    string errorMsg = 2;
+    repeated TicketHistoryProto tickets = 3;
+}
+
+message TicketHistoryProto {
+	string id = 1;
+	string ticketNumber = 2;
+	TicketHistoryStatusProto status = 3;
+}
+
+enum TicketHistoryStatusProto {
+	PENDING = 0;
+	CONFIRMED = 1;
+	CANCELLED = 2;
+	SETTLED = 3;
+}
