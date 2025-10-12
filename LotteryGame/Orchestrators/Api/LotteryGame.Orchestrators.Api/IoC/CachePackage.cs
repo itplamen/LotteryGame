@@ -12,7 +12,8 @@
     using LotteryGame.Orchestrators.Models.PlayerProfile;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
     using LotteryGame.Orchestrators.Models.ReserveFunds;
-    
+    using LotteryGame.Orchestrators.Models.DrawHistory;
+
     public sealed class CachePackage : IPackage
     {
         private bool useInMemoryCache;
@@ -32,6 +33,7 @@
 
             RegisterCacheService<OrchestratorCacheEntry<AvailableDrawRequest, AvailableDrawResponse>>(services);
             RegisterCacheService<OrchestratorCacheEntry<DrawParticipationRequest, DrawParticipationResponse>>(services);
+            RegisterCacheService<OrchestratorCacheEntry<DrawHistoryRequest, DrawHistoryResponse>>(services);
             RegisterCacheService<OrchestratorCacheEntry<PlayerProfileRequest, PlayerProfileResponse>>(services);
             RegisterCacheService<OrchestratorCacheEntry<PurchaseTicketsRequest, PurchaseTicketsResponse>>(services);
             RegisterCacheService<OrchestratorCacheEntry<ReserveFundsRequest, ReserveFundsResponse>>(services);

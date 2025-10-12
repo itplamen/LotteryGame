@@ -28,5 +28,5 @@ message PrizeHistoryProto {
     string ticketNumber = 1;
     int64 amountInCents = 2;
     string tier = 3;
-    string Status = 4;
+    string status = 4;
 }

@@ -44,6 +44,12 @@
                 .ForMember(dest => dest.BonusBalanceInCents, opt => opt.MapFrom(src => src.Data.BonusBalanceInCents))
                 .ForMember(dest => dest.DrawOptions, opt => opt.MapFrom(src => src.Data.DrawOptions));
 
+            CreateMap<PrizeHistory, LotteryHistory.PrizeHistoryProto>()
+                .ForMember(dest => dest.TicketNumber, opt => opt.MapFrom(src => src.TicketNumber))
+                .ForMember(dest => dest.AmountInCents, opt => opt.MapFrom(src => src.AmountInCents))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Tier, opt => opt.MapFrom(src => src.Tier));
+
             CreateMap<OrchestratorResponse<DrawHistoryResponse>, LotteryHistory.HistoryProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
@@ -133,11 +139,27 @@
             CreateMap<DrawHistory.HistoryProtoResponse, OrchestratorResponse<DrawHistoryResponse>>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
-                .ForPath(dest => dest.Data.DrawDate, opt => opt.MapFrom(src => src.DrawDate.ToDateTime()))
-                .ForPath(dest => dest.Data.DrawStatus, opt => opt.MapFrom(src => src.DrawStatus))
-                .ForPath(dest => dest.Data.Participants, opt => opt.MapFrom(src => src.Participants))
-                .ForPath(dest => dest.Data.HouseProfitInCents, opt => opt.MapFrom(src => src.HouseProfitInCents))
-                .ForPath(dest => dest.Data.Prizes, opt => opt.Ignore());
+                .AfterMap((src, dest) =>
+                {
+                    if (src.Draw != null)
+                    {
+                        dest.Data.DrawDate = src.Draw.DrawDate.ToDateTime();
+                        dest.Data.DrawStatus = src.Draw.DrawStatus;
+                        dest.Data.Participants = src.Draw.Participants;
+                        dest.Data.HouseProfitInCents = src.Draw.HouseProfitInCents;
+                    }
+                    else
+                    {
+                        dest.Data = new DrawHistoryResponse()
+                        {
+                            DrawDate = default(DateTime),
+                            HouseProfitInCents = 0,
+                            Participants = 0,
+                            DrawStatus = string.Empty,
+                            Prizes = new List<PrizeHistory>()
+                        };
+                    }
+                });
         }
     }
 }

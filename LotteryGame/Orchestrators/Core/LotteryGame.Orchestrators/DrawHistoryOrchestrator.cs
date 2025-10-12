@@ -15,6 +15,13 @@
         private readonly IDrawGateway drawGateway;
         private readonly IWagerGateway wagerGateway;
 
+        public DrawHistoryOrchestrator(IMapper mapper, IDrawGateway drawGateway, IWagerGateway wagerGateway)
+        {
+            this.mapper = mapper;
+            this.drawGateway = drawGateway;
+            this.wagerGateway = wagerGateway;
+        }
+
         public async Task<OrchestratorResponse<DrawHistoryResponse>> Orchestrate(OrchestratorRequest<DrawHistoryRequest> request)
         {
             DrawHistory.HistoryProtoResponse protoResponse = await drawGateway.GetHistory(request.Payload.DrawId);
@@ -24,7 +31,7 @@
                 return mapper.Map<OrchestratorResponse<DrawHistoryResponse>>(protoResponse);
             }
 
-            IEnumerable<string> ticketIds = protoResponse.Prizes.Select(x => x.TicketId).ToList();
+            IEnumerable<string> ticketIds = protoResponse.Draw.Prizes.Select(x => x.TicketId).ToList();
             HistoryProtoResponse wagerResponse = await wagerGateway.GetHistory(ticketIds);
 
             if (!wagerResponse.Success)
@@ -33,7 +40,7 @@
             }
 
             OrchestratorResponse<DrawHistoryResponse> response = mapper.Map<OrchestratorResponse<DrawHistoryResponse>>(protoResponse);
-            response.Data.Prizes = protoResponse.Prizes.Select(x =>
+            response.Data.Prizes = protoResponse.Draw.Prizes.Select(x =>
             {
                 TicketHistoryProto ticket = wagerResponse.Tickets.FirstOrDefault(y => y.Id == x.TicketId);
 
