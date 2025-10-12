@@ -2,9 +2,9 @@
 
 option csharp_namespace = "WagerService.Api.Models.Protos.History";
 
-package histories;
+package wager_history;
 
-service History {
+service WagerHistory {
     rpc Get(HistoryProtoRequest) returns (HistoryProtoResponse);
 } 
 

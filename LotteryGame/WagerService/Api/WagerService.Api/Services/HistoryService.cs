@@ -9,7 +9,7 @@
     using WagerService.Core.Contracts;
     using WagerService.Core.Models;
 
-    public class HistoryService : History.HistoryBase
+    public class HistoryService : WagerHistory.WagerHistoryBase
     {
         private readonly IMapper mapper;
         private readonly IHistoryOperations historyOperations;

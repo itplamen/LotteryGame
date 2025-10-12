@@ -9,7 +9,7 @@
     using DrawService.Core.Models;
     using LotteryGame.Common.Models.Dto;
 
-    public class HistoryService : History.HistoryBase
+    public class HistoryService : DrawHistory.DrawHistoryBase
     {
         private readonly IMapper mapper;
         private readonly IHistoryOperations operations;

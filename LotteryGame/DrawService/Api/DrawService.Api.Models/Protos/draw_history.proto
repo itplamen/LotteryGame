@@ -4,9 +4,9 @@ import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "DrawService.Api.Models.Protos.History";
 
-package histories;
+package draw_history;
 
-service History {
+service DrawHistory {
     rpc Get(HistoryProtoRequest) returns (HistoryProtoResponse);
 } 
 
