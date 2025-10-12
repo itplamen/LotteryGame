@@ -1,7 +1,5 @@
 ﻿syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
-
 option csharp_namespace = "LotteryGame.Orchestrators.Api.Models.Protos.PlayerProfile";
 
 package profiles;
