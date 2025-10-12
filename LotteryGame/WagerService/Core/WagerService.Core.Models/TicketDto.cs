@@ -8,5 +8,7 @@
         public string TicketNumber { get; set; }
 
         public TicketStatus Status { get; set; }
+
+        public int PlayerId { get; set; }
     }
 }

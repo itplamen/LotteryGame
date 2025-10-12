@@ -29,4 +29,5 @@ message PrizeHistoryProto {
     int64 amountInCents = 2;
     string tier = 3;
     string status = 4;
+    int32 playerId = 5;
 }

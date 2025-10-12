@@ -48,7 +48,8 @@
                 .ForMember(dest => dest.TicketNumber, opt => opt.MapFrom(src => src.TicketNumber))
                 .ForMember(dest => dest.AmountInCents, opt => opt.MapFrom(src => src.AmountInCents))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.Tier, opt => opt.MapFrom(src => src.Tier));
+                .ForMember(dest => dest.Tier, opt => opt.MapFrom(src => src.Tier))
+                .ForMember(dest => dest.PlayerId, opt => opt.MapFrom(src => src.PlayerId));
 
             CreateMap<OrchestratorResponse<DrawHistoryResponse>, LotteryHistory.HistoryProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))

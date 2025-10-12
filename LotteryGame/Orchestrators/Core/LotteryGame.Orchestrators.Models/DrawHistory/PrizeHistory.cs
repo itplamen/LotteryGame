@@ -9,5 +9,7 @@
         public string Tier { get; set; }
 
         public string Status { get; set; }
+
+        public int PlayerId { get; set; }
     }
 }

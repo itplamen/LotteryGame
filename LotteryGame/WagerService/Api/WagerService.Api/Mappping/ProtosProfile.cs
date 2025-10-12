@@ -34,6 +34,7 @@
             CreateMap<TicketDto, TicketHistoryProto>()
                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => MapTicketStatus(src.Status)))
                .ForMember(dest => dest.TicketNumber, opt => opt.MapFrom(src => src.TicketNumber))
+               .ForMember(dest => dest.PlayerId, opt => opt.MapFrom(src => src.PlayerId))
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<ResponseDto<IEnumerable<TicketDto>>, HistoryProtoResponse>()

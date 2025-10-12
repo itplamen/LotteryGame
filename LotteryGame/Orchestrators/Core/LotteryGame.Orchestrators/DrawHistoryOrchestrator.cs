@@ -49,7 +49,8 @@
                     Tier = x.Tier,
                     AmountInCents = x.AmountInCents,
                     TicketNumber = ticket?.TicketNumber ?? "",
-                    Status = ticket?.Status.ToString() ?? ""
+                    Status = ticket?.Status.ToString() ?? "",
+                    PlayerId = ticket?.PlayerId ?? 0
                 };
             });
 

@@ -22,6 +22,7 @@ message TicketHistoryProto {
 	string id = 1;
 	string ticketNumber = 2;
 	TicketHistoryStatusProto status = 3;
+	int32 playerId = 4;
 }
 
 enum TicketHistoryStatusProto {
