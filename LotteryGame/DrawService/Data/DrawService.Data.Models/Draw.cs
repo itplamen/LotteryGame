@@ -18,7 +18,7 @@
 
         public int MaxPlayersInDraw { get; set; }
 
-        public long HouseProfit { get; set; }
+        public long HouseProfitInCents { get; set; }
 
         public ICollection<string> PrizeIds { get; set; } = new HashSet<string>();
 

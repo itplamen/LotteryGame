@@ -61,7 +61,7 @@
             var result = strategy.DeterminePrizes(draw);
 
             result.Should().BeEmpty();
-            draw.HouseProfit.Should().Be(0);
+            draw.HouseProfitInCents.Should().Be(0);
         }
 
         [Test]
@@ -133,7 +133,7 @@
 
             strategy.DeterminePrizes(draw);
 
-            draw.HouseProfit.Should().Be(totalRevenue - (300 + 200 + 100));
+            draw.HouseProfitInCents.Should().Be(totalRevenue - (300 + 200 + 100));
         }
     }
 }
