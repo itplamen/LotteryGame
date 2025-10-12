@@ -7,7 +7,6 @@
     
     public class WalletServiceDbContext : DbContext
     {
-        private readonly string connectionString;
         private readonly long startingBalanceInCents;
 
         public WalletServiceDbContext(DbContextOptions<WalletServiceDbContext> options, IConfiguration configuration)
