@@ -12,9 +12,10 @@
     using DrawService.Core.Validation.Policies;
     using DrawService.Data;
     using DrawService.Data.Contracts;
+    using DrawService.Data.Models;
     using LotteryGame.Common.Models.IoC;
     using LotteryGame.Common.Utils.Validation;
-  
+
     public class WorkerPackage : IPackage
     {
         private readonly IConfiguration configuration;
@@ -71,6 +72,9 @@
             });
 
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+
+            services.AddSingleton<IConflictResolver<Draw>, DrawConflictResolver>();
+            services.AddSingleton<IConflictResolver<Prize>, PrizeConflictResolver>();
         }
     }
 }
