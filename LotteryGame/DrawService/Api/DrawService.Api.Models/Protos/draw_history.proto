@@ -17,11 +17,15 @@ message HistoryProtoRequest {
 message HistoryProtoResponse {
     bool success = 1;
     string errorMsg = 2;
-    google.protobuf.Timestamp drawDate = 3;
-    string drawStatus = 4;
-    int32 participants = 5;
-    int64 houseProfitInCents = 6;
-    repeated PrizeHistoryProto prizes = 7;
+    DrawHistoryProto Draw = 3;
+}
+
+message DrawHistoryProto {
+    google.protobuf.Timestamp drawDate = 1;
+    string drawStatus = 2;
+    int32 participants = 3;
+    int64 houseProfitInCents = 4;
+    repeated PrizeHistoryProto prizes = 5;
 }
 
 message PrizeHistoryProto {

@@ -93,14 +93,17 @@
                .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
                .ForMember(dest => dest.Tier, opt => opt.MapFrom(src => src.Tier));
 
+            CreateMap<HistoryDto, DrawHistoryProto>()
+                .ForMember(dest => dest.DrawDate, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.DrawDate.ToUniversalTime())))
+                .ForMember(dest => dest.DrawStatus, opt => opt.MapFrom(src => src.DrawStatus.ToString()))
+                .ForMember(dest => dest.HouseProfitInCents, opt => opt.MapFrom(src => src.HouseProfitInCents))
+                .ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants))
+                .ForMember(dest => dest.Prizes, opt => opt.MapFrom(src => src.Prizes));
+
             CreateMap<ResponseDto<HistoryDto>, HistoryProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
-                .ForMember(dest => dest.DrawDate, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.Data.DrawDate.ToUniversalTime())))
-                .ForMember(dest => dest.DrawStatus, opt => opt.MapFrom(src => src.Data.DrawStatus.ToString()))
-                .ForMember(dest => dest.HouseProfitInCents, opt => opt.MapFrom(src => src.Data.HouseProfitInCents))
-                .ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Data.Participants))
-                .ForMember(dest => dest.Prizes, opt => opt.MapFrom(src => src.Data.Prizes));
+                .ForMember(dest => dest.Draw, opt => opt.MapFrom(src => src.Data));
         }
     }
 }
