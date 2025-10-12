@@ -14,6 +14,7 @@ builder.Services.AddServices(builder.Configuration);
 var app = builder.Build();
 
 app.MapGrpcService<TicketPurchaseService>();
+app.MapGrpcService<PlayerProfileService>();
 app.MapGet("/", () => "gRPC service running on HTTP/2 localhost:5000");
 
 app.Run();
