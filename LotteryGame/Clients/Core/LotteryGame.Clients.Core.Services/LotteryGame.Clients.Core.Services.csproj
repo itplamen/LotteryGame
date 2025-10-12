@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.32.1" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.72.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\LotteryGame.Common.Models\LotteryGame.Common.Models.csproj" />
+    <ProjectReference Include="..\..\..\Orchestrators\Core\LotteryGame.Orchestrators.Models\LotteryGame.Orchestrators.Models.csproj" />
+    <ProjectReference Include="..\LotteryGame.Clients.Core.Services.Models\LotteryGame.Clients.Core.Services.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Protobuf Include="..\..\..\Orchestrators\Api\LotteryGame.Orchestrators.Api.Models\Protos\profile.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\..\Orchestrators\Api\LotteryGame.Orchestrators.Api.Models\Protos\purchase.proto" GrpcServices="Client" />
+  </ItemGroup>
+</Project>
