@@ -1,13 +1,9 @@
 ﻿namespace LotteryGame.Clients.Core.Services.Contracts
 {
-    using LotteryGame.Clients.Core.Services.Models;
-
-    public interface ILotteryService
+    public interface ILotteryService<TRequest, TResponse>
+        where TRequest : class
+        where TResponse : class
     {
-        Task<PlayerProfileResponse> GetProfile(int playerId);
-
-        Task<PurchaseTicketsResponse> PurchaseTickets(int playerId, int numberOfTickets);
-
-        Task<HistoryResponse> GetHistory(string drawId);
+        Task<TResponse> Execute(TRequest request);       
     }
 }

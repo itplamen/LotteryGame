@@ -1,4 +1,6 @@
-﻿namespace LotteryGame.Clients.Core.Services.Models
+﻿using LotteryGame.Clients.Core.Services.Models.Betting;
+
+namespace LotteryGame.Clients.Core.Services.Models.History
 {
     public class HistoryResponse
     {

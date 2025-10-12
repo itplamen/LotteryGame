@@ -1,6 +1,6 @@
-﻿namespace LotteryGame.Clients.Core.Services.Models
+﻿namespace LotteryGame.Clients.Core.Services.Models.Profile
 {
-    public class PlayerProfileResponse
+    public class ProfileResponse
     {
         public bool Success { get; set; }
 

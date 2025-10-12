@@ -1,6 +1,6 @@
-﻿namespace LotteryGame.Clients.Core.Services.Models
+﻿namespace LotteryGame.Clients.Core.Services.Models.Betting
 {
-    public class PurchaseTicketsResponse
+    public class BettingResponse
     {
         public bool Success { get; set; }
 
