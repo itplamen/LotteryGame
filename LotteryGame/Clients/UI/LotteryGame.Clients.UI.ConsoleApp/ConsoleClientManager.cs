@@ -9,6 +9,7 @@
             if (!string.IsNullOrEmpty(value))
             {
                 Console.Write(value);
+                Console.Out.Flush();
             }
         }
 
@@ -17,6 +18,7 @@
             if (!string.IsNullOrEmpty(value))
             {
                 Console.WriteLine(value);
+                Console.Out.Flush();
             }
         }
 

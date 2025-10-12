@@ -96,7 +96,11 @@
             {
                 clientManager.WriteLine($"Draw ID: {drawId} finished! Ticket Draw Results: ");
 
-                foreach (var prize in response.Prizes.OrderBy(x => x.Tier))
+                IEnumerable<PrizeHistory> prizes = response.Prizes
+                    .OrderBy(x => x.Tier)
+                    .ThenBy(x => x.PlayerId);
+
+                foreach (var prize in prizes)
                 {
                     clientManager.WriteLine($"* {prize.Tier}: Player {prize.PlayerId}, ticket number: {prize.TicketNumber}, wins: {MoneyFormatter.ToLabelValue(prize.Amount)} per winning ticket");
                 }
