@@ -150,6 +150,20 @@ services:
     networks:
       - backend
 
+  consoleapp:
+    build:
+      context: .
+      dockerfile: Clients/UI/LotteryGame.Clients.UI.ConsoleApp/Dockerfile
+    container_name: consoleapp
+    depends_on:
+      - orchestrator.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Grpc__OrchestratorUrl=http://orchestrator:5000
+    networks:
+      - backend
+    stdin_open: true
+    tty: true
 
 volumes:
   sqlserver_data:

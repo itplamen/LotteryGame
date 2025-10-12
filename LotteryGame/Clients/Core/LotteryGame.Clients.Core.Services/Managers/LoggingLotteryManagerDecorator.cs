@@ -22,6 +22,7 @@
         {
             clientManager.WriteLine($"Welcome to the Bede Lottery, Player {playerId}!");
             clientManager.WriteLine("");
+            clientManager.WriteLine("Fetching player profile...");
 
             ProfileResponse resposne = await decoratee.GetProfile(playerId);
 
