@@ -2,7 +2,6 @@
 {
     using LotteryGame.Clients.Core.Services.Contracts;
     using LotteryGame.Clients.Core.Services.Formatters;
-    using LotteryGame.Clients.Core.Services.Models.Betting;
     using LotteryGame.Clients.Core.Services.Models.History;
     using LotteryGame.Orchestrators.Api.Models.Protos.LotteryHistory;
 
@@ -36,7 +35,9 @@
                 {
                     Amount = MoneyFormatter.ToDecimal(x.AmountInCents),
                     Status = x.Status,
-                    TicketNumber = x.TicketNumber
+                    TicketNumber = x.TicketNumber,
+                    Tier = x.Tier,
+                    PlayerId = x.PlayerId
                 })
             };
         }

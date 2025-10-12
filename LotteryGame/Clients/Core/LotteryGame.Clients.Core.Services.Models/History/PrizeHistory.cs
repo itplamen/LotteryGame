@@ -1,4 +1,4 @@
-﻿namespace LotteryGame.Clients.Core.Services.Models.Betting
+﻿namespace LotteryGame.Clients.Core.Services.Models.History
 {
     public class PrizeHistory
     {
@@ -9,5 +9,7 @@
         public string Tier { get; set; }
 
         public string Status { get; set; }
+
+        public int PlayerId { get; set; }
     }
 }

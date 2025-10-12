@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LotteryGame.Clients.Core.Services.Models\LotteryGame.Clients.Core.Services.Models.csproj" />
+  </ItemGroup>
+
 </Project>

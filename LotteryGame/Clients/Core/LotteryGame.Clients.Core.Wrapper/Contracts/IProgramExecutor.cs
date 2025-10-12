@@ -1,6 +1,6 @@
 ﻿namespace LotteryGame.Clients.Core.Wrapper.Contracts
 {
-    public interface IProgramManager
+    public interface IProgramExecutor
     {
         Task Run();
     }

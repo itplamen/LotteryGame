@@ -1,6 +1,4 @@
-﻿using LotteryGame.Clients.Core.Services.Models.Betting;
-
-namespace LotteryGame.Clients.Core.Services.Models.History
+﻿namespace LotteryGame.Clients.Core.Services.Models.History
 {
     public class HistoryResponse
     {

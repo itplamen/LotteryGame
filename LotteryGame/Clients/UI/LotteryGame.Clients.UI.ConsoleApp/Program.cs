@@ -11,6 +11,7 @@ using LotteryGame.Clients.UI.ConsoleApp;
 using LotteryGame.Orchestrators.Api.Models.Protos.LotteryHistory;
 using LotteryGame.Orchestrators.Api.Models.Protos.PlayerProfile;
 using LotteryGame.Orchestrators.Api.Models.Protos.TicketPurchase;
+using LotteryGame.Clients.Core.Services.Managers;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
@@ -34,9 +35,16 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<ILotteryService<BettingRequest, BettingResponse>, LotteryBettingService>();
         services.AddSingleton<ILotteryService<HistoryRequest, HistoryResponse>, LotteryHistoryService>();
         services.AddSingleton<IClientManager, ConsoleClientManager>();
-        services.AddSingleton<IProgramManager, ProgramManager>();
+        services.AddSingleton<IProgramExecutor, ConsoleProgramExecutor>();
+        services.AddSingleton<LotteryManager>();
+        services.AddSingleton<ILotteryManager>(sp =>
+        {
+            var clientManager = sp.GetRequiredService<IClientManager>();
+            var baseManager = sp.GetRequiredService<LotteryManager>();
+            return new LoggingLotteryManagerDecorator(baseManager, clientManager);
+        });
     })
     .Build();
 
-var programManager = host.Services.GetRequiredService<IProgramManager>();
-await programManager.Run();
+var programExecutor = host.Services.GetRequiredService<IProgramExecutor>();
+await programExecutor.Run();
