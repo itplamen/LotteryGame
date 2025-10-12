@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	<Protobuf Include="..\..\..\Orchestrators\Api\LotteryGame.Orchestrators.Api.Models\Protos\lottery_history.proto" GrpcServices="Client" />
 	<Protobuf Include="..\..\..\Orchestrators\Api\LotteryGame.Orchestrators.Api.Models\Protos\profile.proto" GrpcServices="Client" />
 	<Protobuf Include="..\..\..\Orchestrators\Api\LotteryGame.Orchestrators.Api.Models\Protos\purchase.proto" GrpcServices="Client" />
   </ItemGroup>

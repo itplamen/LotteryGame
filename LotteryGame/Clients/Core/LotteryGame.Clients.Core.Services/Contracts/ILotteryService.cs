@@ -7,5 +7,7 @@
         Task<PlayerProfileResponse> GetProfile(int playerId);
 
         Task<PurchaseTicketsResponse> PurchaseTickets(int playerId, int numberOfTickets);
+
+        Task<HistoryResponse> GetHistory(string drawId);
     }
 }

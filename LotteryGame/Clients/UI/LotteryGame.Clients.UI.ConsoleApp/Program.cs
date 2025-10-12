@@ -7,6 +7,7 @@ using LotteryGame.Clients.Core.Wrapper.Contracts;
 using LotteryGame.Clients.UI.ConsoleApp;
 using LotteryGame.Orchestrators.Api.Models.Protos.PlayerProfile;
 using LotteryGame.Orchestrators.Api.Models.Protos.TicketPurchase;
+using LotteryGame.Orchestrators.Api.Models.Protos.LotteryHistory;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
@@ -19,6 +20,11 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddGrpcClient<TicketPurchase.TicketPurchaseClient>(options =>
         {
             options.Address = new Uri(context.Configuration["Grpc:OrchestratorUrl"]); 
+        });
+
+        services.AddGrpcClient<LotteryHistory.LotteryHistoryClient>(options =>
+        {
+            options.Address = new Uri(context.Configuration["Grpc:OrchestratorUrl"]);
         });
 
         services.AddSingleton<ILotteryService, LotteryService>();

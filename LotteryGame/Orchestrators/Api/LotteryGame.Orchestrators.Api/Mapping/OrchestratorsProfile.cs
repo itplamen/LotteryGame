@@ -143,10 +143,13 @@
                 {
                     if (src.Draw != null)
                     {
-                        dest.Data.DrawDate = src.Draw.DrawDate.ToDateTime();
-                        dest.Data.DrawStatus = src.Draw.DrawStatus;
-                        dest.Data.Participants = src.Draw.Participants;
-                        dest.Data.HouseProfitInCents = src.Draw.HouseProfitInCents;
+                        dest.Data = new DrawHistoryResponse()
+                        {
+                            DrawDate = src.Draw.DrawDate.ToDateTime(),
+                            DrawStatus = src.Draw.DrawStatus,
+                            Participants = src.Draw.Participants,
+                            HouseProfitInCents = src.Draw.HouseProfitInCents,
+                        };
                     }
                     else
                     {
