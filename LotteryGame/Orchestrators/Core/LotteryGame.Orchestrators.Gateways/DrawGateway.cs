@@ -5,16 +5,19 @@
     using Microsoft.Extensions.Configuration;
 
     using DrawService.Api.Models.Protos.Draws;
+    using DrawService.Api.Models.Protos.History;
     using LotteryGame.Orchestrators.Gateways.Contracts;
 
     public class DrawGateway : BaseGateway, IDrawGateway
     {
         private readonly Draws.DrawsClient drawClient;
+        private readonly DrawHistory.DrawHistoryClient historyClient;
 
-        public DrawGateway(Draws.DrawsClient drawClient, IConfiguration configuration)
+        public DrawGateway(Draws.DrawsClient drawClient, DrawHistory.DrawHistoryClient historyClient, IConfiguration configuration)
             : base(configuration)
         {
             this.drawClient = drawClient;
+            this.historyClient = historyClient;
         }
 
         public async Task<DrawOptionsProtoResponse> GetDrawOptions() => 
@@ -40,6 +43,16 @@
             request.TicketIds.AddRange(ticketIds);
 
             return await Execute(async () => await drawClient.JoinDrawAsync(request));
+        }
+
+        public async Task<HistoryProtoResponse> GetHistory(string drawId)
+        {
+            HistoryProtoRequest request = new HistoryProtoRequest()
+            {
+                DrawId = drawId
+            };
+
+            return await Execute(async () => await historyClient.GetAsync(request));
         }
     }
 }

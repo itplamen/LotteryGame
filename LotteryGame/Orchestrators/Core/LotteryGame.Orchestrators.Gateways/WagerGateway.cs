@@ -1,18 +1,23 @@
 ﻿namespace LotteryGame.Orchestrators.Gateways
 {
+    using System.Threading.Tasks;
+
     using Microsoft.Extensions.Configuration;
 
     using LotteryGame.Orchestrators.Gateways.Contracts;
+    using WagerService.Api.Models.Protos.History;
     using WagerService.Api.Models.Protos.Tickets;
 
     public class WagerGateway : BaseGateway, IWagerGateway
     {
         private readonly Tickets.TicketsClient wagerClient;
+        private readonly WagerHistory.WagerHistoryClient historyClient;
 
-        public WagerGateway(Tickets.TicketsClient wagerClient, IConfiguration configuration)
+        public WagerGateway(Tickets.TicketsClient wagerClient, WagerHistory.WagerHistoryClient historyClient, IConfiguration configuration)
             : base(configuration)
         {
             this.wagerClient = wagerClient;
+            this.historyClient = historyClient;
         }
 
         public async Task<TicketProtoResponse> PurchaseTickets(int playerId, string drawId, int reservationId, int numberOfTickets)
@@ -35,6 +40,14 @@
             ticketUpdateRequest.TicketIds.AddRange(ticketIds);
 
             return await Execute(async () => await wagerClient.UpdateAsync(ticketUpdateRequest));
+        }
+
+        public async Task<HistoryProtoResponse> GetHistory(IEnumerable<string> ticketIds)
+        {
+            HistoryProtoRequest request = new HistoryProtoRequest();
+            request.TicketIds.AddRange(ticketIds);
+
+            return await Execute(async () => await historyClient.GetAsync(request));
         }
     }
 }

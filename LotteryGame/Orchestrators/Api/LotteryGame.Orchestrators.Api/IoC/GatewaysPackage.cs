@@ -1,9 +1,11 @@
 ﻿namespace LotteryGame.Orchestrators.Api.IoC
 {
     using DrawService.Api.Models.Protos.Draws;
+    using DrawService.Api.Models.Protos.History;
     using LotteryGame.Common.Models.IoC;
     using LotteryGame.Orchestrators.Gateways;
     using LotteryGame.Orchestrators.Gateways.Contracts;
+    using WagerService.Api.Models.Protos.History;
     using WagerService.Api.Models.Protos.Tickets;
     using WalletService.Api.Models.Protos.Funds;
 
@@ -26,8 +28,18 @@
             {
                 x.Address = new Uri(configuration["Grpc:DrawServiceUrl"]);
             });
-            
+
+            services.AddGrpcClient<DrawHistory.DrawHistoryClient>(x =>
+            {
+                x.Address = new Uri(configuration["Grpc:DrawServiceUrl"]);
+            });
+
             services.AddGrpcClient<Tickets.TicketsClient>(x =>
+            {
+                x.Address = new Uri(configuration["Grpc:WagerServiceUrl"]);
+            });
+
+            services.AddGrpcClient<WagerHistory.WagerHistoryClient>(x =>
             {
                 x.Address = new Uri(configuration["Grpc:WagerServiceUrl"]);
             });
