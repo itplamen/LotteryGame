@@ -5,7 +5,8 @@
     using LotteryGame.Clients.Core.Services.Contracts;
     using LotteryGame.Clients.Core.Services.Models;
     using LotteryGame.Clients.Core.Wrapper.Contracts;
-    
+    using LotteryGame.Clients.Core.Services.Formatters;
+
     public class ProgramManager : IProgramManager
     {
         private const int PLAYER_ID = 1;
@@ -79,6 +80,8 @@
             clientManager.WriteLine("Purchased Tickets: ");
             clientManager.WriteLine($"Total cost: {purchaseTicketsResponse.TotalCost.ToString("F2")}");
             clientManager.WriteLine($"Tickets: [{string.Join(" | ", purchaseTicketsResponse.TicketNumbers)}]");
+            clientManager.WriteLine($"Datetime UTC Now: [{DatetimeFormatter.Format(DateTime.UtcNow)}]");
+            clientManager.WriteLine($"Draw date: {DatetimeFormatter.Format(purchaseTicketsResponse.DrawDate)} [{DatetimeFormatter.TimeRemains(purchaseTicketsResponse.DrawDate)}]");
 
             var tasks = Enumerable.Range(PLAYER_ID + 1, cpuPlayers)
                                  .Select(id => Task.Run(() => lotteryService.PurchaseTickets(id, CPU_PLAYERS_TICKETS)))

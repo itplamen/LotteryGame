@@ -1,6 +1,8 @@
 ﻿namespace LotteryGame.Orchestrators.Api.Services
 {
     using AutoMapper;
+   
+    using Google.Protobuf.WellKnownTypes;
     
     using Grpc.Core;
     
@@ -79,6 +81,8 @@
             purchaseResponse.Success = true;
             purchaseResponse.TotalCostInCents = reserveFundsResponse.Data.TotalCostInCents;
             purchaseResponse.TicketNumbers.Add(purchaseTicketsResponse.Data.Tickets.Select(x => x.Number).ToList());
+            purchaseResponse.DrawId = availableDrawResponse.Data.DrawId;
+            purchaseResponse.DrawDate = Timestamp.FromDateTime(availableDrawResponse.Data.DrawDate);
 
             return purchaseResponse;
         }

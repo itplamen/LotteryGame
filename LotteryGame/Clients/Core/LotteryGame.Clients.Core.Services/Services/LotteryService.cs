@@ -54,7 +54,9 @@
                 Success = protoResponse.Success,
                 ErrorMsg = protoResponse.ErrorMsg,
                 TotalCost = MoneyFormatter.ToDecimal(protoResponse.TotalCostInCents),
-                TicketNumbers = protoResponse.TicketNumbers
+                DrawId = protoResponse.DrawId,
+                TicketNumbers = protoResponse.TicketNumbers,
+                DrawDate = protoResponse.DrawDate.ToDateTime()
             };
         }
     }

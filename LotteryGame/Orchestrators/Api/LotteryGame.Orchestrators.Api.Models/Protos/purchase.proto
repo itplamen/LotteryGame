@@ -1,5 +1,7 @@
 ﻿syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 option csharp_namespace = "LotteryGame.Orchestrators.Api.Models.Protos.TicketPurchase";
 
 package funds;
@@ -18,4 +20,6 @@ message PurchaseProtoResponse {
   string errorMsg = 2;
   int64 totalCostInCents = 3;
   repeated string ticketNumbers = 4; 
+  string drawId = 5;
+  google.protobuf.Timestamp drawDate = 6;
 }
