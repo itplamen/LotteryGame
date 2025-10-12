@@ -2,8 +2,8 @@
 {
     public enum PrizeTier
     {
-        Grand,
-        Second,
-        Third
+        GrandPrize,
+        SecondTier,
+        ThirdTier
     }
 }

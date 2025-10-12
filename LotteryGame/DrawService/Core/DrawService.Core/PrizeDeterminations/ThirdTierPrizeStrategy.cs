@@ -10,7 +10,7 @@
         {
             RevenueShare = decimal.Parse(configuration["Prize:ThirdPrizeRevenueShare"]);
             TicketShare = decimal.Parse(configuration["Prize:ThirdPrizeTicketShare"]);
-            Tier = PrizeTier.Third;
+            Tier = PrizeTier.ThirdTier;
         }
 
         protected override decimal RevenueShare { get; }

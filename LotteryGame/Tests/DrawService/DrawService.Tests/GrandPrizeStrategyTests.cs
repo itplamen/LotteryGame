@@ -51,7 +51,7 @@ namespace DrawService.Tests
             prize.DrawId.Should().Be(draw.Id);
             remainingTickets.Should().Contain(prize.TicketId);
             prize.AmountInCents.Should().Be((long)(totalRevenue * 0.5m));
-            prize.Tier.Should().Be(PrizeTier.Grand);
+            prize.Tier.Should().Be(PrizeTier.GrandPrize);
         }
 
         [Test]

@@ -31,7 +31,7 @@
                 DrawId = draw.Id,
                 TicketId = winningTicketId,
                 AmountInCents = (long)(totalRevenue * revenueShare),
-                Tier = PrizeTier.Grand
+                Tier = PrizeTier.GrandPrize
             };
 
             return new List<Prize> { grandPrize };

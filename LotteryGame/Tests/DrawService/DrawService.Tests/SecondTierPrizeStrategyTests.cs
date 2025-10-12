@@ -44,7 +44,7 @@
             var prizes = strategy.Calculate(draw, remainingTickets, totalRevenue).ToList();
 
             prizes.Should().NotBeEmpty();
-            prizes.Should().OnlyContain(p => p.Tier == PrizeTier.Second);
+            prizes.Should().OnlyContain(p => p.Tier == PrizeTier.SecondTier);
             prizes.Should().OnlyContain(p => p.DrawId == draw.Id);
             prizes.Should().OnlyContain(p => remainingTickets.Contains(p.TicketId));
 

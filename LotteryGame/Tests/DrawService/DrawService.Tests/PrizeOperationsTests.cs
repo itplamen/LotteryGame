@@ -118,8 +118,8 @@
 
             var prizes = new List<Prize>()
             {
-                new Prize { Id = "p1", TicketId = "t1", AmountInCents = 100, Tier = PrizeTier.Grand },
-                new Prize { Id = "p2", TicketId = "t2", AmountInCents = 50, Tier = PrizeTier.Second }
+                new Prize { Id = "p1", TicketId = "t1", AmountInCents = 100, Tier = PrizeTier.GrandPrize },
+                new Prize { Id = "p2", TicketId = "t2", AmountInCents = 50, Tier = PrizeTier.SecondTier }
             };
 
             var prizeDtos = new List<PrizeDto>()
@@ -199,8 +199,8 @@
 
             var prizes = new List<Prize>()
             {
-                new Prize { Id = "p1", AmountInCents = 100, Tier = PrizeTier.Grand },
-                new Prize { Id = "p2", AmountInCents = 50, Tier = PrizeTier.Second }
+                new Prize { Id = "p1", AmountInCents = 100, Tier = PrizeTier.GrandPrize },
+                new Prize { Id = "p2", AmountInCents = 50, Tier = PrizeTier.SecondTier }
             };
 
             var prizeDtos = new List<PrizeDto>()
