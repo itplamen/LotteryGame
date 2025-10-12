@@ -1,16 +1,21 @@
 ﻿namespace LotteryGame.Orchestrators.Api.Mapping
 {
     using AutoMapper;
-   
+
+    using Google.Protobuf.WellKnownTypes;
+
+    using DrawHistory = DrawService.Api.Models.Protos.History;
     using DrawService.Api.Models.Protos.Draws;
     using LotteryGame.Orchestrators.Api.Models.Protos.PlayerProfile;
     using LotteryGame.Orchestrators.Api.Models.Protos.TicketPurchase;
     using LotteryGame.Orchestrators.Models.AvailableDraw;
     using LotteryGame.Orchestrators.Models.Base;
+    using LotteryGame.Orchestrators.Models.DrawHistory;
     using LotteryGame.Orchestrators.Models.DrawParticipation;
     using LotteryGame.Orchestrators.Models.PlayerProfile;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
     using LotteryGame.Orchestrators.Models.ReserveFunds;
+    using LotteryHistory = Models.Protos.LotteryHistory;
     using WagerService.Api.Models.Protos.Tickets;
     using WalletService.Api.Models.Protos.Funds;
 
@@ -38,6 +43,15 @@
                 .ForMember(dest => dest.RealBalanceInCents, opt => opt.MapFrom(src => src.Data.RealBalanceInCents))
                 .ForMember(dest => dest.BonusBalanceInCents, opt => opt.MapFrom(src => src.Data.BonusBalanceInCents))
                 .ForMember(dest => dest.DrawOptions, opt => opt.MapFrom(src => src.Data.DrawOptions));
+
+            CreateMap<OrchestratorResponse<DrawHistoryResponse>, LotteryHistory.HistoryProtoResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
+                .ForMember(dest => dest.DrawDate, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.Data.DrawDate.ToUniversalTime())))
+                .ForMember(dest => dest.DrawStatus, opt => opt.MapFrom(src => src.Data.DrawStatus))
+                .ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Data.Participants))
+                .ForMember(dest => dest.HouseProfitInCents, opt => opt.MapFrom(src => src.Data.HouseProfitInCents))
+                .ForMember(dest => dest.Prizes, opt => opt.MapFrom(src => src.Data.Prizes));
 
             CreateMap<OrchestratorResponse<AvailableDrawResponse>, PurchaseProtoResponse>()
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
@@ -115,6 +129,15 @@
                         ctx.Mapper.Map<DrawParticipationRequest>(src.Payload)
                     )
                 );
+
+            CreateMap<DrawHistory.HistoryProtoResponse, OrchestratorResponse<DrawHistoryResponse>>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.Success))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
+                .ForPath(dest => dest.Data.DrawDate, opt => opt.MapFrom(src => src.DrawDate.ToDateTime()))
+                .ForPath(dest => dest.Data.DrawStatus, opt => opt.MapFrom(src => src.DrawStatus))
+                .ForPath(dest => dest.Data.Participants, opt => opt.MapFrom(src => src.Participants))
+                .ForPath(dest => dest.Data.HouseProfitInCents, opt => opt.MapFrom(src => src.HouseProfitInCents))
+                .ForPath(dest => dest.Data.Prizes, opt => opt.Ignore());
         }
     }
 }

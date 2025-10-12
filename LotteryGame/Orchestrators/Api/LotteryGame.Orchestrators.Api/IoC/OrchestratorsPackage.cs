@@ -5,6 +5,7 @@
     using LotteryGame.Orchestrators.Contracts;
     using LotteryGame.Orchestrators.Models.AvailableDraw;
     using LotteryGame.Orchestrators.Models.Cache;
+    using LotteryGame.Orchestrators.Models.DrawHistory;
     using LotteryGame.Orchestrators.Models.DrawParticipation;
     using LotteryGame.Orchestrators.Models.PlayerProfile;
     using LotteryGame.Orchestrators.Models.PurchaseTickets;
@@ -18,12 +19,14 @@
 
             services.AddScoped<AvailableDrawOrchestrator>();
             services.AddScoped<DrawParticipationOrchestrator>();
+            services.AddScoped<DrawHistoryOrchestrator>();
             services.AddScoped<PlayerProfileOrchestrator>();
             services.AddScoped<PurchaseTicketsOrchestrator>();
             services.AddScoped<ReserveFunsOrchestrator>();
 
             RegisterDecorator<AvailableDrawRequest, AvailableDrawResponse, AvailableDrawOrchestrator>(services);
             RegisterDecorator<DrawParticipationRequest, DrawParticipationResponse, DrawParticipationOrchestrator>(services);
+            RegisterDecorator<DrawHistoryRequest, DrawHistoryResponse, DrawHistoryOrchestrator>(services);
             RegisterDecorator<PlayerProfileRequest, PlayerProfileResponse, PlayerProfileOrchestrator>(services);
             RegisterDecorator<PurchaseTicketsRequest, PurchaseTicketsResponse, PurchaseTicketsOrchestrator>(services);
             RegisterDecorator<ReserveFundsRequest, ReserveFundsResponse, ReserveFunsOrchestrator>(services);
