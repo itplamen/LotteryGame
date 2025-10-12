@@ -25,6 +25,7 @@ var app = builder.Build();
 
 app.MapGrpcService<DrawsService>();
 app.MapGrpcService<PrizeService>();
+app.MapGrpcService<HistoryService>();
 app.MapGet("/", () => "gRPC service running on HTTP/2 localhost:5003");
 
 app.Run();

@@ -37,13 +37,18 @@
             services.AddScoped<IOperationPolicy<JoinDrawOperationContext>, DrawCapacityPolicy>();
             services.AddScoped<IOperationPolicy<JoinDrawOperationContext>, TicketsCountPolicy>();
 
+            services.AddScoped<IOperationPolicy<HistoryOperationContext>, DrawMustExistPolicy<HistoryOperationContext>>();
+            services.AddScoped<IOperationPolicy<HistoryOperationContext>, DrawInValidStatusPolicy<HistoryOperationContext>>();
+
             services.AddScoped<OperationPipeline<PrizeOperationContext>>();
             services.AddScoped<OperationPipeline<StartDrawOperationContext>>();
             services.AddScoped<OperationPipeline<JoinDrawOperationContext>>();
             services.AddScoped<OperationPipeline<GetPrizeOperationContext>>();
+            services.AddScoped<OperationPipeline<HistoryOperationContext>>();
 
             services.AddScoped<IDrawOperations, DrawOperations>();
             services.AddScoped<IPrizeOperations, PrizeOperations>();
+            services.AddScoped<IHistoryOperations, HistoryOperations>();
         }
     }
 }

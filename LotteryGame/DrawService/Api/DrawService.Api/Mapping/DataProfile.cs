@@ -25,6 +25,12 @@
                 .ForMember(dest => dest.MinPlayersInDraw, opt => opt.MapFrom(src => src.MinPlayersInDraw))
                 .ForMember(dest => dest.MaxPlayersInDraw, opt => opt.MapFrom(src => src.MaxPlayersInDraw))
                 .ForMember(dest => dest.CurrentPlayersInDraw, opt => opt.MapFrom(src => src.CurrentPlayersInDraw));
+
+            CreateMap<Draw, HistoryDto>()
+                .ForMember(dest => dest.DrawDate, opt => opt.MapFrom(src => src.DrawDate))
+                .ForMember(dest => dest.DrawStatus, opt => opt.MapFrom(src => src.Status.ToString()))
+                .ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.CurrentPlayersInDraw))
+                .ForMember(dest => dest.HouseProfitInCents, opt => opt.MapFrom(src => src.HouseProfitInCents));
         }
     }
 }

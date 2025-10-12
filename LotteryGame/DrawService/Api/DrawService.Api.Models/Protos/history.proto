@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "DrawService.Api.Models.Protos.History";
+
+package histories;
+
+service History {
+    rpc Get(HistoryProtoRequest) returns (HistoryProtoResponse);
+} 
+
+message HistoryProtoRequest {
+    string drawId = 1;
+}
+
+message HistoryProtoResponse {
+    bool success = 1;
+    string errorMsg = 2;
+    google.protobuf.Timestamp drawDate = 3;
+    string drawStatus = 4;
+    int32 participants = 5;
+    int64 houseProfitInCents = 6;
+    repeated PrizeHistoryProto prizes = 7;
+}
+
+message PrizeHistoryProto {
+    string ticketId = 1;
+    int64 amountInCents = 2;
+    string tier = 3;
+}

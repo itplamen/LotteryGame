@@ -9,6 +9,7 @@
     using DrawService.Core.Models;
     using DrawService.Data.Models;
     using LotteryGame.Common.Models.Dto;
+    using DrawService.Api.Models.Protos.History;
 
     public class ProtosProfile : Profile
     {
@@ -86,6 +87,20 @@
                 .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
                 .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
                 .ForMember(dest => dest.Prizes, opt => opt.MapFrom(src => src.Data));
+
+            CreateMap<PrizeDto, PrizeHistoryProto>()
+               .ForMember(dest => dest.AmountInCents, opt => opt.MapFrom(src => src.AmountInCents))
+               .ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
+               .ForMember(dest => dest.Tier, opt => opt.MapFrom(src => src.Tier));
+
+            CreateMap<ResponseDto<HistoryDto>, HistoryProtoResponse>()
+                .ForMember(dest => dest.Success, opt => opt.MapFrom(src => src.IsSuccess))
+                .ForMember(dest => dest.ErrorMsg, opt => opt.MapFrom(src => src.ErrorMsg))
+                .ForMember(dest => dest.DrawDate, opt => opt.MapFrom(src => Timestamp.FromDateTime(src.Data.DrawDate.ToUniversalTime())))
+                .ForMember(dest => dest.DrawStatus, opt => opt.MapFrom(src => src.Data.DrawStatus.ToString()))
+                .ForMember(dest => dest.HouseProfitInCents, opt => opt.MapFrom(src => src.Data.HouseProfitInCents))
+                .ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Data.Participants))
+                .ForMember(dest => dest.Prizes, opt => opt.MapFrom(src => src.Data.Prizes));
         }
     }
 }
