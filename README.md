@@ -10,6 +10,7 @@ A lottery game implemented as microservices with a SAGA orchestrator, where a hu
 
 * Microservice Architecture
 * SAGA orchestration pattern
+* ASP.NET Core Web API
 * gRPC for service-to-service calls
 * Snowflake algorithm for unique ticket numbers
 * SQL Server
